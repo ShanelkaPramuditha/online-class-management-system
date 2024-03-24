@@ -18,8 +18,8 @@ import UpdateEnrollment from './updateEnrollment';
 
 import PageNotFound from './PageNotFound';
 
-import UserMain from './UserMain'
-import AddUser from './UserMain/AddUser'
+import UserMain from './UserMain';
+import AddUser from './UserMain/AddUser';
 
 export {
    Home,
@@ -32,11 +32,10 @@ export {
    ModelPapers,
    Profile,
    UserMain,
-   AddUser
+   AddUser,
    Payment,
    ViewPayment,
    PaymentDetails,
    UpdateEnrollment,
    PageNotFound
-
 };
