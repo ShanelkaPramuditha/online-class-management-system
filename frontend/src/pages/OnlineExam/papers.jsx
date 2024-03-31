@@ -1,16 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 function Papers() {
-   const [papers, setPapers] = useState([
-      { id: 1, title: 'Model Paper 01', subtitle: 'Applied Mathematics' },
-      { id: 2, title: 'Model Paper 02', subtitle: 'Physics' },
-      { id: 3, title: 'Model Paper 03', subtitle: 'Chemistry' }
-   ]);
+   const [papers, setPapers] = useState([]);
 
-   const handleDelete = id => {
-      // Handle delete functionality here
-      console.log('Delete paper with id:', id);
+   useEffect(() => {
+      fetchPapers();
+   }, []);
+
+   const fetchPapers = async () => {
+      try {
+         const response = await axios.get('http://localhost:5000/api/paper');
+         setPapers(response.data);
+      } catch (error) {
+         console.error('Failed to fetch papers:', error);
+      }
+   };
+
+   const handleDelete = async id => {
+      try {
+         await axios.delete('http://localhost:5000/api/paper', {
+            data: { id }
+         });
+         setPapers(prevPapers => prevPapers.filter(paper => paper.id !== id));
+      } catch (error) {
+         console.error('Failed to delete paper:', error);
+      }
    };
 
    return (
@@ -28,8 +44,11 @@ function Papers() {
                   key={paper.id}
                   className="bg-white shadow-md rounded-md p-6">
                   <div className="text-xl font-bold mb-2">{paper.title}</div>
-                  <div className="text-gray-700">{paper.subtitle}</div>
-                  <div className="flex justify-end mt-4">
+                  <div className="text-gray-700 mb-2">{paper.description}</div>
+                  <div className="text-gray-500 mb-4">
+                     Quiz Count: {paper.quizCount}
+                  </div>
+                  <div className="flex justify-end">
                      <Link
                         to={`/update/${paper.id}`}
                         className="text-blue-500 hover:text-blue-700 mr-2">

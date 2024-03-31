@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function CreatePapers() {
    const [title, setTitle] = useState('');
@@ -17,49 +19,34 @@ function CreatePapers() {
       setError('');
    };
 
-   const handleSubmit = async e => {
-      e.preventDefault();
+   const handleSubmit = async () => {
       if (!title.trim() || !description.trim()) {
          setError('Title and Description are required.');
          return;
       }
 
-      // try {
-      //   // Make a GET request to a specific URL
-      //   const response = await axios.get('https://api.example.com/data');
-
-      //   // Handle successful response
-      //   console.log('Data:', response.data); // Log the data returned by the server
-      //   console.log('Status:', response.status); // Log the HTTP status code
-      //   console.log('Headers:', response.headers); // Log the response headers
-      // } catch (error) {
-      //   // Handle error
-      //   console.error('Error:', error); // Log any errors that occur during the request
-
-      //   if (error.response) {
-      //     // Log the HTTP status code if available
-      //     console.log('Status:', error.response.status);
-      //     // Log the error response data if available
-      //     console.log('Data:', error.response.data);
-      //   }
-      // }
-
       try {
          const { data, status } = await axios.post(
             'http://localhost:5000/api/paper/create',
-            { title: 'No Name', description: 'Amo eka' }
+            { title: title, description: description }
          );
 
          console.log(data);
          console.log(status);
+
+         if (status === 200) {
+            toast.success('Paper created successfully!');
+            // Clear form fields after successful submission
+            setTitle('');
+            setDescription('');
+         } else {
+            toast.error('Failed to create paper. Please try again.');
+         }
       } catch (e) {
-         console.log('An error occured.');
+         console.log('An error occurred.');
+         toast.error('Failed to create paper. Please try again.');
       }
    };
-
-   const sample = [1, 2, 4, 5];
-
-   handleSubmit();
 
    return (
       <div className="flex items-center justify-center h-screen bg-white">
@@ -71,14 +58,10 @@ function CreatePapers() {
             </h2>
          </div>
 
-         {sample.map(number => (
-            <p>{number}</p>
-         ))}
-
          {/* Right Section: Card with Input Fields */}
          <div className="flex-shrink-0 w-full max-w-md bg-gray-100 shadow-lg rounded-lg overflow-hidden">
             <div className="p-6">
-               <form onSubmit={handleSubmit}>
+               <form>
                   <div className="mb-4">
                      <label
                         className="block text-gray-700 text-sm font-bold mb-2"
@@ -113,11 +96,11 @@ function CreatePapers() {
                      <p className="text-red-500 text-sm mb-4">{error}</p>
                   )}
                   <div className="flex justify-end">
-                     <Link
-                        to="/CreateQues"
+                     <button
+                        onClick={handleSubmit}
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                         Next
-                     </Link>
+                     </button>
                   </div>
                </form>
             </div>
