@@ -11,7 +11,7 @@ export async function createLive(req, res) {
        const liveclass = new LIVECLASS({ sessionName, sessionTime, description, link });
        await liveclass.save();
  
-       res.status(200).json({ massage: 'Session Created Successfully', paper });
+       res.status(200).json({ massage: 'Session Created Successfully'});
     } catch (error) {
        res.status(500).json({ error: 'Faild To Create A Session.' });
     }
