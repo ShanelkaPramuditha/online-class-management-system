@@ -7,6 +7,10 @@ const liveSchema = new mongoose.Schema(
          type: String,
          required: true
       },
+      grade: {
+         type: String,
+         required: true
+      },
       sessiontime: {
          type: String,
          required: true

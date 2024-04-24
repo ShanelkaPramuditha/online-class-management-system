@@ -73,7 +73,7 @@ function LiveClassEdit() {
 
    return (
       <div
-         className="flex items-center justify-center h-screen bg-white"
+         className="flex items-center justify-center h-screen bg-white min-h-[calc(100vh-170px)]"
          style={{
             backgroundImage: `url(${backgroundImage})`,
             backgroundSize: 'cover',

@@ -12,6 +12,7 @@ const upload = multer({ dest: './src/uploads/' }); // specify the upload folder
 // Controller to create a new Class Session
 export async function createLive(req, res) {
    const sessionName = req.body.sessionName;
+   const grade = req.body.grade;
    const sessiontime = req.body.sessiontime;
    const description = req.body.description;
    const link = req.body.link;
@@ -32,6 +33,7 @@ export async function createLive(req, res) {
 
       const liveclass = new LIVECLASS({
          sessionName,
+         grade,
          sessiontime,
          description,
          link,
@@ -77,7 +79,7 @@ export async function getASession(req, res) {
 
 // Controller to edit a Class Session
 export async function editLive(req, res) {
-   const { sessionName, sessiontime, description, link } = req.body;
+   const { sessionName, grade, sessiontime, description, link } = req.body;
    const { id } = req.params;
 
    try {
@@ -89,6 +91,9 @@ export async function editLive(req, res) {
       const updateFields = {};
       if (sessionName !== undefined) {
          updateFields.sessionName = sessionName;
+      }
+      if (grade !== undefined) {
+         updateFields.grade = grade;
       }
       if (sessiontime !== undefined) {
          updateFields.sessiontime = sessiontime;
@@ -110,6 +115,7 @@ export async function editLive(req, res) {
       const updateData = await LIVECLASS.findByIdAndUpdate(id);
 
       updateData.sessionName = sessionName;
+      updateData.grade = grade;
       updateData.sessiontime = sessiontime;
       updateData.description = description;
       updateData.link = link;
@@ -145,5 +151,16 @@ export async function deleteLive(req, res) {
    } catch (error) {
       console.log(error);
       res.status(500).json({ error: 'Failed to delete Live Session.' });
+   }
+}
+
+// Get a session (using grades)
+export async function getAGrade(req, res) {
+   try {
+      const { grade } = req.params;
+      const session = await LIVECLASS.find(grade);
+      res.status(200).json(session);
+   } catch (error) {
+      res.status(500).json({ error: 'Failed to retrieve sessions.' });
    }
 }

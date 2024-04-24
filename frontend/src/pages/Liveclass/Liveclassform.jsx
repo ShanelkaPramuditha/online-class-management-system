@@ -5,6 +5,7 @@ import backgroundImage from '../../assets/images/LiveclassformBG.png';
 
 function LiveClassForm() {
    const [sessionName, setSessionName] = useState('');
+   const [grade, setSessionGrade] = useState('');
    const [sessiontime, setSessionTime] = useState('');
    const [description, setDescription] = useState('');
    const [link, setLink] = useState('');
@@ -14,6 +15,11 @@ function LiveClassForm() {
 
    const handleSessionName = e => {
       setSessionName(e.target.value);
+      setError('');
+   };
+
+   const handleSessionGrade = e => {
+      setSessionGrade(e.target.value);
       setError('');
    };
 
@@ -39,13 +45,19 @@ function LiveClassForm() {
 
    const handleSubmit = async e => {
       e.preventDefault();
-      if (!sessionName.trim() && !sessiontime.trim() && !link.trim()) {
-         setError('Topic, Time Duration, and Class Link are required.');
+      if (
+         !sessionName.trim() &&
+         !grade.trim() &&
+         !sessiontime.trim() &&
+         !link.trim()
+      ) {
+         setError('Topic, Grade, Time Duration, and Class Link are required.');
          return;
       }
       try {
          const formData = new FormData();
          formData.append('sessionName', sessionName);
+         formData.append('grade', grade);
          formData.append('sessiontime', sessiontime);
          formData.append('description', description);
          formData.append('link', link);
@@ -97,6 +109,21 @@ function LiveClassForm() {
                         placeholder="Topic"
                         value={sessionName}
                         onChange={handleSessionName}
+                     />
+                  </div>
+                  <div className="mb-4">
+                     <label
+                        className="block text-[#36454F] text-sm font-bold mb-2"
+                        htmlFor="grade">
+                        Grade
+                     </label>
+                     <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="grade"
+                        type="text"
+                        placeholder="Grade"
+                        value={grade}
+                        onChange={handleSessionGrade}
                      />
                   </div>
                   <div className="mb-4">

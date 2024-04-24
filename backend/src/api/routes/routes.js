@@ -81,5 +81,8 @@ router.route('/liveSessions').get(liveclassController.getSession); //Teacher onl
 router.route('/liveSessions/:id').get(liveclassController.getASession);
 router.route('/liveSessions/edit/:id').put(liveclassController.editLive);
 router.route('/liveSessions/delete/:id').delete(liveclassController.deleteLive);
+router
+   .route('/liveSessions/checkGrade/:grade')
+   .get(liveclassController.getAGrade);
 
 export default router;

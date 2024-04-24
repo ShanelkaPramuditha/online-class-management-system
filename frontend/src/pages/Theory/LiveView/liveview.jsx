@@ -28,7 +28,7 @@ function LiveClassView() {
 
    return (
       <div
-         className="flex flex-col items-center"
+         className="flex flex-col items-center min-h-[calc(100vh-170px)]"
          style={{
             backgroundImage: `url(${backgroundImage})`,
             backgroundSize: 'cover',
