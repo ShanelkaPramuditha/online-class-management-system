@@ -25,7 +25,7 @@ function CreateQuestions() {
             console.log(createdQuestions);
             console.log(createdQuestions.length);
          } catch (error) {
-            setError('Failed to fetch questions. Please try again.');
+            setError('');
          }
       };
 
