@@ -5,7 +5,7 @@ on:
       branches:
          - 'dev'
          - 'main'
-         - 'feature/*'
+         # - 'feature/*'
       tags:
          - 'v*.*.*'
    workflow_dispatch:
@@ -50,8 +50,9 @@ jobs:
            with:
               images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
               flavor: |
+                 branch=${{ env.BRANCH_NAME }}
                  latest=false
-                 suffix=-${{ github.event_name }}
+              #   suffix=-${{ github.event_name }}
 
          - name: Build and push Docker image (Frontend)
            uses: docker/build-push-action@v2
