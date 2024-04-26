@@ -41,10 +41,11 @@ const routes = [
    { path: '/payment', element: <Payment /> },
    { path: '/payments', element: <ViewPayment /> },
    { path: '/payment/:id', element: <PaymentDetails /> },
+
    //UserMain
    { path: '/UserMain', element: <UserMain /> },
    { path: '/UserMain/AddUser', element: <AddUser /> },
-   { path: '/UserMain/UpdateUser', element: <UpdateUser /> },
+   { path: '/UserMain/UpdateUser/:id', element: <UpdateUser /> },
    // {
    //    path: '/password',
    //    element: (

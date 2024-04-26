@@ -311,17 +311,39 @@ export async function GetAllUsers(req, res) {
    res.status(200).json(users);
 }
 
+//Description - Get User By Id
+//Route - usermain/get/:_id
+//Access - Private
+export async function GetOne(req, res) {
+   //Get ID from request parameter - :Id
+   const { _id } = req.params;
+
+   //Getting All Users As In UserModel From MongoDB by Mongoose
+   const user = await UserModel.findById(_id);
+
+   //Check If The User Array is Null
+   if (!user) {
+      res.status(400);
+      throw new Error('User Not Found!');
+   } else {
+      //Export Users To Front-End UserMain
+      res.status(200).send(user);
+   }
+}
+
 //Description - Update User
 //Route - usermain/update
 //Access - Private
 export async function UpdateUser(req, res) {
    try {
-      // Extract email and Other Data from the request body
+      // Extract id from the request body
+      const { _id } = req.params;
 
       // Construct update data, skipping role if it's null
       const updateData = {
          firstName: req.body.fName,
          lastName: req.body.lName,
+         email: req.body.email,
          userRole: req.body.userRole,
          gender: req.body.gender,
          mobileNumber: req.body.mobile,
@@ -330,11 +352,7 @@ export async function UpdateUser(req, res) {
       };
 
       // Update user in the database
-      const result = await UserModel.updateOne(
-         { email: req.body.email },
-         { $set: updateData }
-      );
-      console.log(updateData);
+      const result = await UserModel.updateOne({ _id }, { $set: updateData });
       // Check if the update was successful
       if (result.nModified === 0) {
          return res
@@ -343,10 +361,10 @@ export async function UpdateUser(req, res) {
       }
 
       // Send success response
-      res.status(200).json({ message: 'User updated successfully.' });
+      //res.status(200).json({ message: 'User updated successfully.' });
    } catch (error) {
       console.error('Error updating user:', error);
-      res.status(500).json({ error: 'Internal server error.' });
+      //res.status(500).json({ error: 'Internal server error.' });
    }
 }
 
@@ -356,15 +374,10 @@ export async function UpdateUser(req, res) {
 export async function DeleteUser(req, res) {
    try {
       // Extract email from the request body
-      const { email } = req.body;
-
-      // Validate input data
-      if (!email) {
-         return res.status(400).json({ error: 'Email is required.' });
-      }
+      const { _id } = req.params;
 
       // Delete user from the database
-      const result = await UserModel.deleteOne({ email: email });
+      const result = await UserModel.deleteOne({ _id });
 
       // Check if the delete operation was successful
       if (result.deletedCount === 0) {

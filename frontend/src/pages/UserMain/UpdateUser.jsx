@@ -1,17 +1,26 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function UpdateUser() {
    var TCellStyle = 'px-5 py-2 bg-neutral-300 text-neutral-950';
    var THeadStyle = 'px-5 py-2 bg-[#0057FF] ';
+   var TextStyle = 'text-black text-xl';
+   var TextBoxStyle =
+      'border-slate-600 placeholder-zinc-950 bg-black bg-opacity-0 pb-3 border-b-4 text-3xl';
 
-   const location = useLocation();
-   const searchParams = new URLSearchParams(location.search);
-   const key = searchParams.get('key');
+   const { id } = useParams();
+   const [uUser, setUUser] = useState({});
 
-   const [formData, setFormData] = useState({
+   useEffect(() => {
+      axios
+         .get('http://localhost:5000/api/usermain/get/' + id)
+         .then(response => setUUser(response.data))
+         .catch(err => console.error(err));
+   }, [id]);
+
+   const formStructure = {
       firstName: '',
       lastName: '',
       email: '',
@@ -20,9 +29,11 @@ function UpdateUser() {
       mobileNumber: '',
       password: '',
       registerDate: ''
-   });
+   };
 
-   const {
+   const [formData, setFormData] = useState(formStructure);
+
+   const [
       firstName,
       lastName,
       email,
@@ -31,7 +42,21 @@ function UpdateUser() {
       mobileNumber,
       password,
       registerDate
-   } = formData;
+   ] = Object.values(formData);
+
+   //Set User's Previous Data as default
+   useEffect(() => {
+      setFormData({
+         firstName: uUser.firstName,
+         lastName: uUser.lastName,
+         email: uUser.email,
+         userRole: uUser.userRole,
+         gender: uUser.gender,
+         mobileNumber: uUser.mobileNumber,
+         password: uUser.password,
+         registerDate: uUser.registerDate
+      });
+   }, [uUser]);
 
    const onChange = e => {
       setFormData(prevformData => ({
@@ -40,17 +65,12 @@ function UpdateUser() {
       }));
    };
 
-   const funUpdateUser = () => {
-      const url = 'http://localhost:5000/api/usermain/update';
-      const config = {
-         headers: {
-            'x-apikey': 'API_KEY'
-         }
-      };
+   const funcUpdateUser = () => {
+      const url = 'http://localhost:5000/api/usermain/update/' + id;
       const UserPayload = {
          fName: firstName,
          lName: lastName,
-         email: key,
+         email,
          userRole,
          gender,
          mobile: mobileNumber,
@@ -58,7 +78,7 @@ function UpdateUser() {
          registerDate
       };
       console.log(UserPayload);
-      axios.post(url, UserPayload, config).then(response => {
+      axios.put(url, UserPayload).then(response => {
          console.log(response);
       });
    };
@@ -72,39 +92,35 @@ function UpdateUser() {
             <div className=" bg-slate-600 min-h-52 min-w-32 border-spacing-4    ">
                <div className="flex">
                   <div className=" mt-12 m-5">
-                     <label className=" text-black text-3xl">First Name</label>
+                     <label className={TextStyle}>First Name</label>
                      <br />
                      <br />
                      <br />
-                     <label className="text-black text-3xl">Last Name</label>
+                     <label className={TextStyle}>Last Name</label>
                      <br />
                      <br />
                      <br />
-                     <label className="text-black text-3xl">email</label>
+                     <label className={TextStyle}>email</label>
                      <br />
                      <br />
                      <br />
-                     <label className="text-black text-3xl">User Role</label>
+                     <label className={TextStyle}>User Role</label>
                      <br />
                      <br />
                      <br />
-                     <label className="text-black text-3xl">Gender</label>
+                     <label className={TextStyle}>Gender</label>
                      <br />
                      <br />
                      <br />
-                     <label className="text-black text-3xl">
-                        Mobile Number
-                     </label>
+                     <label className={TextStyle}>Mobile Number</label>
                      <br />
                      <br />
                      <br />
-                     <label className="text-black text-3xl">Password</label>
+                     <label className={TextStyle}>Password</label>
                      <br />
                      <br />
                      <br />
-                     <label className="text-black text-3xl">
-                        Register Date
-                     </label>
+                     <label className={TextStyle}>Register Date</label>
                      <br />
                      <br />
                      <br />
@@ -116,7 +132,7 @@ function UpdateUser() {
                         value={firstName}
                         name="firstName"
                         placeholder="Enter your ID Here"
-                        className="border-slate-600 placeholder-zinc-950 bg-black bg-opacity-0 pb-3 border-b-4 text-3xl"
+                        className={TextBoxStyle}
                         type="text"
                      />
                      <br />
@@ -126,17 +142,17 @@ function UpdateUser() {
                         value={lastName}
                         name="lastName"
                         placeholder="Enter your ID Here"
-                        className="border-slate-600 placeholder-zinc-950 bg-black bg-opacity-0 pb-3 border-b-4 text-3xl"
+                        className={TextBoxStyle}
                         type="text"
                      />
                      <br />
                      <br />
                      <input
-                        disabled
-                        value={key}
+                        onChange={onChange}
+                        value={email}
                         name="email"
                         placeholder="Enter your ID Here"
-                        className="border-slate-600 placeholder-zinc-950 bg-black bg-opacity-0 pb-3 border-b-4 text-3xl"
+                        className={TextBoxStyle}
                         type="text"
                      />
                      <br />
@@ -146,7 +162,7 @@ function UpdateUser() {
                         value={userRole}
                         name="userRole"
                         placeholder="Enter your ID Here"
-                        className="border-slate-600 placeholder-zinc-950 bg-black bg-opacity-0 pb-3 border-b-4 text-3xl"
+                        className={TextBoxStyle}
                         type="text"
                      />
                      <br />
@@ -156,7 +172,7 @@ function UpdateUser() {
                         value={gender}
                         name="gender"
                         placeholder="Enter your ID Here"
-                        className="border-slate-600 placeholder-zinc-950 bg-black bg-opacity-0 pb-3 border-b-4 text-3xl"
+                        className={TextBoxStyle}
                         type="text"
                      />
                      <br />
@@ -166,7 +182,7 @@ function UpdateUser() {
                         value={mobileNumber}
                         name="mobileNumber"
                         placeholder="Enter your ID Here"
-                        className="border-slate-600 placeholder-zinc-950 bg-black bg-opacity-0 pb-3 border-b-4 text-3xl"
+                        className={TextBoxStyle}
                         type="text"
                      />
                      <br />
@@ -176,7 +192,7 @@ function UpdateUser() {
                         value={password}
                         name="password"
                         placeholder="Enter your ID Here"
-                        className="border-slate-600 placeholder-zinc-950 bg-black bg-opacity-0 pb-3 border-b-4 text-3xl"
+                        className={TextBoxStyle}
                         type="text"
                      />
                      <br />
@@ -186,7 +202,7 @@ function UpdateUser() {
                         value={registerDate}
                         name="registerDate"
                         placeholder="Enter your ID Here"
-                        className="border-slate-600 placeholder-zinc-950 bg-black bg-opacity-0 pb-3 border-b-4 text-3xl"
+                        className={TextBoxStyle}
                         type="text"
                      />
                      <br />
@@ -197,9 +213,8 @@ function UpdateUser() {
                   <div className="flex w-4 bg-opacity-0"></div>
                   <div className="mb-5 flex w-44 h-14 max-w-sm  bg-gradient-to-tr from-blue-300 to-blue-600 p-0.5 shadow-lg">
                      <button
-                        className="flex-1 w-44 h-14 font-bold text-xl bg-white 
-                bg-opacity-45 px-6 py-3 "
-                        onClick={funUpdateUser}>
+                        className="flex-1 w-44 h-14 font-bold text-xl bg-white bg-opacity-45 px-6 py-3 "
+                        onClick={funcUpdateUser}>
                         Update User
                      </button>
                   </div>
