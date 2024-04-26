@@ -3,8 +3,8 @@ name: Docker Image CI (For ghcr.io)
 on:
    push:
       branches:
-         - 'dev'
-         # - 'main'
+         # - 'dev'
+         - 'main'
          # - 'feature/*'
    workflow_dispatch:
 
