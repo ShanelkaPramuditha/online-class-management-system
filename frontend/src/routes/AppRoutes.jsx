@@ -37,36 +37,6 @@ import { ProtectedRoute } from './ProtectedRoutes.jsx';
 import DashboardRoutes from './DashboardRoutes.jsx';
 
 const routes = [
-<<<<<<< HEAD
-   { path: '/', element: <Home /> },
-   { path: '/courses', element: <Courses /> },
-   { path: '/contact', element: <Contact /> },
-   { path: '/about', element: <About /> },
-   { path: '/theory', element: <Theory /> },
-   { path: '/revision', element: <Revision /> },
-   // { path: '/onlineexam', element: <OnlineExam /> },
-   { path: '/exam', element: <Papers /> },
-   { path: '/exam/create', element: <CreateExam /> },
-   { path: '/modelpapers', element: <ModelPapers /> },
-
-   { path: '/payment', element: <Payment /> },
-   { path: '/payments', element: <ViewPayment /> },
-   { path: '/payment/:id', element: <PaymentDetails /> },
-
-   //UserMain
-   { path: '/UserMain', element: <UserMain /> },
-   { path: '/UserMain/AddUser', element: <AddUser /> },
-   { path: '/UserMain/UpdateUser/:id', element: <UpdateUser /> },
-   // {
-   //    path: '/password',
-   //    element: (
-   //       <ProtectRoute>
-   //          <Password />
-   //       </ProtectRoute>
-   //    )
-   // },
-=======
->>>>>>> dev
    {
       path: '/',
       element: <DashboardRoutes />,
@@ -181,21 +151,22 @@ const routes = [
       auth: [true],
       roles: ['admin', 'teacher']
    },
+
    //UserMain
    {
-      path: '/UserMain',
+      path: '/students',
       element: <UserMain />,
       auth: [true],
       roles: ['admin', 'teacher', 'student']
    },
    {
-      path: '/UserMain/AddUser',
+      path: '/students/AddUser',
       element: <AddUser />,
       auth: [true],
       roles: ['admin']
    },
    {
-      path: '/UserMain/UpdateUser',
+      path: '/students/UpdateUser/:id',
       element: <UpdateUser />,
       auth: [true],
       roles: ['admin', 'teacher', 'student']

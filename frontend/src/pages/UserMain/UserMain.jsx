@@ -11,7 +11,7 @@ export default function UserMain() {
    const [Data, setData] = useState([]);
 
    const AddUser = () => {
-      navigate('./AddUser');
+      navigate('/students/AddUser');
    };
 
    useEffect(() => {
@@ -72,7 +72,7 @@ export default function UserMain() {
             <td className={TCellStyle}>
                <button onClick={() => DeleteUser(User._id)}>Delete</button>
                <button
-                  onClick={() => navigate('/UserMain/UpdateUser/' + User._id)}>
+                  onClick={() => navigate('/students/UpdateUser/' + User._id)}>
                   Update
                </button>
                <button onClick={() => ChangeRole(User._id)}>ChangeRole</button>
