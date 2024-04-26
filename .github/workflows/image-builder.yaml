@@ -41,8 +41,7 @@ jobs:
            run: echo "BRANCH_NAME=$(echo ${{ github.ref }} | awk -F'/' '{print $NF}')" >> $GITHUB_ENV
 
          - name: Set up Docker Buildx
-           run: |
-              docker buildx create --name mybuilder --use --driver docker-container
+           uses: docker/setup-buildx-action@v1
 
          - name: Extract metadata (tags, labels) for Docker
            id: meta
