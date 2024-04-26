@@ -51,8 +51,7 @@ jobs:
               images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
               flavor: |
                  latest=false
-                 branch=${{ github.ref_name }}
-              #   suffix=-${{ github.event_name }}
+                 suffix=${{ github.ref_name }}
 
          - name: Build and push Docker image (Frontend)
            uses: docker/build-push-action@v2
