@@ -151,21 +151,22 @@ const routes = [
       auth: [true],
       roles: ['admin', 'teacher']
    },
+
    //UserMain
    {
-      path: '/UserMain',
+      path: '/students',
       element: <UserMain />,
       auth: [true],
       roles: ['admin', 'teacher', 'student']
    },
    {
-      path: '/UserMain/AddUser',
+      path: '/students/AddUser',
       element: <AddUser />,
       auth: [true],
       roles: ['admin']
    },
    {
-      path: '/UserMain/UpdateUser',
+      path: '/students/UpdateUser/:id',
       element: <UpdateUser />,
       auth: [true],
       roles: ['admin', 'teacher', 'student']

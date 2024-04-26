@@ -11,7 +11,7 @@ export default function UserMain() {
    const [Data, setData] = useState([]);
 
    const AddUser = () => {
-      navigate('./AddUser');
+      navigate('/students/AddUser');
    };
 
    useEffect(() => {
@@ -38,20 +38,15 @@ export default function UserMain() {
       });
    }
 
-   function DeleteUser(key) {
-      const email = Data[key].email;
-      const url = 'http://localhost:5000/api/usermain/delete';
-      const config = {
-         headers: {
-            'x-apikey': 'API_KEY'
-         }
-      };
+   function DeleteUser(_id) {
+      const url = 'http://localhost:5000/api/usermain/delete/' + _id;
+
       const payload = {
-         email
+         _id
       };
       console.log(payload);
       axios
-         .post(url, payload, config)
+         .delete(url, payload)
          .then(res => {
             UpdateData();
             console.log(res);
@@ -59,7 +54,10 @@ export default function UserMain() {
          .catch(error => {
             console.log(error);
          });
+      window.location.reload;
    }
+
+   function ChangeRole() {}
 
    const RowGen = () => {
       return Data.map((User, index) => (
@@ -72,15 +70,12 @@ export default function UserMain() {
             <td className={TCellStyle}>{User.mobileNumber}</td>
             <td className={TCellStyle}>{User.registerDate}</td>
             <td className={TCellStyle}>
-               <button onClick={() => DeleteUser(index)}>Delete User</button>
-               <br />
-               <Link
-                  to={{
-                     pathname: '/UserMain/UpdateUser',
-                     search: `?key=${User.email}`
-                  }}>
-                  Update User
-               </Link>
+               <button onClick={() => DeleteUser(User._id)}>Delete</button>
+               <button
+                  onClick={() => navigate('/students/UpdateUser/' + User._id)}>
+                  Update
+               </button>
+               <button onClick={() => ChangeRole(User._id)}>ChangeRole</button>
             </td>
          </tr>
       ));
