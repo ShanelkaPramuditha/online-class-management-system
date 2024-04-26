@@ -14,8 +14,7 @@ env:
    REGISTRY: ghcr.io
    GITHUB_USERNAME: ${{ github.actor }}
    IMAGE_NAME: ${{ github.repository }}
-   DIR_NAME: front
-   DOCKER_IMAGE: shanelka/classmanage:main
+   DIR_NAME: frontend
 
 jobs:
    docker-image-build:
@@ -38,9 +37,9 @@ jobs:
               username: ${{ github.actor }}
               password: ${{ secrets.GITHUB_TOKEN }}
 
-         - name: Convert User Name to lowercase
-           run: |
-              echo "GITHUB_USERNAME=${GITHUB_USERNAME,,}" >>${GITHUB_ENV}
+         # - name: Convert User Name to lowercase
+         #   run: |
+         #      echo "GITHUB_USERNAME=${GITHUB_USERNAME,,}" >>${GITHUB_ENV}
 
          - name: Determine Branch Name
            run: echo "BRANCH_NAME=$(echo ${{ github.ref }} | awk -F'/' '{print $NF}')" >> $GITHUB_ENV
@@ -49,7 +48,7 @@ jobs:
            id: meta
            uses: docker/metadata-action@v3
            with:
-              images: ${{ env.REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}
+              images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
               flavor: |
                  latest=false
                  suffix=-${{ github.event_name }}
