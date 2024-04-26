@@ -5,7 +5,7 @@ on:
       branches:
          - 'dev'
          - 'main'
-         - 'feature/*'
+         # - 'feature/*'
       tags:
          - 'v*.*.*'
    workflow_dispatch:
@@ -48,16 +48,16 @@ jobs:
            id: meta
            uses: docker/metadata-action@v3
            with:
-              images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+              images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ env.DIR_NAME }}:${{ env.BRANCH_NAME }}
               flavor: |
                  latest=false
                  suffix=-${{ github.event_name }}
 
-         - name: Build and push Docker image (Frontend)
+         - name: Build and push Docker image
            uses: docker/build-push-action@v2
            with:
               context: ./frontend
-              file: ./frontend/Dockerfile.dev
+              file: ./frontend/Dockerfile.${{ env.BRANCH_NAME }}
               push: true
               tags: ${{ steps.meta.outputs.tags }}
               labels: ${{ steps.meta.outputs.labels }}
