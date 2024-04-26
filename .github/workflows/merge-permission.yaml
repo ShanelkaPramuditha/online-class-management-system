@@ -1,0 +1,19 @@
+name: Merge Control
+
+on:
+   pull_request:
+      types: [opened, reopened, synchronize, labeled, unlabeled]
+
+jobs:
+   merge-control:
+      runs-on: ubuntu-latest
+
+      steps:
+         - name: Check Pull Request Author
+           id: check_author
+           run: |
+              PR_AUTHOR=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.number }}" | jq -r '.user.login')
+              if [ "$PR_AUTHOR" != "ShanelkaPramuditha" ]; then
+                echo "Only ShanelkaPramuditha is allowed to merge pull requests."
+                exit 1
+              fi

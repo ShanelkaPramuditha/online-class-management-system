@@ -3,10 +3,10 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useFormik } from 'formik';
 
 import avatar from '../assets/react.svg';
-import { passwordValidate } from '../helper/validate';
+import { passwordValidate } from '../api/validate';
 import useFetch from '../hooks/fetch.hook';
 import { useAuthStore } from '../store/store';
-import { verifyPassword } from '../helper/helper';
+import { verifyPassword } from '../api/helper';
 
 export default function Password() {
    const navigate = useNavigate();

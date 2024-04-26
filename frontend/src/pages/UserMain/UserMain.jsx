@@ -1,5 +1,5 @@
 import { useNavigate, Link } from 'react-router-dom';
-import Button2 from '../../components/Button/Button2';
+import Button2 from '../../components/Buttons/Button2';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 

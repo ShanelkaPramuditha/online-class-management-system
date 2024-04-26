@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Card = ({ image, header, description, navTo }) => {
    return (
       <div
-         className={`bg-light-silver h-[calc(100vh-150px)] w-[270px] relative rounded-lg shadow-[8px_8px_20px_0px_rgba(0,0,0,0.5)] hover:shadow-[8px_8px_20px_0px_rgba(0,0,0,0.75)] hover:bg-light-gray`}>
+         className={`bg-light-silver h-[calc(100vh-250px)] w-[270px] relative rounded-lg shadow-[8px_8px_20px_0px_rgba(0,0,0,0.5)] hover:shadow-[8px_8px_20px_0px_rgba(0,0,0,0.75)] hover:to-light-silver`}>
          <div className="mx-auto w-[calc((100vw/4)-100px)]">
             <img
                src={image}

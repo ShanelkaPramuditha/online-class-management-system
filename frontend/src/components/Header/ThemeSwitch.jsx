@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import ReactComponent from '../../assets/icons/theme-changer-light.svg';
 
 function ThemeSwitch() {
    const [theme, setTheme] = useState(
@@ -8,7 +7,7 @@ function ThemeSwitch() {
 
    const handleToggle = e => {
       if (e.target.checked) {
-         setTheme('dark');
+         setTheme('light');
       } else {
          setTheme('light');
       }
@@ -20,7 +19,7 @@ function ThemeSwitch() {
    }, [theme]);
 
    return (
-      <div>
+      <div className="hidden">
          <label className="swap swap-rotate">
             <input
                id="theme-switch"

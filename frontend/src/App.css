@@ -14,10 +14,17 @@
 
 body {
    font-family: 'Ubuntu', sans-serif;
-   /* Additional global styles if needed */
+   margin-top: 70px;
 }
 
 /* Set the top of body padding */
 .main-content {
-   padding-top: 70px;
+   margin-top: 70px;
+}
+
+.body-content {
+   margin-right: 20px;
+   margin-left: 20px;
+   margin-top: 120px;
+   margin-bottom: 50px;
 }

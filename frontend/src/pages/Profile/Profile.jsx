@@ -2,8 +2,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { useFormik } from 'formik';
 
-import { profileValidation } from '../../helper/validate';
-import { updateUser } from '../../helper/helper';
+import { profileValidation } from '../../api/validate';
+import { updateUser } from '../../api/helper';
 import useFetch from '../../hooks/fetch.hook';
 
 export default function Profile() {

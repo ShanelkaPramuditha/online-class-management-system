@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 // Define the Live Session Schema
 const liveSchema = new mongoose.Schema(
    {
-      sessionname: {
+      sessionName: {
          type: String,
          required: true
       },

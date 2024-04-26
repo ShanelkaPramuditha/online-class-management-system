@@ -1,7 +1,7 @@
-import LiveClass from './Liveclass';
+import LiveClassForm from './Liveclassform';
 
 const index = () => {
-   return <LiveClass />;
+   return <LiveClassForm />;
 };
 
 export default index;

@@ -4,6 +4,13 @@ import morgan from 'morgan';
 import configs from './config/index.js';
 import connect from './utility/db-connection.js';
 import router from './api/routes/routes.js';
+import {
+   postmessages,
+   getdetails,
+   deletemessages,
+   editemessages,
+   editmsgs
+} from './api/controllers/livechat.controller.js';
 
 const port = configs.backend.port;
 
@@ -41,3 +48,10 @@ try {
    console.log('Cannot connect to the database');
    console.log('Server Not Running!');
 }
+
+//Livechat
+app.post('/message', postmessages);
+app.get('/msg', getdetails);
+app.delete('/deletemsg/:msgId', deletemessages);
+app.get('/editdetail/:msgId', editemessages);
+app.put('/editmsg/:msgId', editmsgs);

@@ -1,22 +1,20 @@
 import { useState } from 'react';
 import { useFormik } from 'formik';
 import { PiUserCircleLight } from 'react-icons/pi';
-import { emailValidate, passwordValidate } from '../../helper/validate';
-import { useAuthStore } from '../../store/store';
+import { emailValidate, passwordValidate } from '../../api/validate';
+import { useAuthStore } from '../../store/authStore';
 import toast, { Toaster } from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router-dom';
-import { verifyPassword } from '../../helper/helper';
+import { Link } from 'react-router-dom';
+import { verifyPassword } from '../../api/helper';
+import Swal from 'sweetalert2';
 
 const SignIn = () => {
-   const setEmail = useAuthStore(state => state.setEmail);
+   const { login } = useAuthStore();
 
    const [showPasswordForm, setShowPasswordForm] = useState(false);
-   const [showUsernameForm, setShowUsernameForm] = useState(true);
    const [showModal, setShowModal] = useState(true);
 
-   const navigate = useNavigate();
-
-   // Set Username value from the form
+   // Formik for Email
    const userFormik = useFormik({
       initialValues: {
          email: ''
@@ -24,13 +22,12 @@ const SignIn = () => {
       validate: emailValidate,
       validateOnBlur: false,
       validateOnChange: false,
-      onSubmit: async values => {
-         setEmail(values.email);
+      onSubmit: async () => {
          setShowPasswordForm(true);
       }
    });
 
-   // Set Username value from the form
+   // Formik for Password
    const passwordFormik = useFormik({
       initialValues: {
          password: ''
@@ -51,11 +48,28 @@ const SignIn = () => {
 
          loginPromise.then(res => {
             let { token } = res.data;
-            localStorage.setItem('token', token);
-            setShowUsernameForm(false);
+            login(
+               res.data.email,
+               res.data.userRole,
+               token,
+               res.data.firstName,
+               res.data.lastName,
+               res.data.gender,
+               res.data.mobileNumber,
+               res.data.dateOfRegistration,
+               res.data.dateOfUpdated
+            );
             setShowPasswordForm(false);
             setShowModal(false);
-            navigate('/profile');
+            Swal.fire({
+               icon: 'success',
+               title: 'Logged In Successfully!',
+               showConfirmButton: false,
+               timerProgressBar: true,
+               timer: 2000
+            }).then(() => {
+               window.location.href = '/';
+            });
          });
       }
    });
@@ -71,7 +85,6 @@ const SignIn = () => {
                      className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
                      onClick={() => {
                         setShowPasswordForm(false);
-                        setShowUsernameForm(true);
                      }}>
                      ✕
                   </button>
@@ -84,10 +97,14 @@ const SignIn = () => {
                   <form className="py-1" onSubmit={passwordFormik.handleSubmit}>
                      {/* Password form fields */}
                      <div className="textbox flex flex-col items-center gap-6">
+                        <div className="flex items-center justify-center p-3">
+                           <PiUserCircleLight size={120} />
+                        </div>
                         <input
                            {...passwordFormik.getFieldProps('password')}
                            type="password"
                            placeholder="Password"
+                           className="input input-bordered w-full"
                         />
                         <button type="submit">SIGN IN</button>
                      </div>
@@ -108,7 +125,7 @@ const SignIn = () => {
                               type="email"
                               placeholder="Email"
                               autoComplete="on"
-                              className="px-4 h-[27px] border-2 border-[#00000066] rounded-lg w-full"
+                              className="input input-bordered w-full"
                            />
                         </div>
                         <button

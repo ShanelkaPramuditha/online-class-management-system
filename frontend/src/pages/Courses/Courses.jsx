@@ -4,11 +4,16 @@ import { Card } from '../../components';
 
 const Courses = () => {
    return (
-      <div>
-         <div className="h-[calc(100vh-70px)] w-full">
-            <img src={CourseImg} alt="course" className="h-full w-full" />
-         </div>
-         <div className="w-full h-[calc(100vh-70px)] bg-blue-500 items-center justify-center px-12 py-10">
+      <div className="relative">
+         {/* Background image */}
+         <img
+            src={CourseImg}
+            alt="course"
+            className="absolute inset-0 w-full h-full object-cover opacity-50"
+         />
+
+         {/* Overlay container */}
+         <div className="relative z-10 flex flex-col justify-center items-center px-12 py-10">
             <div className="grid grid-cols-4 gap-7">
                <Card
                   image={CardImg1}
@@ -26,7 +31,7 @@ const Courses = () => {
                   image={CardImg1}
                   header="Online Exam"
                   description=""
-                  navTo="/onlineexam"
+                  navTo="/allexams"
                />
                <Card
                   image={CardImg1}
