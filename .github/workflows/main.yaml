@@ -41,8 +41,8 @@ jobs:
            run: |
               echo "GITHUB_USERNAME=${GITHUB_USERNAME,,}" >>${GITHUB_ENV}
 
-         - name: Determine Branch Name
-           run: echo "BRANCH_NAME=$(echo ${{ github.ref }} | awk -F'/' '{print $NF}')" >> $GITHUB_ENV
+         # - name: Determine Branch Name
+         #   run: echo "BRANCH_NAME=$(echo ${{ github.ref }} | awk -F'/' '{print $NF}')" >> $GITHUB_ENV
 
          - name: Extract metadata (tags, labels) for Docker
            id: meta
@@ -50,15 +50,15 @@ jobs:
            with:
               images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
               flavor: |
-                 branch=${{ env.BRANCH_NAME }}
                  latest=false
+                 branch=${{ github.ref_name }}
               #   suffix=-${{ github.event_name }}
 
          - name: Build and push Docker image (Frontend)
            uses: docker/build-push-action@v2
            with:
               context: ./frontend
-              file: ./frontend/Dockerfile.${{ env.BRANCH_NAME }}
+              file: ./frontend/Dockerfile.${{ github.ref_name }}
               push: true
               tags: ${{ steps.meta.outputs.tags }}
               labels: ${{ steps.meta.outputs.labels }}
