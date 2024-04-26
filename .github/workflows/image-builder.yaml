@@ -49,13 +49,18 @@ jobs:
          - name: Determine Branch Name
            run: echo "BRANCH_NAME=$(echo ${{ github.ref }} | awk -F'/' '{print $NF}')" >> $GITHUB_ENV
 
+         - name: Set up Docker Buildx
+           run: |
+              docker buildx create --name mybuilder --use --driver docker-container
+
          - name: Build and Push - Frontend Image
            uses: docker/build-push-action@v2
            with:
               context: ./frontend
-              file: ./frontend/Dockerfile.main
+              file: ./frontend/Dockerfile.dev
               push: true
               tags: ${{ steps.meta.outputs.tags }}
+              labels: ${{ steps.meta.outputs.labels }}
               platforms: linux/amd64,linux/arm64
 
          - name: Build and Push - Backend Image
