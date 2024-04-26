@@ -40,24 +40,24 @@ jobs:
          - name: Determine Branch Name
            run: echo "BRANCH_NAME=$(echo ${{ github.ref }} | awk -F'/' '{print $NF}')" >> $GITHUB_ENV
 
-         - name: Extract metadata (tags, labels) for Docker
-           id: meta
-           uses: docker/metadata-action@v3
-           with:
-              images: ${{ env.REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}
-              flavor: |
-                 latest=false
-                 suffix=-${{ github.event_name }}
-
          - name: Set up Docker Buildx
            run: |
               docker buildx create --name mybuilder --use --driver docker-container
 
-         - name: Build and Push - Frontend Image
+         - name: Extract metadata (tags, labels) for Docker
+           id: meta
+           uses: docker/metadata-action@v3
+           with:
+              images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+              flavor: |
+                 latest=false
+                 suffix=-${{ github.event_name }}
+
+         - name: Build and push Docker image
            uses: docker/build-push-action@v2
            with:
               context: ./frontend
-              file: ./frontend/Dockerfile.dev
+              file: Dockerfile.dev
               push: true
               tags: ${{ steps.meta.outputs.tags }}
               labels: ${{ steps.meta.outputs.labels }}
