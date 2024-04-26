@@ -7,14 +7,23 @@ on:
          - 'main'
    workflow_dispatch:
 
+env:
+   REGISTRY: ghcr.io
+   GITHUB_USERNAME: ${{ github.actor }}
+   IMAGE_NAME: online-class-management-system
+   DIR_NAME: frontend
+   DOCKERFILE: Dockerfile
+   DOCKER_IMAGE: ShanelkaPramuditha/online-class-management-system:latest
+
 jobs:
-   build:
+   docker-image-build:
       runs-on: ubuntu-latest
-      env:
-         GITHUB_USERNAME: ${{ github.actor }}
+      permissions:
+         contents: read
+         packages: write
       steps:
          - name: Checkout Repository
-           uses: actions/checkout@v2
+           uses: actions/checkout@v3
 
          - name: Convert User Name to lowercase
            run: |
@@ -23,25 +32,36 @@ jobs:
          - name: Login to Github Container Registry (GHR)
            uses: docker/login-action@v3
            with:
-              registry: ghcr.io
+              registry: ${{ env.REGISTRY }}
               username: ${{ github.actor }}
               password: ${{ secrets.GITHUB_TOKEN }}
+
+         - name: Extract metadata (tags, labels) for Docker
+           id: meta
+           uses: docker/metadata-action@v3
+           with:
+              images: ${{ env.REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}
+              flavor: |
+                 latest=false
+                 suffix=-${{ github.event_name }}
 
          - name: Determine Branch Name
            run: echo "BRANCH_NAME=$(echo ${{ github.ref }} | awk -F'/' '{print $NF}')" >> $GITHUB_ENV
 
          - name: Build and Push - Frontend Image
-           uses: docker/build-push-action@v5
+           uses: docker/build-push-action@v2
            with:
               context: ./frontend
               file: ./frontend/Dockerfile.${{ env.BRANCH_NAME }}
               push: true
-              tags: ghcr.io/${{ env.GITHUB_USERNAME }}/online-class-management-system-frontend:${{ env.BRANCH_NAME }}
+              tags: ${{ steps.meta.outputs.tags }}
+              platforms: linux/amd64,linux/arm64
 
          - name: Build and Push - Backend Image
-           uses: docker/build-push-action@v5
+           uses: docker/build-push-action@v2
            with:
               context: ./backend
               file: ./backend/Dockerfile.${{ env.BRANCH_NAME }}
               push: true
-              tags: ghcr.io/${{ env.GITHUB_USERNAME }}/online-class-management-system-backend:${{ env.BRANCH_NAME }}
+              tags: ${{ steps.meta.outputs.tags }}
+              platforms: linux/amd64,linux/arm64
