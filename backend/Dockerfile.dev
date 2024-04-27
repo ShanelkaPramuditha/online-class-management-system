@@ -1,26 +1,19 @@
-# Use a slim Node.js base image
-FROM node:18-alpine AS builder
-
-# Set working directory
+FROM node:20-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+COPY . /app
 WORKDIR /app
 
-# Copy package.json and pnpm-lock.yaml for dependency installation
-COPY package*.json ./
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-# Install pnpm globally (optional, adjust based on your setup)
-RUN npm install -g pnpm
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm run build
 
-# Install dependencies using pnpm
-RUN pnpm install --frozen-lockfile
-
-# Switch to a smaller runtime image for the final container
-FROM node:18-alpine
-
-# Copy everything from the builder stage
-COPY --from=builder /app .
-
-# Expose port for your backend application (adjust as needed)
-EXPOSE 3000
-
-# Start the application using pnpm (adjust command based on your entry point)
+FROM base
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
+EXPOSE 5000
 CMD [ "pnpm", "start" ]
