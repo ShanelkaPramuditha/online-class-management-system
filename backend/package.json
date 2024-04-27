@@ -5,8 +5,7 @@
    "main": "index.js",
    "type": "module",
    "scripts": {
-      "start": "nodemon src/server.js",
-      "build": "webpack"
+      "start": "nodemon src/server.js"
    },
    "keywords": [],
    "author": "",
