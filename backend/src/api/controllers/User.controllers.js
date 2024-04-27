@@ -231,17 +231,8 @@ export async function resetPassword(req, res) {
 //Access - Private
 export async function CreateUser(req, res) {
    //Getting Form Data From Request Sent By FrontEnd UserMain
-   const {
-      fName,
-      lName,
-      email,
-      userRole,
-      gender,
-      mobile,
-      password,
-      registerDate
-   } = req.body;
-
+   const { fName, lName, email, userRole, gender, mobile, password } = req.body;
+   var userRolevar = '';
    //Check If Any Variable ( Form Field ) is Null( Empty/Not Filled )
    if (
       !fName ||
@@ -250,12 +241,23 @@ export async function CreateUser(req, res) {
       !userRole ||
       !gender ||
       !mobile ||
-      !password ||
-      !registerDate
+      !password
    ) {
       res.status(400).json('Please add all fields');
       //throw new Error('Please add all fields')
    } else {
+      if (
+         !(
+            userRole === 'admin' ||
+            userRole === 'teacher' ||
+            userRole === 'student'
+         )
+      ) {
+         userRolevar = 'student';
+      } else {
+         userRolevar = userRole;
+      }
+
       //Check If The User Already Exists
       const userExists = await UserModel.findOne({ email });
 
@@ -272,11 +274,11 @@ export async function CreateUser(req, res) {
             firstName: fName,
             lastName: lName,
             email,
-            userRole,
+            userRole: userRolevar,
             gender,
             mobileNumber: mobile,
             password: hashedPassword,
-            registerDate
+            registerDate: Date.now()
          });
 
          //Check For The Created User
@@ -346,20 +348,33 @@ export async function UpdateUser(req, res) {
       // Extract id from the request body
       const { _id } = req.params;
 
-      // Construct update data, skipping role if it's null
-      const updateData = {
-         firstName: req.body.fName,
-         lastName: req.body.lName,
-         email: req.body.email,
-         userRole: req.body.userRole,
-         gender: req.body.gender,
-         mobileNumber: req.body.mobile,
-         password: req.body.password,
-         registerDate: req.body.registerDate
+      const oldUser = await UserModel.findById(_id);
+
+      let hashedPassword = oldUser.password;
+
+      if (req.body.password) {
+         //Hashing password
+         const salt = await bcrypt.genSalt(10);
+         hashedPassword = await bcrypt.hash(req.body.password, salt);
+      }
+
+      const { fName, lName, email, userRole, gender, mobile, registerDate } =
+         req.body;
+
+      const newUser = {
+         firstName: fName || oldUser.firstName,
+         lastName: lName || oldUser.lastName,
+         email: email || oldUser.email,
+         userRole: userRole || oldUser.userRole,
+         gender: gender || oldUser.gender,
+         mobileNumber: mobile || oldUser.mobileNumber,
+         password: hashedPassword,
+         registerDate: registerDate || oldUser.registerDate
       };
 
       // Update user in the database
-      const result = await UserModel.updateOne({ _id }, { $set: updateData });
+      const result = await UserModel.updateOne({ _id }, { $set: newUser });
+
       // Check if the update was successful
       if (result.nModified === 0) {
          return res
@@ -368,10 +383,10 @@ export async function UpdateUser(req, res) {
       }
 
       // Send success response
-      //res.status(200).json({ message: 'User updated successfully.' });
+      res.status(200).json({ message: 'User updated successfully.' });
    } catch (error) {
       console.error('Error updating user:', error);
-      //res.status(500).json({ error: 'Internal server error.' });
+      res.status(500).json({ error: 'Internal server error.' });
    }
 }
 

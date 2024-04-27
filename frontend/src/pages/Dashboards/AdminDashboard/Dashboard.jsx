@@ -18,6 +18,7 @@ const Dashboard = () => {
                title="Students"
                description="Manage student profiles, including registration information and personal details. Update, suspend, or delete student accounts as necessary."
                buttonText="Manage"
+               to="/students"
             />
             <Dashcard
                imageSrc={paymentImg}
