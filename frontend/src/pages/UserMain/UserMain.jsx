@@ -269,7 +269,6 @@ export default function UserMain() {
          {/* Search Input */}
          <div className="mb-5 flex justify-start">
             <label className="p-2 text-lg">Filter</label>
-            <QRCode value={Data} />
             <select
                value={searchOption}
                onChange={e => setSearchOption(e.target.value)}
