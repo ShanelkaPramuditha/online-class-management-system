@@ -385,7 +385,7 @@ export async function UpdateUser(req, res) {
       // Send success response
       res.status(200).json({ message: 'User updated successfully.' });
    } catch (error) {
-      console.error('Error updating user:', error);
+      console.error('Error updating user:');
       res.status(500).json({ error: 'Internal server error.' });
    }
 }
