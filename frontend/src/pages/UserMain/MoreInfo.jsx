@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import QRCode from 'react-qr-code';
+import html2canvas from 'html2canvas';
 
 function Moreinfo() {
    const { id } = useParams();
