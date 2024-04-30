@@ -3,12 +3,11 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import QRCode from 'qrcode.react';
+import Swal from 'sweetalert2';
 
 var TCellStyle = 'px-5 py-2 bg-neutral-300 text-neutral-950';
 var TCellStyle2 = 'px-5 py-2 bg-neutral-100 text-neutral-950';
-var RedButtonStyle =
-   'bg-[#FF0000] hover:bg-[#850000] text-[white] font-bold py-2 px-4 rounded-md';
+
 var THeadStyle = `p-3`;
 
 export default function UserMain() {
@@ -16,17 +15,37 @@ export default function UserMain() {
    const [Data, setData] = useState([]);
    const [searchQuery, setSearchQuery] = useState('');
    const [searchOption, setSearchOption] = useState('');
+
    function AddUser() {
       navigate('/students/AddUser');
    }
 
-   const UpdateUser = _id => {
-      navigate('/students/updateUser/' + _id);
+   const UpdateUser = async _id => {
+      const user = await axios.get(
+         'http://localhost:5000/api/usermain/get/' + _id
+      );
+
+      Swal.fire({
+         title: 'Update User Request',
+         text: `Do You Want To Update the User ${
+            user.data.firstName + ' ' + user.data.lastName
+         }`,
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonText: 'Yes',
+         cancelButtonText: 'No'
+      }).then(async result => {
+         if (result.isConfirmed) {
+            navigate('/students/updateUser/' + _id);
+         }
+      });
    };
 
-   function HandleViewMore() {}
+   function HandleViewMore(_id) {
+      navigate('/students/moreinfo/' + _id);
+   }
 
-   function UpdateData() {
+   async function UpdateData() {
       const url = 'http://localhost:5000/api/usermain/getall';
 
       axios.get(url).then(response => {
@@ -38,36 +57,47 @@ export default function UserMain() {
       UpdateData();
    }, []);
 
-   function DeleteUser(_id) {
-      const url = 'http://localhost:5000/api/usermain/delete/' + _id;
+   async function ChangeRole(_id) {
+      const user = await axios.get(
+         'http://localhost:5000/api/usermain/get/' + _id
+      );
 
-      const payload = {
-         _id
-      };
-      console.log(payload);
-      axios
-         .delete(url, payload)
-         .then(res => {
-            UpdateData();
-            console.log(res);
-         })
-         .catch(error => {
-            console.log(error);
-         });
-      window.location.reload;
+      const username =
+         user.data.firstName && user.data.lastName
+            ? user.data.firstName + ' ' + user.data.lastName + ' '
+            : 'user';
+
+      Swal.fire({
+         title: 'Changing User Role',
+         text: `You are going to change the user role of ${username}  from ${
+            user.data.userRole
+         } to ${
+            user.data.userRole === 'student' ? 'teacher' : 'student'
+         }. Confirm Change ?`,
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonText: 'Yes, Change!',
+         cancelButtonText: 'No, Do Not Change'
+      }).then(async result => {
+         if (result.isConfirmed) {
+            try {
+               if (user.data.userRole === 'teacher') {
+                  UpdateRole('student', _id);
+               } else if (user.data.userRole === 'student') {
+                  UpdateRole('teacher', _id);
+               }
+
+               Swal.fire('Changed!', `${user.data.firstName}`, 'success');
+               window.location.reload;
+            } catch (error) {
+               console.error('Error deleting payment:', error);
+               Swal.fire('Error!', 'Failed to delete the payment.', 'error');
+            }
+         }
+      });
    }
 
-   function ChangeRole(index) {
-      if (Data[index].userRole === 'teacher') {
-         UpdateRole('student', index);
-      } else if (Data[index].userRole === 'student') {
-         console.log('Test');
-         UpdateRole('teacher', index);
-      }
-   }
-
-   async function UpdateRole(Role, index) {
-      const _id = Data[index]._id;
+   async function UpdateRole(Role, _id) {
       const url = 'http://localhost:5000/api/usermain/update/' + _id;
 
       const UserPayload = {
@@ -80,6 +110,7 @@ export default function UserMain() {
       });
 
       console.log(UserPayload);
+      UpdateData();
       window.location.reload;
    }
 
@@ -159,7 +190,7 @@ export default function UserMain() {
                   </button>
                   {/* Delete Button */}
                   <button
-                     onClick={() => DeleteUser(user._id)}
+                     onClick={() => DeleteUser(user._id, user.index)}
                      className="bg-[#FF0000] hover:bg-[#850000] text-[white] font-bold my-1 py-2 px-4 rounded-md">
                      Delete
                   </button>
@@ -167,13 +198,13 @@ export default function UserMain() {
                   {user.userRole === 'student' ? (
                      <button
                         className="bg-[#551717] hover:bg-[#311212] text-[white] my-1 ml-3 py-2 px-4 rounded-md "
-                        onClick={() => ChangeRole(index)}>
+                        onClick={() => ChangeRole(user._id)}>
                         Promote To Teacher
                      </button>
                   ) : user.userRole === 'teacher' ? (
                      <button
                         className="bg-[#237971] hover:bg-[#0b2220] text-[white] my-1 ml-3 py-2 px-4 rounded-md "
-                        onClick={() => ChangeRole(index)}>
+                        onClick={() => ChangeRole(user._id)}>
                         Demote To Student
                      </button>
                   ) : null}
@@ -182,6 +213,55 @@ export default function UserMain() {
          </tr>
       ));
    };
+
+   async function DeleteUser(_id, index) {
+      const url = 'http://localhost:5000/api/usermain/delete/' + _id;
+
+      const payload = {
+         _id
+      };
+
+      const user = await axios.get(
+         'http://localhost:5000/api/usermain/get/' + _id
+      );
+      console.log(user.data);
+      const username = user
+         ? 'User ' + user.data.firstName + ' ' + user.data.lastName
+         : 'User' + index;
+
+      Swal.fire({
+         title: `Are you sure to delete ${username}`,
+         text: 'You will not be able to recover this user again!',
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonText: 'Delete!',
+         cancelButtonText: 'No Cancel'
+      }).then(async result => {
+         if (result.isConfirmed) {
+            axios
+               .delete(url, payload)
+               .then(res => {
+                  UpdateData();
+                  console.log(res);
+                  Swal.fire(
+                     'Deleted!',
+                     `The ${username} has been deleted.`,
+                     'success'
+                  );
+               })
+               .catch(error => {
+                  console.error('Error deleting payment:', error);
+                  Swal.fire(
+                     'Error!',
+                     `Failed to delete the ${username}`,
+                     'error'
+                  );
+               });
+
+            window.location.reload;
+         }
+      });
+   }
 
    // Report handler
    async function RepGen() {

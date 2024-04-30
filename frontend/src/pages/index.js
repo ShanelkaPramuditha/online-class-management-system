@@ -32,9 +32,12 @@ import PaymentDetails from './PaymentManagement/PaymentDetails';
 import UpdateEnrollment from './PaymentManagement/UpdateEnrollment';
 
 import PageNotFound from './PageNotFound';
+
+//User Management
 import UserMain from './UserMain';
 import AddUser from './UserMain/AddUser';
 import UpdateUser from './UserMain/UpdateUser';
+import Moreinfo from './UserMain/MoreInfo';
 
 // Live class Management
 import LiveClassForm from './Liveclass/Liveclassform'; // Teacher
@@ -65,6 +68,7 @@ export {
    UserMain,
    AddUser,
    UpdateUser,
+   Moreinfo,
    PageNotFound,
    UpdateExam,
    ViewExams,
