@@ -16,6 +16,7 @@ import {
    UserMain,
    AddUser,
    UpdateUser,
+   Moreinfo,
    Payment,
    ViewPayment,
    PaymentDetails,
@@ -168,6 +169,12 @@ const routes = [
    {
       path: '/students/UpdateUser/:id',
       element: <UpdateUser />,
+      auth: [true],
+      roles: ['admin', 'teacher', 'student']
+   },
+   {
+      path: '/students/MoreInfo/:id',
+      element: <Moreinfo />,
       auth: [true],
       roles: ['admin', 'teacher', 'student']
    },
