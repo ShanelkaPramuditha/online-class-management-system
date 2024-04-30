@@ -67,6 +67,7 @@ export default function UserMain() {
    }, []);
 
    async function ChangeRole(_id) {
+      console.log(_id);
       const user = await axios.get(
          'http://localhost:5000/api/usermain/get/' + _id
       );
@@ -113,7 +114,7 @@ export default function UserMain() {
          _id,
          userRole: Role
       };
-
+      console.log(UserPayload);
       await axios.put(url, UserPayload).then(response => {
          console.log(response);
       });
@@ -207,13 +208,13 @@ export default function UserMain() {
                   {user.userRole === 'student' ? (
                      <button
                         className={PromoteTeacherStyle}
-                        onClick={() => ChangeRole(index)}>
+                        onClick={() => ChangeRole(user._id)}>
                         Promote To Teacher
                      </button>
                   ) : user.userRole === 'teacher' ? (
                      <button
                         className={DemoteStudentStyle}
-                        onClick={() => ChangeRole(index)}>
+                        onClick={() => ChangeRole(user._id)}>
                         Demote To Student
                      </button>
                   ) : null}
