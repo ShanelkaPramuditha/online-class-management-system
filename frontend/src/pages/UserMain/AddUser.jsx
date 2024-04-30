@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AddUser = () => {
    // var TCellStyle = 'px-5 py-2 bg-neutral-300 text-neutral-950';
    //  var THeadStyle = 'px-5 py-2 bg-[#0057FF] ';
-
+   const navigate = useNavigate();
    const [formData, setFormData] = useState({
       firstName: '',
       lastName: '',
@@ -12,8 +13,7 @@ const AddUser = () => {
       userRole: '',
       gender: '',
       mobileNumber: '',
-      password: '',
-      registerDate: ''
+      password: ''
    });
 
    const {
@@ -23,8 +23,7 @@ const AddUser = () => {
       userRole,
       gender,
       mobileNumber,
-      password,
-      registerDate
+      password
    } = formData;
 
    const onChange = e => {
@@ -34,7 +33,7 @@ const AddUser = () => {
       }));
    };
 
-   const funAddUser = () => {
+   const handleAddUser = () => {
       const url = 'http://localhost:5000/api/usermain/create';
 
       const UserPayload = {
@@ -44,19 +43,15 @@ const AddUser = () => {
          userRole,
          gender,
          mobile: mobileNumber,
-         password,
-         registerDate
+         password
       };
 
-      const config = {
-         headers: {
-            'x-apikey': 'API_KEY'
-         }
-      };
       console.log(UserPayload);
-      axios.post(url, UserPayload, config).then(response => {
+      axios.post(url, UserPayload).then(response => {
          console.log(response);
       });
+
+      navigate('/students/');
    };
 
    return (
@@ -95,12 +90,6 @@ const AddUser = () => {
                      <br />
                      <br />
                      <label className="text-black text-3xl">Password</label>
-                     <br />
-                     <br />
-                     <br />
-                     <label className="text-black text-3xl">
-                        Register Date
-                     </label>
                      <br />
                      <br />
                      <br />
@@ -177,16 +166,6 @@ const AddUser = () => {
                      />
                      <br />
                      <br />
-                     <input
-                        onChange={onChange}
-                        value={registerDate}
-                        name="registerDate"
-                        placeholder="Enter your ID Here"
-                        className="border-slate-600 placeholder-zinc-950 bg-black bg-opacity-0 pb-3 border-b-4 text-3xl"
-                        type="text"
-                     />
-                     <br />
-                     <br />
                   </div>
                </div>
                <div className="flex text-center justify-center content-center">
@@ -195,7 +174,7 @@ const AddUser = () => {
                      <button
                         className="flex-1 w-44 h-14 font-bold text-xl bg-white 
                 bg-opacity-45 px-6 py-3 "
-                        onClick={funAddUser}>
+                        onClick={handleAddUser}>
                         Add User
                      </button>
                   </div>
