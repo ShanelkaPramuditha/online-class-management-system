@@ -7,7 +7,16 @@ import Swal from 'sweetalert2';
 
 var TCellStyle = 'px-5 py-2 bg-neutral-300 text-neutral-950';
 var TCellStyle2 = 'px-5 py-2 bg-neutral-100 text-neutral-950';
-
+var DeleteButtonStyle =
+   'bg-[#FF0000] hover:bg-[#850000] text-[white] font-bold my-1 py-2 px-4 rounded-md';
+var UpdateButtonStyle =
+   'bg-[#0057FF] hover:bg-[#FF8500] text-[white] font-bold my-1 py-2 px-4 rounded-md me-3';
+var MoreInfoButtonStyle =
+   'bg-[#664b1a] hover:bg-[#000D85] text-[white] font-bold my-1 py-2 px-4 rounded-md me-3';
+var PromoteTeacherStyle =
+   'bg-[#551717] hover:bg-[#311212] text-[white] my-1 ml-3 py-2 px-4 rounded-md';
+var DemoteStudentStyle =
+   'bg-[#237971] hover:bg-[#0b2220] text-[white] my-1 ml-3 py-2 px-4 rounded-md';
 var THeadStyle = `p-3`;
 
 export default function UserMain() {
@@ -179,32 +188,32 @@ export default function UserMain() {
                   {/* View Button */}
                   <button
                      onClick={() => HandleViewMore(user._id)}
-                     className="bg-[#664b1a] hover:bg-[#000D85] text-[white] font-bold my-1 py-2 px-4 rounded-md me-3">
+                     className={MoreInfoButtonStyle}>
                      More Info
                   </button>
                   {/* Update Button */}
                   <button
                      onClick={() => UpdateUser(user._id)}
-                     className="bg-[#0057FF] hover:bg-[#FF8500] text-[white] font-bold my-1 py-2 px-4 rounded-md me-3">
+                     className={UpdateButtonStyle}>
                      Update
                   </button>
                   {/* Delete Button */}
                   <button
-                     onClick={() => DeleteUser(user._id, user.index)}
-                     className="bg-[#FF0000] hover:bg-[#850000] text-[white] font-bold my-1 py-2 px-4 rounded-md">
+                     onClick={() => DeleteUser(user._id)}
+                     className={DeleteButtonStyle}>
                      Delete
                   </button>
                   {/* Change Role Button */}
                   {user.userRole === 'student' ? (
                      <button
-                        className="bg-[#551717] hover:bg-[#311212] text-[white] my-1 ml-3 py-2 px-4 rounded-md "
-                        onClick={() => ChangeRole(user._id)}>
+                        className={PromoteTeacherStyle}
+                        onClick={() => ChangeRole(index)}>
                         Promote To Teacher
                      </button>
                   ) : user.userRole === 'teacher' ? (
                      <button
-                        className="bg-[#237971] hover:bg-[#0b2220] text-[white] my-1 ml-3 py-2 px-4 rounded-md "
-                        onClick={() => ChangeRole(user._id)}>
+                        className={DemoteStudentStyle}
+                        onClick={() => ChangeRole(index)}>
                         Demote To Student
                      </button>
                   ) : null}
