@@ -1,29 +1,24 @@
-import axios from 'axios';
 import { useEffect, useState, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import QRCode from 'react-qr-code';
-import { getUser } from '../../api/helper';
+import axios from 'axios';
 
-function Moreinfo() {
-   const { id } = useParams();
+function Profile() {
    const [user, setUser] = useState({});
    const qrCodeRef = useRef(null);
    const navigate = useNavigate();
 
-   const GetId = async () => {
+   async function GetUser() {
       const x = JSON.parse(localStorage.getItem('authStore'));
-      const y = await getUser(x.state.email);
-      console.log(y.data._id);
-      return y.data._id;
-   };
-   GetId();
+
+      await axios
+         .get('http://localhost:5000/api/usermain/getbyemail/' + x.state.email)
+         .then(res => setUser(res.data[0]));
+   }
 
    useEffect(() => {
-      axios
-         .get('http://localhost:5000/api/usermain/get/' + id)
-         .then(response => setUser(response.data))
-         .catch(err => console.error(err));
-   }, [id]);
+      GetUser();
+   }, []);
 
    return (
       <>
@@ -71,4 +66,4 @@ function Moreinfo() {
    );
 }
 
-export default Moreinfo;
+export default Profile;

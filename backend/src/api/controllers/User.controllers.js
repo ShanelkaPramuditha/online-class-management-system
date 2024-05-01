@@ -340,6 +340,26 @@ export async function GetOne(req, res) {
    }
 }
 
+//Description - Get User By Email
+//Route - usermain/get/:email
+//Access - Private
+export async function GetUserByEmail(req, res) {
+   //Get ID from request parameter - :Id
+   const { email } = req.params;
+
+   //Getting All Users As In UserModel From MongoDB by Mongoose
+   const user = await UserModel.find({ email });
+
+   //Check If The User Array is Null
+   if (!user) {
+      res.status(400);
+      throw new Error('User Not Found!');
+   } else {
+      //Export Users To Front-End UserMain
+      res.status(200).send(user);
+   }
+}
+
 //Description - Update User
 //Route - usermain/update
 //Access - Private

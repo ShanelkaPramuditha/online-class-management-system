@@ -7,8 +7,6 @@ import Courses from './Courses';
 import Contact from './Contact';
 import About from './About';
 
-import Profile from './Profile';
-
 import Theory from './Theory';
 
 import FaqHandling from './FaqHandling';
@@ -38,6 +36,7 @@ import UserMain from './UserMain';
 import AddUser from './UserMain/AddUser';
 import UpdateUser from './UserMain/UpdateUser';
 import Moreinfo from './UserMain/MoreInfo';
+import Profile from './UserMain/Profile';
 
 // Live class Management
 import LiveClassForm from './Liveclass/Liveclassform'; // Teacher

@@ -17,6 +17,7 @@ import {
    AddUser,
    UpdateUser,
    Moreinfo,
+   Profile,
    Payment,
    ViewPayment,
    PaymentDetails,
@@ -178,7 +179,12 @@ const routes = [
       auth: [true],
       roles: ['admin', 'teacher', 'student']
    },
-
+   {
+      path: '/profile',
+      element: <Profile />,
+      auth: [true],
+      roles: ['admin', 'teacher', 'student']
+   },
    // Chat Option
    {
       path: '/chat',
