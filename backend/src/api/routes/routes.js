@@ -40,6 +40,7 @@ router.route('/usermain/getall').get(controller.GetAllUsers);
 router.route('/usermain/create').post(controller.CreateUser);
 router.route('/usermain/update/:_id').put(controller.UpdateUser);
 router.route('/usermain/delete/:_id').delete(controller.DeleteUser);
+router.route('/usermain/getbyemail/:email').get(controller.GetUserByEmail);
 
 /* Payment and Enrollemnt Routes */
 router.route('/enroll').post(Auth, PaymentController.insertPayment);

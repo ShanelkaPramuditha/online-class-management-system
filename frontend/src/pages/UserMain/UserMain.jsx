@@ -5,8 +5,8 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import Swal from 'sweetalert2';
 
-var TCellStyle = 'px-5 py-2 bg-neutral-300 text-neutral-950';
-var TCellStyle2 = 'px-5 py-2 bg-neutral-100 text-neutral-950';
+var TCellStyle2 = 'px-5 py-2 bg-neutral-300 text-neutral-950';
+var TCellStyle = 'px-5 py-2 bg-neutral-100 text-neutral-950';
 var DeleteButtonStyle =
    'bg-[#FF0000] hover:bg-[#850000] text-[white] font-bold my-1 py-2 px-4 rounded-md';
 var UpdateButtonStyle =
@@ -155,10 +155,11 @@ export default function UserMain() {
          <tr
             key={index}
             className="bg-[white] border-b dark:bg-gray-800 dark:border-[gray] hover:bg-silver-mist dark:hover:bg-silver-mist">
-            <td className={TCellStyle}>{user.firstName}</td>
-            <td className={TCellStyle2}>{user.lastName}</td>
+            <td className={TCellStyle2}>
+               {user.firstName + ' ' + user.lastName}
+            </td>
             <td className={TCellStyle}>{user.email}</td>
-            <td className="px-6 py-4">
+            <td className={TCellStyle2}>
                <div
                   className={`${
                      user.userRole === 'student'
@@ -184,7 +185,7 @@ export default function UserMain() {
                /{String(new Date(user.registerDate).getDate()).padStart(2, '0')}
             </td>
 
-            <td className="px-6 py-4">
+            <td className={TCellStyle2}>
                <div className="">
                   {/* View Button */}
                   <button
@@ -471,8 +472,7 @@ export default function UserMain() {
             <table className="w-full text-sm text-left rtl:text-right text-[gray] dark:text-[gray]">
                <thead className="text-sm text-[white] uppercase bg-[gray] dark:bg-[#1a1947] dark:text-[white] text-center">
                   <tr>
-                     <th className={THeadStyle}>First Name</th>
-                     <th className={THeadStyle}>Last Name</th>
+                     <th className={THeadStyle}>Name</th>
                      <th className={THeadStyle}>Email</th>
                      <th className={THeadStyle}>User Role</th>
                      <th className={THeadStyle}>Gender</th>
