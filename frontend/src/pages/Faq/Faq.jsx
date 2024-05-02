@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import React from 'react';
-import { Reset } from '../../components';
 
-function FaqHandling() {
+function Faq() {
 
   let condition = true;
   let options = [];
@@ -22,7 +21,7 @@ function FaqHandling() {
     options = ['Unit1', 'Unit2', 'Unit3', 'Unit4', 'Unit5'];
   } else if (formData.MainCategory == 'Grade13') {
     options = ['Unit1', 'Unit2', 'Unit3', 'Unit4'];
-  }  else if (formData.MainCategory == 'Platform') {
+  } else if (formData.MainCategory == 'Platform') {
     options = ['Login', 'SignUp'];
   } else if (formData.MainCategory == 'Feature') {
     options = ['Fees', 'Theory', 'Revision', 'Model Papers'];
@@ -72,13 +71,13 @@ function FaqHandling() {
     if (payload.Question == '') {
       alert('Enter Question')
     }
-    if (payload.Answer == '') {
-      alert('Enter Answer')
-    }
+    // if (payload.Answer == '') {
+    //   alert('Enter Answer')
+    // }
 
     axios.post(url, payload, config) //Sending a request
       .then((res) => {
-        console.log('POST Result: ', res)
+        console.log(res)
         console.log(config)
         UpdateData()
       })
@@ -151,30 +150,41 @@ function FaqHandling() {
       })
   }
 
-  const search = (key) => {
+  // function searchByMainCatagory(key) {
+  //   const searchData = key;
+  //   console.log('searchData: ', searchData);
+  //   // const url = `http://localhost:5000/api/faq/get/${searchData}`
+  //   const config = {
+  //     headers: {
+  //       "x-apikey": "API_KEY",
+  //     },
+  //     dataType: "json"
+  //   }
+  //   axios.get(`http://localhost:5000/api/faq/get/mainCategory/${searchData}`, config)
+  //     .then((response) => {
+  //       console.log('result:', response)
+  //       setUserData(response.data.items)
+  //     })
+  // }
+
+  const searchByMainCatagory = (key) => {
     const searchData = key;
     // const url = `http://localhost:5000/api/faq/get/${searchData}`
 
-    if (searchData == 'All') {
-      UpdateData()
-    }
     if (searchData == 'Reset') {
       UpdateData()
     }
-    if (searchData == 'Pending') {
-      const config = {
-        headers: {
-          "x-apikey": "API_KEY",
-        },
-        dataType: "json"
-      }
-      axios.get(`http://localhost:5000/api/faq/get/notAnswered`, config)
-        .then((response) => {
-          console.log('result:', response)
-          setUserData(response.data.items)
-        })
+    const config = {
+      headers: {
+        "x-apikey": "API_KEY",
+      },
+      dataType: "json"
     }
-
+    axios.get(`http://localhost:5000/api/faq/get/mainCategory/${searchData}`, config)
+      .then((response) => {
+        console.log('result:', response)
+        setUserData(response.data.items)
+      })
   }
 
 
@@ -222,9 +232,11 @@ function FaqHandling() {
       <div>
         <div class="place-content-center w-full">
           <ul class="menu menu-horizontal px-3 gap-4 center">
-            <li><button class="rounded-full border py-0" onClick={() => search('All')} >All</button></li>
-            <li><button class="rounded-full border py-0" onClick={() => search('Pending')} >Pending</button></li>
-            <li><button class="rounded-full border py-0" onClick={() => search('Reset')} >Reset</button></li>
+            <li><button class="rounded-full border py-0" onClick={() => searchByMainCatagory('Platform')} >Platform</button></li>
+            <li><button class="rounded-full border py-0" onClick={() => searchByMainCatagory('Feature')} >Feature</button></li>
+            <li><button class="rounded-full border py-0" onClick={() => searchByMainCatagory('Grade12')} >Grade 12</button></li>
+            <li><button class="rounded-full border py-0" onClick={() => searchByMainCatagory('Grade13')} >Grade 13</button></li>
+            <li><button class="rounded-full border py-0" onClick={() => searchByMainCatagory('Reset')} >Reset</button></li>
           </ul>
         </div>
         <div className="">
@@ -239,19 +251,15 @@ function FaqHandling() {
               <label className="text-black text-3xl">Question -</label>
               <br />
               <br />
-              <label className="text-black text-3xl">Answer -</label>
+              {/* <label className="text-black text-3xl">Answer -</label> */}
             </div>
             <div className="mt-12 m-5 bg-opacity-0 block border-black border-3">
               <select onChange={onChange} value={MainCategory} name='MainCategory' id="MainCategory">
                 <option value="Grade12">Grade12</option>
                 <option value="Grade13">Grade13</option>
-                <option value="Platform">Platform</option>
-                <option value="Feature">Feature</option>
+                <option value="platform">Platform</option>
+                <option value="feature">Feature</option>
               </select>
-              {/* <input onChange={onChange} value={MainCategory} name='MainCategory'
-                placeholder="Enter MainCategory"
-                className="border-slate-600 placeholder-gray-600 bg-black bg-opacity-0 pb-3 border-b-2 text-2xl"
-                type="text" required /> */}
               <br />
               <br />
               <select onChange={onChange} value={SubCategory} name='SubCategory' id="SubCategory">
@@ -263,20 +271,14 @@ function FaqHandling() {
               </select>
               <br />
               <br />
-              {/* <input onChange={onChange} value={SubCategory} name='SubCategory'
-                placeholder="Enter SubCategory"
-                className="border-slate-600 placeholder-gray-600 bg-black bg-opacity-0 pb-3 border-b-2 text-2xl"
-                type="text" required />
-              <br />
-              <br /> */}
               <input onChange={onChange} value={Question} name='Question' placeholder="Enter Question"
                 className="border-slate-600 placeholder-gray-600 bg-black bg-opacity-0 pb-3 border-b-2 
               text-2xl" type="text" required />
               <br />
               <br />
-              <input onChange={onChange} value={Answer} name='Answer' placeholder="Enter Answer"
+              {/* <input onChange={onChange} value={Answer} name='Answer' placeholder="Enter Answer"
                 className="border-slate-600 placeholder-gray-600 bg-black bg-opacity-0 pb-3 border-b-2 
-              text-2xl" type="text" required />
+              text-2xl" type="text" required /> */}
             </div>
           </div>
           <div className="flex text-center justify-center content-center">
@@ -287,8 +289,6 @@ function FaqHandling() {
               bg-opacity-45 px-6 py-3 rounded-full"
                 onClick={addItem}
               >Add To List</button>
-
-
             </div>
             {condition ? (
               <button className="flex-2 w-44 h-14 font-bold text-xl bg-white 
@@ -346,4 +346,4 @@ function FaqHandling() {
   )
 }
 
-export default FaqHandling;
+export default Faq;

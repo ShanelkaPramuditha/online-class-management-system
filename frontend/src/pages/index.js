@@ -10,6 +10,7 @@ import About from './About';
 import Theory from './Theory';
 
 import FaqHandling from './FaqHandling';
+import Faq from './Faq';
 
 // Theory Content
 import TheoryGrade12 from './Theory/Grade12';
@@ -56,6 +57,7 @@ export {
    Courses,
    Contact,
    About,
+   Faq,
    FaqHandling,
    Theory,
    TheoryGrade12,
