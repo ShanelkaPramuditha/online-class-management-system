@@ -30,7 +30,10 @@ import {
    LiveClassEdit,
    LiveClassView,
    AllExams,
-   UpdateEnrollment
+   UpdateEnrollment,
+   NoticeList,
+   AddNotice,
+   UpdateNotice
 } from '../pages';
 import Dash from '../components/chat/dash.jsx';
 
@@ -39,6 +42,12 @@ import { ProtectedRoute } from './ProtectedRoutes.jsx';
 import DashboardRoutes from './DashboardRoutes.jsx';
 
 const routes = [
+   {
+      path: '/',
+      element: <DashboardRoutes />,
+      auth: [true, false],
+      roles: ['admin', 'teacher', 'student', 'user']
+   },
    {
       path: '/',
       element: <DashboardRoutes />,
@@ -241,6 +250,24 @@ const routes = [
       element: <UpdateEnrollment />,
       auth: [true],
       roles: ['admin', 'teacher', 'student']
+   },
+   {
+      path: '/Notices',
+      element: <NoticeList />,
+      auth: [true, false],
+      roles: ['admin', 'teacher', 'student', 'user']
+   },
+   {
+      path: '/Notices/Add',
+      element: <AddNotice />,
+      auth: [true, false],
+      roles: ['admin', 'teacher', 'student', 'user']
+   },
+   {
+      path: '/Notices/Update/:id',
+      element: <UpdateNotice />,
+      auth: [true, false],
+      roles: ['admin', 'teacher', 'student', 'user']
    }
 ];
 
