@@ -44,6 +44,11 @@ import LiveClassUI from './Liveclass/LiveclassUI/liveclassui'; // Teacher
 import LiveClassEdit from './Liveclass/Liveclassedit/Liveclassedit'; // Teacher
 import LiveClassView from './Theory/LiveView/liveview'; //Student View
 
+// Review Management
+import AddReview from './Review/AddReview';
+import Reviewlist from './Review/Reviewlist';
+import UpdateReview from './Review/UpdateReview';
+
 export {
    Home,
    AdminDashboard,
@@ -76,5 +81,8 @@ export {
    LiveClassUI,
    LiveClassEdit,
    LiveClassView,
-   AllExams
+   AllExams,
+   AddReview,
+   Reviewlist,
+   UpdateReview
 };

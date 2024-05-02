@@ -30,7 +30,10 @@ import {
    LiveClassEdit,
    LiveClassView,
    AllExams,
-   UpdateEnrollment
+   UpdateEnrollment,
+   AddReview,
+   Reviewlist,
+   UpdateReview
 } from '../pages';
 import Dash from '../components/chat/dash.jsx';
 
@@ -239,6 +242,24 @@ const routes = [
    {
       path: '/payment/update/:id',
       element: <UpdateEnrollment />,
+      auth: [true],
+      roles: ['admin', 'teacher', 'student']
+   },
+   {
+      path: '/review',
+      element: <Reviewlist />,
+      auth: [true],
+      roles: ['admin', 'teacher', 'student']
+   },
+   {
+      path: '/review/add',
+      element: <AddReview />,
+      auth: [true],
+      roles: ['admin', 'teacher', 'student']
+   },
+   {
+      path: '/review/update/:id',
+      element: <UpdateReview />,
       auth: [true],
       roles: ['admin', 'teacher', 'student']
    }
