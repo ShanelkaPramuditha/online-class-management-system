@@ -70,6 +70,8 @@ router.route('/quiz').patch(quizController.editQuiz);
 // faq section
 router.route('/faq/add').post(faqController.faqAdd);
 router.route('/faq/get').get(faqController.faqGet);
+router.route('/faq/get/mainCategory/:Category').get(faqController.faqGetMainCategory);
+router.route('/faq/get/notAnswered/').get(faqController.faqGetNotAnswered);
 router.route('/faq/delete/:_id').delete(faqController.faqDelete);
 router.route('/faq/update/:_id').put(faqController.faqUpdate);
 
