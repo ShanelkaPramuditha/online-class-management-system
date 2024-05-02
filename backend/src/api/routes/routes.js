@@ -11,7 +11,9 @@ import * as paperController from '../controllers/OnlineExam/Exam.controller.js';
 import * as quizController from '../controllers/OnlineExam/Question.controller.js';
 import * as liveclassController from '../controllers/LiveClass/LiveclassController.js';
 import * as faqController from '../controllers/Faq.controller.js';
+import * as ReviewController from '../controllers/Review.controller.js';
 import * as noticeController from '../controllers/Notice.controller.js';
+
 
 /* POST Methods */
 router.route('/register').post(controller.register);
@@ -86,6 +88,13 @@ router.route('/liveSessions').get(liveclassController.getSession); //Teacher onl
 router.route('/liveSessions/:id').get(liveclassController.getASession);
 router.route('/liveSessions/edit/:id').put(liveclassController.editLive);
 router.route('/liveSessions/delete/:id').delete(liveclassController.deleteLive);
+
+// Review routes
+router.route('/review/add').post(ReviewController.createReview);
+router.route('/review/get').get(ReviewController.getAllReviews);
+router.route('/review/get/:id').get(ReviewController.getReview);
+router.route('/review/edit/:Id').put(ReviewController.editReview);
+router.route('/review/delete/:id').delete(ReviewController.deleteReview);
 
 // Notice routes
 router.route('/notices').post(noticeController.create); //Teacher only
