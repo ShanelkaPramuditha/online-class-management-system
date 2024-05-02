@@ -1,11 +1,11 @@
-import REVIEW from '../models/Review.js';
+import Review from '../models/Review.model.js';
 
 // Controller to create a new review
 export async function createReview(req, res) {
-   const { StudentID, Name, ClassName, Discription } = req.body;
+   const { StudentID, Name, ClassName, Description } = req.body;
 
    try {
-      const review = new REVIEW({ StudentID, Name, ClassName, Discription });
+      const review = new Review({ StudentID, Name, ClassName, Description });
       await review.save();
 
       res.status(200).json({ message: 'Review Created Successfully', review });
@@ -17,7 +17,7 @@ export async function createReview(req, res) {
 // Controller to retrieve all reviews
 export async function getAllReviews(req, res) {
    try {
-      const reviews = await REVIEW.find({});
+      const reviews = await Review.find({});
       res.status(200).json(reviews);
    } catch (error) {
       res.status(500).json({ error: 'Failed to retrieve reviews.' });
@@ -30,7 +30,7 @@ export async function getReview(req, res) {
    const id = req.params.id;
 
    try {
-      const review = await REVIEW.findById(id);
+      const review = await Review.findById(id);
       if (!review) {
          return res.status(404).json({ error: 'Review not found.' });
       }
@@ -43,9 +43,9 @@ export async function getReview(req, res) {
 // Controller to edit a review
 
 export async function editReview(req, res) {
-   const { reviewId } = req.params;
-   const { StudentID, Name, ClassName, Discription } = req.body;
-
+   const { id } = req.params;
+   const { StudentID, Name, ClassName, Description } = req.body;
+   console.log(id);
    try {
       const updateFields = {};
       if (StudentID !== undefined) {
@@ -57,11 +57,11 @@ export async function editReview(req, res) {
       if (ClassName !== undefined) {
          updateFields.ClassName = ClassName;
       }
-      if (Discription !== undefined) {
-         updateFields.Discription = Discription;
+      if (Description !== undefined) {
+         updateFields.Description = Description;
       }
 
-      const review = await REVIEW.findByIdAndUpdate(reviewId, updateFields, {
+      const review = await Review.findByIdAndUpdate(id, updateFields, {
          new: true
       });
 
@@ -77,10 +77,10 @@ export async function editReview(req, res) {
 
 // Controller to delete a review
 export async function deleteReview(req, res) {
-   const id = req.body.id;
+   const { id } = req.params;
 
    try {
-      const review = await REVIEW.findByIdAndDelete(id);
+      const review = await Review.findByIdAndDelete(id);
       if (!review) {
          return res.status(404).json({ error: 'Review not found.' });
       }

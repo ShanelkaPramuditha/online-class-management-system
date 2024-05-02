@@ -34,7 +34,10 @@ import {
    UpdateEnrollment,
    NoticeList,
    AddNotice,
-   UpdateNotice
+   UpdateNotice,
+   AddReview,
+   Reviewlist,
+   UpdateReview
 } from '../pages';
 import Dash from '../components/chat/dash.jsx';
 
@@ -275,6 +278,24 @@ const routes = [
       element: <UpdateNotice />,
       auth: [true, false],
       roles: ['admin', 'teacher', 'student', 'user']
+   },
+   {
+      path: '/review',
+      element: <Reviewlist />,
+      auth: [true],
+      roles: ['admin', 'teacher', 'student']
+   },
+   {
+      path: '/review/add',
+      element: <AddReview />,
+      auth: [true],
+      roles: ['admin', 'teacher', 'student']
+   },
+   {
+      path: '/review/update/:id',
+      element: <UpdateReview />,
+      auth: [true],
+      roles: ['admin', 'teacher', 'student']
    }
 ];
 
