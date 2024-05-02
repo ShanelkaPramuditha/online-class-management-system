@@ -1,26 +1,31 @@
-const mongoose=require('mongoose');
+import mongoose from 'mongoose';
 
-const studentscheema = new mongoose.Schema({
-    StudentID:{
-        type: String,
-        required:true,
-    },
+const reviewSchema = new mongoose.Schema(
+   {
+      StudentID: {
+         type: String,
+         required: true
+      },
 
-    Name:{
-        type:String,
-    },
+      Name: {
+         type: String
+      },
 
-    ClassName:{
-        type:String,
-        required:true,
-    },
-    
-    Discription:{
-        type:String,
-        required:true,
-    }
+      ClassName: {
+         type: String,
+         required: true
+      },
 
+      Discription: {
+         type: String,
+         required: true
+      }
+   },
 
-});
+   { timestamps: { currentTime: () => Date.now() + 5.5 * 60 * 60 * 1000 } }
+);
 
-module.exports = student = mongoose.model("student",studentscheema);
+// Create the OTP model
+const REVIEW = mongoose.model('REVIEW', reviewSchema);
+
+export default REVIEW;
