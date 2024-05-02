@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import configs from './config/index.js';
+// import { Server } from 'socket.io';
+// import http from 'http';
 import connect from './utility/db-connection.js';
 import router from './api/routes/routes.js';
 import {
@@ -9,12 +11,30 @@ import {
    getdetails,
    deletemessages,
    editemessages,
-   editmsgs
+   editmsgs,
+   report
 } from './api/controllers/livechat.controller.js';
 
 const port = configs.backend.port;
 
 const app = express();
+// const server = http.createServer(app);
+
+// const io = new Server(server, {
+//    cors: {
+//       origin: 'http://localhost:5173',
+//       methods: ['GET', 'POST']
+//    }
+// });
+
+// io.on('connection', socket => {
+//    console.log(`connection: ${socket.id}`);
+
+//    socket.on('sendmsg', data => {
+//       console.log(data);
+//       socket.broadcast.emit('recmsg', data);
+//    });
+// });
 
 /* middlewares */
 app.use(express.json());
@@ -55,3 +75,4 @@ app.get('/msg', getdetails);
 app.delete('/deletemsg/:msgId', deletemessages);
 app.get('/editdetail/:msgId', editemessages);
 app.put('/editmsg/:msgId', editmsgs);
+app.get('/report', report);

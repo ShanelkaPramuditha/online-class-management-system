@@ -77,3 +77,31 @@ export const editmsgs = async (req, res) => {
       console.error('error:', error);
    }
 };
+
+export const report = async (req, res) => {
+   try {
+      const reportdata = await MSG.aggregate([
+         {
+            $group: {
+               _id: '$senderId',
+               // studentName: '$senderName',
+               nummesg: { $sum: 1 }
+            }
+         }
+      ]);
+      const messages = await Promise.all(
+         reportdata.map(async senderId => {
+            console.log(senderId);
+            const user = await Users.findById(senderId);
+            console.log(user.userName);
+            return {
+               username: user.firstName
+               // Nummesg: senderId.nummesg
+            };
+         })
+      );
+      console.log(messages);
+   } catch (error) {
+      console.error('error:', error);
+   }
+};

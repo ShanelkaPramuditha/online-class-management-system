@@ -13,6 +13,7 @@ const dash = () => {
    const [selcted, setselcted] = useState(null);
    const [editinput, seteditinput] = useState('');
    const [edit, setedit] = useState(false);
+   const [livechat, setlivechat] = useState(false);
 
    console.log(`aaaaaaaaa`, msgs.idofmessage);
 
@@ -109,6 +110,23 @@ const dash = () => {
 
    return (
       <div className="w-full bg-light-gray h-[600px] flex items-center justify-center flex-col">
+         {!livechat && (
+            <div>
+               <div className="my-5 text-6xl font-bold font-Rowdies">
+                  Welcome to Live Chat
+               </div>
+               <div>
+                  <button
+                     className="w-32 h-12 p-2 text-xl font-semibold text-center border rounded-md bg-light-blue"
+                     onClick={() => setlivechat(true)}>
+                     Get Started
+                  </button>
+               </div>
+               <div className="mt-4 rounded-lg">
+                  <img src={chat}></img>
+               </div>
+            </div>
+         )}
          <div className=" bg-silver-mist w-[600px] shadow-lg shadow-neutral-500 border border-black h-[600px] flex flex-col items-center justify-center">
             <div className="h-10 w-[80%] bg-light-gray m-3 border rounded-full text-center p-2 text-lg font-mono text-neutral-950 shadow-md shadow-neutral-500">
                Live Chat
