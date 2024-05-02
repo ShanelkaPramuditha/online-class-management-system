@@ -10,6 +10,7 @@ import About from './About';
 import Theory from './Theory';
 
 import FaqHandling from './FaqHandling';
+import Faq from './Faq';
 
 // Theory Content
 import TheoryGrade12 from './Theory/Grade12';
@@ -44,6 +45,11 @@ import LiveClassUI from './Liveclass/LiveclassUI/liveclassui'; // Teacher
 import LiveClassEdit from './Liveclass/Liveclassedit/Liveclassedit'; // Teacher
 import LiveClassView from './Theory/LiveView/liveview'; //Student View
 
+//Notice Management
+import NoticeList from './Notice/Noticelist';
+import AddNotice from './Notice/AddNotice';
+import UpdateNotice from './Notice/UpdateNotice';
+
 export {
    Home,
    AdminDashboard,
@@ -51,6 +57,7 @@ export {
    Courses,
    Contact,
    About,
+   Faq,
    FaqHandling,
    Theory,
    TheoryGrade12,
@@ -76,5 +83,8 @@ export {
    LiveClassUI,
    LiveClassEdit,
    LiveClassView,
-   AllExams
+   AllExams,
+   NoticeList,
+   AddNotice,
+   UpdateNotice
 };

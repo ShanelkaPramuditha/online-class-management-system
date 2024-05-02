@@ -12,6 +12,8 @@ import * as quizController from '../controllers/OnlineExam/Question.controller.j
 import * as liveclassController from '../controllers/LiveClass/LiveclassController.js';
 import * as faqController from '../controllers/Faq.controller.js';
 import * as ReviewController from '../controllers/Review.controller.js';
+import * as noticeController from '../controllers/Notice.controller.js';
+
 
 /* POST Methods */
 router.route('/register').post(controller.register);
@@ -75,6 +77,8 @@ router.route('/quiz/:id').patch(quizController.editQuiz);
 // faq section
 router.route('/faq/add').post(faqController.faqAdd);
 router.route('/faq/get').get(faqController.faqGet);
+router.route('/faq/get/mainCategory/:Category').get(faqController.faqGetMainCategory);
+router.route('/faq/get/notAnswered/').get(faqController.faqGetNotAnswered);
 router.route('/faq/delete/:_id').delete(faqController.faqDelete);
 router.route('/faq/update/:_id').put(faqController.faqUpdate);
 
@@ -91,5 +95,12 @@ router.route('/review/get').get(ReviewController.getAllReviews);
 router.route('/review/get/:id').get(ReviewController.getReview);
 router.route('/review/edit/:Id').put(ReviewController.editReview);
 router.route('/review/delete/:id').delete(ReviewController.deleteReview);
+
+// Notice routes
+router.route('/notices').post(noticeController.create); //Teacher only
+router.route('/notices').get(noticeController.getall); //Teacher only
+router.route('/notice/:id').get(noticeController.getOne);
+router.route('/notice/:id').put(noticeController.update);
+router.route('/notice/:id').delete(noticeController.deleteOne);
 
 export default router;
