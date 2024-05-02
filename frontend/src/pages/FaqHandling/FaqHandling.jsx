@@ -1,17 +1,32 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import React from 'react';
+import { Reset } from '../../components';
 
 function FaqHandling() {
 
+  let condition = true;
+  let options = [];
+
   const [userData, setUserData] = useState([]);
   const [formData, setFormData] = useState({
-    FAQID: "",
+    MainCategory: "",
+    SubCategory: "",
     Question: "",
     Answer: "",
   })
 
-  const { FAQID, Question, Answer } = formData;
+  const { MainCategory, SubCategory, Question, Answer } = formData;
+
+  if (formData.MainCategory == 'Grade12') {
+    options = ['Unit1', 'Unit2', 'Unit3', 'Unit4', 'Unit5'];
+  } else if (formData.MainCategory == 'Grade13') {
+    options = ['Unit1', 'Unit2', 'Unit3', 'Unit4'];
+  }  else if (formData.MainCategory == 'Platform') {
+    options = ['Login', 'SignUp'];
+  } else if (formData.MainCategory == 'Feature') {
+    options = ['Fees', 'Theory', 'Revision', 'Model Papers'];
+  }
 
   useEffect(() => UpdateData, [])
 
@@ -40,26 +55,30 @@ function FaqHandling() {
       },
     }
     const payload = {
-      FAQID,
+      MainCategory,
+      SubCategory,
       Question,
       Answer,
 
     }
     console.log('payload', payload)
 
-    if(payload.FAQID==''){
-      alert('Enter Faq id')
+    if (payload.MainCategory == '') {
+      alert('Enter MainCategory')
     }
-    if(payload.Question==''){
+    if (payload.SubCategory == '') {
+      alert('Enter SubCategory')
+    }
+    if (payload.Question == '') {
       alert('Enter Question')
     }
-    if(payload.Answer==''){
+    if (payload.Answer == '') {
       alert('Enter Answer')
     }
 
     axios.post(url, payload, config) //Sending a request
       .then((res) => {
-        console.log(res)
+        console.log('POST Result: ', res)
         console.log(config)
         UpdateData()
       })
@@ -68,28 +87,35 @@ function FaqHandling() {
       })
 
   }
+
+
   //Update - Put
   function UpdateName(key) {
+
+    setFormData(userData[key])
+    const ID = userData[key]._id
+    console.log('KEYYY: ', ID)
+
+    condition = true;
+  }
+
+  //Update - Put
+  function UpdateFAQ() {
+    console.log('** Trigger Update **')
     //Find User Email By Row ID
-    const userId = userData[key]._id
-    const url = `http://localhost:5000/api/faq/update/${userId}`
+    const id = formData._id
+    console.log('Form data key: ', id)
+
+    const url = `http://localhost:5000/api/faq/update/${id}`
     const config = {
       headers: {
         "x-apikey": "API_KEY",
       },
     }
 
-    const question = prompt('Enter Question')
-    const answer = prompt('Enter Answer')
-    // var a = prompt("A : ", "");
-    // var b = prompt("B : ", "");
-    alert(question + "\n" + answer);
-    const faqupdate = {
-      FAQID: userData[key].FAQID,
-      Question: question,
-      Answer: answer,
-    }
-    axios.put(url, faqupdate, config)
+    setFormData(formData)
+
+    axios.put(url, formData, config)
       .then((res) => {
         console.log(res)
       })
@@ -99,6 +125,8 @@ function FaqHandling() {
 
     UpdateData()
   }
+
+
   //Delete - Delete
   function Delete(key) {
 
@@ -123,11 +151,38 @@ function FaqHandling() {
       })
   }
 
+  const search = (key) => {
+    const searchData = key;
+    // const url = `http://localhost:5000/api/faq/get/${searchData}`
+
+    if (searchData == 'All') {
+      UpdateData()
+    }
+    if (searchData == 'Reset') {
+      UpdateData()
+    }
+    if (searchData == 'Pending') {
+      const config = {
+        headers: {
+          "x-apikey": "API_KEY",
+        },
+        dataType: "json"
+      }
+      axios.get(`http://localhost:5000/api/faq/get/notAnswered`, config)
+        .then((response) => {
+          console.log('result:', response)
+          setUserData(response.data.items)
+        })
+    }
+
+  }
+
 
   const RowGen = () => {
     return userData.map((item, index) => (
       <tr className="py-4" key={index}>
-        <td className="px-4 border-2 border-black">{item.FAQID}</td>
+        <td className="px-4 border-2 border-black">{item.MainCategory}</td>
+        <td className="px-4 border-2 border-black">{item.SubCategory}</td>
         <td className="px-4 border-2 border-black">{item.Question}</td>
         <td className="px-4 border-2 border-black">{item.Answer}</td>
         <td className="py-4 flex  px-4 border-2 border-black">
@@ -165,10 +220,20 @@ function FaqHandling() {
     // <div className=" items-center justify-center ">
     <div className="flex items-center justify-center min-h-screen">
       <div>
+        <div class="place-content-center w-full">
+          <ul class="menu menu-horizontal px-3 gap-4 center">
+            <li><button class="rounded-full border py-0" onClick={() => search('All')} >All</button></li>
+            <li><button class="rounded-full border py-0" onClick={() => search('Pending')} >Pending</button></li>
+            <li><button class="rounded-full border py-0" onClick={() => search('Reset')} >Reset</button></li>
+          </ul>
+        </div>
         <div className="">
           <div className="flex">
             <div className="mt-12 m-5">
-              <label className=" text-black text-3xl" >Id    -</label>
+              <label className=" text-black text-3xl" >MainCategory -</label>
+              <br />
+              <br />
+              <label className=" text-black text-3xl" >SubCategory -</label>
               <br />
               <br />
               <label className="text-black text-3xl">Question -</label>
@@ -177,12 +242,33 @@ function FaqHandling() {
               <label className="text-black text-3xl">Answer -</label>
             </div>
             <div className="mt-12 m-5 bg-opacity-0 block border-black border-3">
-              <input onChange={onChange} value={FAQID} name='FAQID'
-                placeholder="Enter FAQ ID "
+              <select onChange={onChange} value={MainCategory} name='MainCategory' id="MainCategory">
+                <option value="Grade12">Grade12</option>
+                <option value="Grade13">Grade13</option>
+                <option value="Platform">Platform</option>
+                <option value="Feature">Feature</option>
+              </select>
+              {/* <input onChange={onChange} value={MainCategory} name='MainCategory'
+                placeholder="Enter MainCategory"
                 className="border-slate-600 placeholder-gray-600 bg-black bg-opacity-0 pb-3 border-b-2 text-2xl"
-                type="number" required />
+                type="text" required /> */}
               <br />
               <br />
+              <select onChange={onChange} value={SubCategory} name='SubCategory' id="SubCategory">
+                {options.map(option => <option key={option} value={option}>{option}</option>)}
+                {/* <option value="Sub1">Unit1</option>
+                <option value="Sub2">Unit2</option>
+                <option value="Sub3">Unit3</option>
+                <option value="Sub4">Unit4</option> */}
+              </select>
+              <br />
+              <br />
+              {/* <input onChange={onChange} value={SubCategory} name='SubCategory'
+                placeholder="Enter SubCategory"
+                className="border-slate-600 placeholder-gray-600 bg-black bg-opacity-0 pb-3 border-b-2 text-2xl"
+                type="text" required />
+              <br />
+              <br /> */}
               <input onChange={onChange} value={Question} name='Question' placeholder="Enter Question"
                 className="border-slate-600 placeholder-gray-600 bg-black bg-opacity-0 pb-3 border-b-2 
               text-2xl" type="text" required />
@@ -201,7 +287,15 @@ function FaqHandling() {
               bg-opacity-45 px-6 py-3 rounded-full"
                 onClick={addItem}
               >Add To List</button>
+
+
             </div>
+            {condition ? (
+              <button className="flex-2 w-44 h-14 font-bold text-xl bg-white 
+              bg-opacity-45 px-6 py-3 rounded-full"
+                onClick={UpdateFAQ}
+              >Update</button>
+            ) : null}
           </div>
         </div>
         <div>
@@ -210,7 +304,8 @@ function FaqHandling() {
             <table className="text-3xl backdrop-blur-lg ">
               <thead>
                 <tr className="">
-                  <th className="px-4 border-2 border-black">ID</th>
+                  <th className="px-4 border-2 border-black">MainCategory</th>
+                  <th className="px-4 border-2 border-black">SubCategory</th>
                   <th className="px-4 border-2 border-black">Question</th>
                   <th className="px-4 border-2 border-black">Answer</th>
                   <th className="px-4 border-2 border-black">Action</th>

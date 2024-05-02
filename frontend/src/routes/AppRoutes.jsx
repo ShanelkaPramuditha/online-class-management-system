@@ -6,6 +6,7 @@ import {
    Courses,
    Contact,
    About,
+   Faq,
    FaqHandling,
    Theory,
    TheoryGrade12,
@@ -57,9 +58,15 @@ const routes = [
    },
    {
       path: '/faq',
-      element: <FaqHandling />,
+      element: <Faq />,
       auth: [true, false],
       roles: ['student', 'user']
+   },
+   {
+      path: '/faq-handling',
+      element: <FaqHandling />,
+      auth: [true, false],
+      roles: ['teacher', 'admin', 'user']
    },
    {
       path: '/theory',

@@ -35,14 +35,14 @@ export const SetNavbarItems = () => {
          return [
             { name: 'DASHBOARD', path: '/' },
             { name: 'MANAGEMENT', path: '/management' },
-            { name: 'FAQ', path: '/faq' }
+            { name: 'FAQHANDLING', path: '/faq-handling' }
          ];
       } else if (role === 'teacher') {
          return [
             { name: 'DASHBOARD', path: '/' },
             { name: 'COURSES', path: '/courses' },
             { name: 'STUDENTS', path: '/students' },
-            { name: 'FAQ', path: '/faq' }
+            { name: 'FAQHANDLING', path: '/faq-handling' }
          ];
       } else if (role === 'student') {
          return [
@@ -50,7 +50,7 @@ export const SetNavbarItems = () => {
             { name: 'COURSES', path: '/courses' },
             { name: 'ABOUT', path: '/about' },
             { name: 'CONTACT', path: '/contact' },
-            { name: 'FAQ', path: '/faq' }
+            { name: 'FAQ', path: '/faq' },
          ];
       }
    } else {
@@ -59,7 +59,8 @@ export const SetNavbarItems = () => {
          { name: 'COURSES', path: '/courses' },
          { name: 'ABOUT', path: '/about' },
          { name: 'CONTACT', path: '/contact' },
-         { name: 'FAQ', path: '/faq' }
+         { name: 'FAQ', path: '/faq' },
+         { name: 'FAQHANDLING', path: '/faq-handling' }
       ];
    }
 };
