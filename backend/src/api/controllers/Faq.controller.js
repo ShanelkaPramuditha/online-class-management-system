@@ -19,10 +19,12 @@ export const faqGet = async (req, res) => {
 export const faqAdd = async (req, res) => {
    try {
       // Extract user information from req.user
+      console.log('FAQ ADD: ', req.body)
 
       // Add FAQ from Database
       const faqAddSchema = await FaqSchema.create({
-         FAQID: req.body.FAQID,
+         MainCategory: req.body.MainCategory,
+         SubCategory: req.body.SubCategory,
          Question: req.body.Question,
          Answer: req.body.Answer
       })
@@ -145,4 +147,22 @@ export const faqUpdate = async (req, res) => {
 //   faqGet,
 // }
 
+export const faqGetMainCategory = async (req, res) => {
+   try {
+      const mainCategory = req.params;
+      console.log('mainCategory: ', mainCategory)
+      const items = await FaqSchema.find({ MainCategory: mainCategory.Category });
+      res.status(200).send({ items });
+   } catch (error) {
+      res.status(500).send({ error: 'Internal Server Error' });
+   }
+};
 
+export const faqGetNotAnswered = async (req, res) => {
+   try {
+      const items = await FaqSchema.find({ Answer: "" });
+      res.status(200).send({ items });
+   } catch (error) {
+      res.status(500).send({ error: 'Internal Server Error' });
+   }
+};

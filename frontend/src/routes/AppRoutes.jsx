@@ -6,6 +6,7 @@ import {
    Courses,
    Contact,
    About,
+   Faq,
    FaqHandling,
    Theory,
    TheoryGrade12,
@@ -31,6 +32,9 @@ import {
    LiveClassView,
    AllExams,
    UpdateEnrollment,
+   NoticeList,
+   AddNotice,
+   UpdateNotice,
    AddReview,
    Reviewlist,
    UpdateReview
@@ -42,6 +46,12 @@ import { ProtectedRoute } from './ProtectedRoutes.jsx';
 import DashboardRoutes from './DashboardRoutes.jsx';
 
 const routes = [
+   {
+      path: '/',
+      element: <DashboardRoutes />,
+      auth: [true, false],
+      roles: ['admin', 'teacher', 'student', 'user']
+   },
    {
       path: '/',
       element: <DashboardRoutes />,
@@ -68,9 +78,15 @@ const routes = [
    },
    {
       path: '/faq',
-      element: <FaqHandling />,
+      element: <Faq />,
       auth: [true, false],
       roles: ['student', 'user']
+   },
+   {
+      path: '/faq-handling',
+      element: <FaqHandling />,
+      auth: [true, false],
+      roles: ['teacher', 'admin', 'user']
    },
    {
       path: '/theory',
@@ -244,6 +260,24 @@ const routes = [
       element: <UpdateEnrollment />,
       auth: [true],
       roles: ['admin', 'teacher', 'student']
+   },
+   {
+      path: '/Notices',
+      element: <NoticeList />,
+      auth: [true, false],
+      roles: ['admin', 'teacher', 'student', 'user']
+   },
+   {
+      path: '/Notices/Add',
+      element: <AddNotice />,
+      auth: [true, false],
+      roles: ['admin', 'teacher', 'student', 'user']
+   },
+   {
+      path: '/Notices/Update/:id',
+      element: <UpdateNotice />,
+      auth: [true, false],
+      roles: ['admin', 'teacher', 'student', 'user']
    },
    {
       path: '/review',

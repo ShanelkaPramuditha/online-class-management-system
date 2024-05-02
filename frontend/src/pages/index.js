@@ -10,6 +10,7 @@ import About from './About';
 import Theory from './Theory';
 
 import FaqHandling from './FaqHandling';
+import Faq from './Faq';
 
 // Theory Content
 import TheoryGrade12 from './Theory/Grade12';
@@ -43,11 +44,15 @@ import LiveClassForm from './Liveclass/Liveclassform'; // Teacher
 import LiveClassUI from './Liveclass/LiveclassUI/liveclassui'; // Teacher
 import LiveClassEdit from './Liveclass/Liveclassedit/Liveclassedit'; // Teacher
 import LiveClassView from './Theory/LiveView/liveview'; //Student View
-
 // Review Management
 import AddReview from './Review/AddReview';
 import Reviewlist from './Review/Reviewlist';
 import UpdateReview from './Review/UpdateReview';
+
+//Notice Management
+import NoticeList from './Notice/Noticelist';
+import AddNotice from './Notice/AddNotice';
+import UpdateNotice from './Notice/UpdateNotice';
 
 export {
    Home,
@@ -56,6 +61,7 @@ export {
    Courses,
    Contact,
    About,
+   Faq,
    FaqHandling,
    Theory,
    TheoryGrade12,
@@ -84,5 +90,8 @@ export {
    AllExams,
    AddReview,
    Reviewlist,
-   UpdateReview
+   UpdateReview,
+   NoticeList,
+   AddNotice,
+   UpdateNotice
 };

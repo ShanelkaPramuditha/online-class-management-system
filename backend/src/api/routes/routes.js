@@ -12,6 +12,7 @@ import * as quizController from '../controllers/OnlineExam/Question.controller.j
 import * as liveclassController from '../controllers/LiveClass/LiveclassController.js';
 import * as faqController from '../controllers/Faq.controller.js';
 import * as reviewController from '../controllers/Review.controller.js';
+import * as noticeController from '../controllers/Notice.controller.js';
 
 /* POST Methods */
 router.route('/register').post(controller.register);
@@ -91,5 +92,12 @@ router.route('/review/get').get(reviewController.getAllReviews);
 router.route('/review/get/:id').get(reviewController.getReview);
 router.route('/review/edit/:id').put(reviewController.editReview);
 router.route('/review/delete/:id').delete(reviewController.deleteReview);
+
+// Notice routes
+router.route('/notices').post(noticeController.create); //Teacher only
+router.route('/notices').get(noticeController.getall); //Teacher only
+router.route('/notice/:id').get(noticeController.getOne);
+router.route('/notice/:id').put(noticeController.update);
+router.route('/notice/:id').delete(noticeController.deleteOne);
 
 export default router;
