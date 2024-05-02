@@ -44,6 +44,11 @@ import LiveClassUI from './Liveclass/LiveclassUI/liveclassui'; // Teacher
 import LiveClassEdit from './Liveclass/Liveclassedit/Liveclassedit'; // Teacher
 import LiveClassView from './Theory/LiveView/liveview'; //Student View
 
+//Notice Management
+import NoticeList from './Notice/Noticelist';
+import AddNotice from './Notice/AddNotice';
+import UpdateNotice from './Notice/UpdateNotice';
+
 export {
    Home,
    AdminDashboard,
@@ -76,5 +81,8 @@ export {
    LiveClassUI,
    LiveClassEdit,
    LiveClassView,
-   AllExams
+   AllExams,
+   NoticeList,
+   AddNotice,
+   UpdateNotice
 };
