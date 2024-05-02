@@ -2,18 +2,20 @@ import mongoose from 'mongoose';
 
 const faqschema = mongoose.Schema(
   {
-    FAQID: {
-      type: Number,
-      required: [true, 'Please add a Id'],  
-      unique: true, //Primary key
+    MainCategory: {
+      type: String,
+      required: [true, 'Please add a text value'],
+    },
+    SubCategory: {
+      type: String,
+      required: [true, 'Please add a text value'],
     },
     Question: {
       type: String,
       required: [true, 'Please add a text value'],
     },
     Answer: {
-      type: String,
-      required: [true, 'Please add a text value'],
+      type: String
     },
   },
   {
