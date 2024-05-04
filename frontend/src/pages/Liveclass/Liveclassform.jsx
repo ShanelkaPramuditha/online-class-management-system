@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { createLive } from '../../api/liveclassAPI.js';
-import { Link } from 'react-router-dom';
 import backgroundImage from '../../assets/images/LiveclassformBG.png';
 
 function LiveClassForm() {

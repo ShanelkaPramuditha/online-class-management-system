@@ -10,6 +10,8 @@ import Swal from 'sweetalert2';
 
 function Papers() {
    const [papers, setPapers] = useState([]);
+   const [searchQuery, setSearchQuery] = useState('');
+   const [searchOption, setSearchOption] = useState('');
 
    useEffect(() => {
       // Fetch papers from the backend when the component mounts
@@ -24,6 +26,21 @@ function Papers() {
 
       fetchPapers();
    }, []); // Empty dependency array ensures the effect runs only once on mount
+
+   const filteredPaperList = papers.filter(paper => {
+      var searchDate = new Date(searchQuery);
+      var userDate = new Date(paper.createdAt);
+      switch (searchOption) {
+         case 'topic':
+            return paper.title
+               .toLowerCase()
+               .includes(searchQuery.toLowerCase());
+         case 'date':
+            return userDate < searchDate;
+         default:
+            return true;
+      }
+   });
 
    const handleDelete = async id => {
       try {
@@ -61,7 +78,7 @@ function Papers() {
       doc.text('Papers Report', 105, 10, { align: 'center' });
 
       // Table header
-      const tableData = papers.map(paper => [
+      const tableData = filteredPaperList.map(paper => [
          paper.title,
          paper.description,
          paper.quizCount,
@@ -75,7 +92,7 @@ function Papers() {
       });
 
       // Show total number of papers
-      const totalPapers = papers.length;
+      const totalPapers = filteredPaperList.length;
       doc.text(
          `Total Papers: ${totalPapers}`,
          14,
@@ -98,6 +115,45 @@ function Papers() {
          }}>
          <div className="flex justify-between mb-4">
             <div></div>
+            {/* Search Input */}
+            <div className="mb-5 flex justify-start">
+               <label className="p-2 text-lg">Filter</label>
+               <select
+                  value={searchOption}
+                  onChange={e => setSearchOption(e.target.value)}
+                  className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500 mr-2">
+                  <option value="topic">By Topic</option>
+                  <option value="date">By Date Before</option>
+               </select>
+
+               <div className="mb-5 flex justify-start">
+                  {(() => {
+                     switch (searchOption) {
+                        case 'topic':
+                           return (
+                              <input
+                                 type="text"
+                                 value={searchQuery}
+                                 onChange={e => setSearchQuery(e.target.value)}
+                                 placeholder={`Search by topic`}
+                                 className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500"
+                              />
+                           );
+                        case 'date':
+                           return (
+                              <input
+                                 type="date"
+                                 value={searchQuery}
+                                 onChange={e => setSearchQuery(e.target.value)}
+                                 className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500"
+                              />
+                           );
+                        default:
+                           return null;
+                     }
+                  })()}
+               </div>
+            </div>
             <div>
                <button
                   className="bg-[#dbdbdb] hover:bg-[black] text-[black] hover:text-[white] font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 m-6"
@@ -116,7 +172,7 @@ function Papers() {
             </div>
          </div>
          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {papers.map(paper => (
+            {filteredPaperList.map(paper => (
                <div
                   key={paper._id}
                   className="bg-[white] hover:bg-[#e3e6e3] transition duration-300 ease-in-out shadow-md rounded-md p-6">
