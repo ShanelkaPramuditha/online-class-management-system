@@ -13,6 +13,7 @@ import * as liveclassController from '../controllers/LiveClass/LiveclassControll
 import * as faqController from '../controllers/Faq.controller.js';
 import * as reviewController from '../controllers/Review.controller.js';
 import * as noticeController from '../controllers/Notice.controller.js';
+import * as modelpapercontroller from '../controllers/Paper.controller.js';
 
 /* POST Methods */
 router.route('/register').post(controller.register);
@@ -103,5 +104,12 @@ router.route('/notices').get(noticeController.getall); //Teacher only
 router.route('/notice/:id').get(noticeController.getOne);
 router.route('/notice/:id').put(noticeController.update);
 router.route('/notice/:id').delete(noticeController.deleteOne);
+
+// Paper routes
+router.route('/modelpapers').get(modelpapercontroller.getPaper);
+router.route('/modelpaper/:id').get(modelpapercontroller.getonePaper);
+router.route('/createmodelpaper').post(modelpapercontroller.addPaper);
+router.route('/updatemodelpaper/:id').put(modelpapercontroller.updatePaper);
+router.route('/deletemodelpaper/:id').delete(modelpapercontroller.deletePaper);
 
 export default router;

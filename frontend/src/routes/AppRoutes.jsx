@@ -37,7 +37,11 @@ import {
    UpdateNotice,
    AddReview,
    Reviewlist,
-   UpdateReview
+   UpdateReview,
+   StudentTable,
+   TeacherTable,
+   UpdatePaper,
+   AddPaper
 } from '../pages';
 import Dash from '../components/chat/dash.jsx';
 
@@ -294,6 +298,30 @@ const routes = [
    {
       path: '/review/update/:id',
       element: <UpdateReview />,
+      auth: [true],
+      roles: ['admin', 'teacher', 'student']
+   },
+   {
+      path: '/paper/add',
+      element: <AddPaper />,
+      auth: [true],
+      roles: ['admin', 'teacher', 'student']
+   },
+   {
+      path: '/paper',
+      element: <TeacherTable />,
+      auth: [true],
+      roles: ['admin', 'teacher', 'student']
+   },
+   {
+      path: '/paper/update/:id',
+      element: <UpdatePaper />,
+      auth: [true],
+      roles: ['admin', 'teacher', 'student']
+   },
+   {
+      path: '/paper/student',
+      element: <StudentTable />,
       auth: [true],
       roles: ['admin', 'teacher', 'student']
    }
