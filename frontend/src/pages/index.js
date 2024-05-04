@@ -54,6 +54,12 @@ import NoticeList from './Notice/Noticelist';
 import AddNotice from './Notice/AddNotice';
 import UpdateNotice from './Notice/UpdateNotice';
 
+// Paper Management
+import StudentTable from './Paper/StudentTable';
+import TeacherTable from './Paper/TeacherTable';
+import AddPaper from './Paper/AddPaper';
+import UpdatePaper from './Paper/UpdatePaper';
+
 export {
    Home,
    AdminDashboard,
@@ -93,5 +99,9 @@ export {
    UpdateReview,
    NoticeList,
    AddNotice,
-   UpdateNotice
+   UpdateNotice,
+   StudentTable,
+   TeacherTable,
+   UpdatePaper,
+   AddPaper
 };

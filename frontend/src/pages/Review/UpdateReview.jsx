@@ -4,6 +4,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 const UpdateReview = () => {
+   const { id } = useParams();
    const navigate = useNavigate();
    const [reviewData, setReviews] = useState({
       StudentID: '',
@@ -11,8 +12,6 @@ const UpdateReview = () => {
       ClassName: '',
       Description: ''
    });
-
-   const { id } = useParams();
 
    useEffect(() => {
       axios

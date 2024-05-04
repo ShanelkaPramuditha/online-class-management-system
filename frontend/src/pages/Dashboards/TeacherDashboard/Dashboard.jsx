@@ -28,6 +28,7 @@ const Dashboard = () => {
                title="Papers"
                description="Manage past exam papers, including uploading, organizing, and editing paper details. Access and review historical exam data effortlessly."
                buttonText="Manage"
+               to="/paper"
             />
 
             <Dashcard
