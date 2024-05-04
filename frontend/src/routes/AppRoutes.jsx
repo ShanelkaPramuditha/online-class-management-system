@@ -311,13 +311,13 @@ const routes = [
       path: '/paper',
       element: <TeacherTable />,
       auth: [true],
-      roles: ['admin', 'teacher', 'student']
+      roles: ['admin', 'teacher']
    },
    {
       path: '/paper/update/:id',
       element: <UpdatePaper />,
       auth: [true],
-      roles: ['admin', 'teacher', 'student']
+      roles: ['admin', 'teacher']
    },
    {
       path: '/paper/student',

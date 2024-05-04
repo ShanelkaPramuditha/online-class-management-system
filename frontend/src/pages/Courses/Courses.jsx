@@ -37,7 +37,7 @@ const Courses = () => {
                   image={CardImg1}
                   header="Model Papers"
                   description=""
-                  navTo="/modelpapers"
+                  navTo="/papers/students"
                />
             </div>
          </div>
