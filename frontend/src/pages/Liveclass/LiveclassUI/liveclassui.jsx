@@ -9,6 +9,7 @@ import backgroundImage from '../../../assets/images/LiveclassUI.jpg';
 
 function LiveClassUI() {
    const [sessions, setSessions] = useState([]);
+   const [searchTerm, setSearchTerm] = useState('');
 
    useEffect(() => {
       fetchSessions();
@@ -95,6 +96,10 @@ function LiveClassUI() {
       doc.save('live-sessions-report.pdf');
    };
 
+   const filteredSessions = sessions.filter(session =>
+      session.sessionName.toLowerCase().includes(searchTerm.toLowerCase())
+   );
+
    return (
       <div
          className="flex flex-col items-center"
@@ -104,6 +109,13 @@ function LiveClassUI() {
             backgroundPosition: 'center',
             opacity: '1'
          }}>
+         <input
+            type="text"
+            placeholder="Search sessions..."
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            className="mt-4 px-2 py-1 border border-gray-300 rounded-sm"
+         />
          <button
             className="btn fixed bottom-10 right-10 bg-[blue] hover:bg-[#00008B] text-[white] font-bold py-2 px-4 rounded"
             onClick={handleCreateSession}>
@@ -115,7 +127,7 @@ function LiveClassUI() {
             Generate Report
          </button>
          <div className="flex flex-wrap justify-center">
-            {sessions.map((session, index) => (
+            {filteredSessions.map((session, index) => (
                <div key={index} className="m-4">
                   <Card
                      title={session.sessionName}
