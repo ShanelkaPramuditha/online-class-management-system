@@ -105,55 +105,45 @@ function Papers() {
 
    return (
       <div
-         className=" min-h-[calc(100vh-170px)] container mx-auto mt-8 p-10"
-         // style={{ background: 'linear-gradient(to top, #f7fbff, #cfcfcf)' }}
+         className="min-h-[calc(100vh-170px)] container mx-auto mt-8 p-10"
          style={{
             backgroundImage: `url(${backgroundImage})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            opacity: '1'
+            backgroundPosition: 'center'
          }}>
          <div className="flex justify-between mb-4">
             <div></div>
-            {/* Search Input */}
-            <div className="mb-5 flex justify-start">
-               <label className="p-2 text-lg">Filter</label>
+            {/* Filter Bar */}
+            <div className="flex items-center">
+               <label htmlFor="searchOption" className="mr-2 text-gray-700">
+                  Filter by:
+               </label>
                <select
+                  id="searchOption"
                   value={searchOption}
                   onChange={e => setSearchOption(e.target.value)}
-                  className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500 mr-2">
-                  <option value="topic">By Topic</option>
-                  <option value="date">By Date Before</option>
+                  className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500 mr-2 appearance-none bg-white text-gray-700 hover:border-gray-500">
+                  <option value="topic">Topic</option>
+                  <option value="date">Date Before</option>
                </select>
-
-               <div className="mb-5 flex justify-start">
-                  {(() => {
-                     switch (searchOption) {
-                        case 'topic':
-                           return (
-                              <input
-                                 type="text"
-                                 value={searchQuery}
-                                 onChange={e => setSearchQuery(e.target.value)}
-                                 placeholder={`Search by topic`}
-                                 className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500"
-                              />
-                           );
-                        case 'date':
-                           return (
-                              <input
-                                 type="date"
-                                 value={searchQuery}
-                                 onChange={e => setSearchQuery(e.target.value)}
-                                 className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500"
-                              />
-                           );
-                        default:
-                           return null;
-                     }
-                  })()}
-               </div>
+               {searchOption === 'topic' ? (
+                  <input
+                     type="text"
+                     value={searchQuery}
+                     onChange={e => setSearchQuery(e.target.value)}
+                     placeholder="Search by topic"
+                     className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500"
+                  />
+               ) : (
+                  <input
+                     type="date"
+                     value={searchQuery}
+                     onChange={e => setSearchQuery(e.target.value)}
+                     className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500"
+                  />
+               )}
             </div>
+            {/* Action Buttons */}
             <div>
                <button
                   className="bg-[#dbdbdb] hover:bg-[black] text-[black] hover:text-[white] font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 m-6"
@@ -171,6 +161,7 @@ function Papers() {
                </button>
             </div>
          </div>
+         {/* Paper Cards */}
          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {filteredPaperList.map(paper => (
                <div
@@ -181,21 +172,16 @@ function Papers() {
                   <div className="text-gray-700 mt-2">
                      No of Questions: {paper.quizCount}
                   </div>
-
                   <div className="flex justify-end mt-4">
                      <Link
                         to={`/exam/update/${paper._id}`}
                         className="text-blue-500 hover:text-blue-700 mr-2">
-                        <div>
-                           <FaEdit className="hover:text-[#06a800] transition duration-300 ease-in-out hover:scale-110 ml-4" />
-                        </div>
+                        <FaEdit className="hover:text-[#06a800] transition duration-300 ease-in-out hover:scale-110 ml-4" />
                      </Link>
                      <button
                         onClick={() => handleDelete(paper._id)}
                         className="text-red-500 hover:text-red-700">
-                        <div>
-                           <FaTrashAlt className="hover:text-[red] transition duration-300 ease-in-out hover:scale-110 ml-4" />
-                        </div>
+                        <FaTrashAlt className="hover:text-[red] transition duration-300 ease-in-out hover:scale-110 ml-4" />
                      </button>
                   </div>
                </div>
