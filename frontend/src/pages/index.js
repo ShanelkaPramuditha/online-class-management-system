@@ -60,6 +60,9 @@ import TeacherTable from './Paper/TeacherTable';
 import AddPaper from './Paper/AddPaper';
 import UpdatePaper from './Paper/UpdatePaper';
 
+import Chat from './Chatpage/DashChat';
+import Chatstd from './Chatpage/Dashstd';
+
 export {
    Home,
    AdminDashboard,
@@ -103,5 +106,7 @@ export {
    StudentTable,
    TeacherTable,
    UpdatePaper,
-   AddPaper
+   AddPaper,
+   Chat,
+   Chatstd
 };
