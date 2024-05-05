@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 /* import all pages */
-import { Header, Footer, Recovery, Reset } from '../components';
+import { Header, Footer, Reset } from '../components';
 import {
    Courses,
    Contact,
@@ -43,7 +43,8 @@ import {
    UpdatePaper,
    AddPaper,
    Chat,
-   Chatstd
+   Chatstd,
+   FileUploadForm
 } from '../pages';
 
 /* Auth Middleware */
@@ -323,6 +324,12 @@ const routes = [
    {
       path: '/paper/student',
       element: <StudentTable />,
+      auth: [true],
+      roles: ['admin', 'teacher', 'student']
+   },
+   {
+      path: '/upload',
+      element: <FileUploadForm />,
       auth: [true],
       roles: ['admin', 'teacher', 'student']
    }
