@@ -363,7 +363,7 @@ export default function UserMain() {
             <select
                value={searchOption}
                onChange={e => setSearchOption(e.target.value)}
-               className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500 mr-2">
+               className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500 mr-2 h-12">
                <option value="name">By Name</option>
                <option value="gender">By Gender</option>
                <option value="email">By Email</option>
@@ -394,7 +394,7 @@ export default function UserMain() {
                         );
                      case 'gender':
                         return (
-                           <div>
+                           <div className="flex align-middle px-2 gap-4">
                               <label>
                                  <input
                                     type="radio"
@@ -419,7 +419,7 @@ export default function UserMain() {
                         );
                      case 'role':
                         return (
-                           <div>
+                           <div className="flex align-middle px-2 gap-4">
                               <label>
                                  <input
                                     type="radio"
