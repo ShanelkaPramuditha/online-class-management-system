@@ -196,7 +196,7 @@ const Noticelist = () => {
             </div>
          </div>
          <div className="min-h-[calc(100vh-170px)] mx-auto mt-8 body-content">
-            <h1 className="text-2xl font-bold mb-4">Online Exams</h1>
+            <h1 className="text-2xl font-bold mb-4">ALL Notices</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                {FilteredNoticedList.map(notice => (
                   <div
