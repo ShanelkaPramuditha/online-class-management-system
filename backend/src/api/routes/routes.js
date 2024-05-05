@@ -14,6 +14,7 @@ import * as faqController from '../controllers/Faq.controller.js';
 import * as reviewController from '../controllers/Review.controller.js';
 import * as noticeController from '../controllers/Notice.controller.js';
 import * as modelpapercontroller from '../controllers/Paper.controller.js';
+import * as studentAnswersController from '../controllers/OnlineExam/StudentAnswers.controller.js';
 
 /* POST Methods */
 router.route('/register').post(controller.register);
@@ -66,6 +67,10 @@ router.route('/paper/').get(paperController.getAllPapers);
 router.route('/paper/:id').get(paperController.getPaper);
 router.route('/update/:paperId').patch(paperController.editPaper);
 router.route('/paper').delete(paperController.deletePaper);
+
+router
+   .route('/studentAnswers/:id')
+   .post(studentAnswersController.createStudentAnswer);
 
 router.route('/question/Create/:paperId').post(quizController.createQuiz);
 router.route('/question/:id').put(quizController.editQuiz);
