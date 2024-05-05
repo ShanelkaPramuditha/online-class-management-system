@@ -5,6 +5,8 @@ import papersImg from '../../../assets/images/papers.png';
 import onlineexamImg from '../../../assets/images/Onlineexams.png';
 import paymentImg from '../../../assets/images/payment.png';
 import Dashcard from '../../../components/Card/DashBoardCard';
+import ScrollToTopButton from '../../../components/ScrollToTop';
+
 const Dashboard = () => {
    return (
       <div className="min-h-[calc(100vh-170px)]">
@@ -52,6 +54,7 @@ const Dashboard = () => {
                to="/payments"
             />
          </div>
+         <ScrollToTopButton />
       </div>
    );
 };

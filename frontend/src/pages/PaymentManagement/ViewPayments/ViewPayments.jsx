@@ -107,10 +107,10 @@ const ViewPayment = () => {
       let currentY = doc.autoTable.previous.finalY + 10;
 
       // total payments
-      doc.text(`Total Teams: ${totalPayments}`, 14, currentY);
+      doc.text(`Total Payment Count: ${totalPayments}`, 14, currentY);
 
       // Total Amounts
-      doc.text(`Total Players: ${totalAmount}`, 14, currentY + 10);
+      doc.text(`Total Value: ${totalAmount}`, 14, currentY + 10);
 
       // Save the PDF
       doc.save('payments-report.pdf');
@@ -135,7 +135,7 @@ const ViewPayment = () => {
          </div>
 
          {/* Search Input */}
-         <div className="mb-5 flex justify-start">
+         <div className="mb-5 flex justify-start w-52">
             <input
                type="text"
                value={searchQuery}
