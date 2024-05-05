@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 function TeacherTable() {
    var TCellStyle2 = 'px-5 py-2 bg-neutral-300 text-neutral-950';
@@ -13,11 +15,28 @@ function TeacherTable() {
 
    const navigate = useNavigate();
    const [Data, setData] = useState([]);
+   const [searchQuery, setSearchQuery] = useState('');
+   const [searchOption, setSearchOption] = useState('des');
 
    const UpdatePaper = _id => {
       const updatelink = `update/${_id}`;
       navigate(updatelink);
    };
+
+   const filteredModelPaperList = Data.filter(modelpaper => {
+
+      switch (searchOption) {
+         case 'des':
+            return modelpaper.Des.toLowerCase().includes(searchQuery.toLowerCase());
+         case 'pid':
+            return modelpaper.Pid.toLowerCase().includes(searchQuery.toLowerCase());
+         case 'tid':
+            return modelpaper.Tid.toString().toLowerCase().includes(searchQuery.toLowerCase());
+         case 'plink':
+            return modelpaper.Plink.toLowerCase().includes(searchQuery.toLowerCase());
+      }
+   });
+
 
    function UpdateData() {
       const url = 'http://localhost:5000/api/modelpapers';
@@ -52,7 +71,7 @@ function TeacherTable() {
    }
 
    const RowGen = () => {
-      return Data.map((Paper, index) => (
+      return filteredModelPaperList.map((Paper, index) => (
          <tr
             className="bg-[white] border-b dark:bg-gray-800 dark:border-[gray] hover:bg-silver-mist dark:hover:bg-silver-mist"
             key={index}>
@@ -83,6 +102,48 @@ function TeacherTable() {
       ));
    };
 
+// Report handler
+async function RepGen() {
+   const doc = new jsPDF();
+
+   // Total non-student Users user.userRole === 'admin' ||
+   const totalModelPaper = filteredModelPaperList.reduce((count) => {
+         count++;
+      return count;
+   }, 0);
+
+   // Add header
+   const headerTitle = 'Exported Model Paper List';
+   const headerTitleX = doc.internal.pageSize.width / 2;
+   doc.setFontSize(12);
+   doc.text(headerTitle, headerTitleX, 10, { align: 'center' });
+
+   // Table header
+   doc.autoTable({
+      head: [
+         ['Description', 'Paper ID', 'Teacher ID', 'Paper Link', 'Time Duration', 'Start Date', 'End Date']
+      ],
+      body: filteredModelPaperList.map(user => [
+         user.Des,
+         user.Pid,
+         user.Tid,
+         user.Plink,
+         user.Time,
+         new Date(user.Sdate),
+         new Date(user.Edate)
+      ])
+   });
+
+   let currentY = doc.autoTable.previous.finalY + 10;
+
+   // Total Model Papers
+   doc.text(`Total Model Papers: ${totalModelPaper}`, 14, currentY + 10);
+
+
+   // Save the PDF
+   doc.save('ModelPaperList.pdf');
+}
+
    return (
       <>
          <div className="body-content min-h-[calc(100vh-270px)]">
@@ -92,9 +153,57 @@ function TeacherTable() {
             <button
                className="btn btn-info m-4"
                onClick={() => navigate('add')}>
-               {' '}
                Add Paper
             </button>
+            <button
+               className="btn btn-active m-4"
+               onClick={() => RepGen()}>
+               Generate Report
+            </button>
+            <select
+               value={searchOption}
+               onChange={e => {
+                  setSearchOption(e.target.value);
+               }}
+               className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500 mr-2 h-12">
+               <option value="des">By Description</option>
+               <option value="pid">By Paper ID</option>
+               <option value="tid">By Teacher ID</option>
+               <option value="plink">By Paper Link</option>
+            </select>
+            <div className="mb-5 flex justify-start">
+   {(() => {
+      switch (searchOption) {
+         case 'des':
+         case 'pid':
+         case 'tid':
+         case 'plink':
+            return (
+               <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={e => {
+                     setSearchQuery(e.target.value);
+                  }}
+                  placeholder={`Search by ${
+                     searchOption === 'des'
+                        ? 'Description'
+                        : searchOption === 'pid'
+                        ? 'Paper ID'
+                        : searchOption === 'tid'
+                        ? 'Teacher ID'
+                        : searchOption === 'plink'
+                        ? 'Paper Link'
+                        : ''
+                  }...`}
+                  className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500"
+               />
+            );
+         default:
+            return null;
+      }
+   })()}
+</div>
             <div>
                <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                   <table className="w-full text-sm text-left rtl:text-right text-[gray] dark:text-[gray]">
