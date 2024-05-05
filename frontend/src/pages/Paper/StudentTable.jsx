@@ -9,6 +9,8 @@ function TeacherTable() {
    var THeadStyle = `p-3`;
 
    const [Data, setData] = useState([]);
+   const [searchQuery, setSearchQuery] = useState('');
+   const [searchOption, setSearchOption] = useState('des');
 
    const Download = link => {
       console.log(link);
@@ -33,8 +35,22 @@ function TeacherTable() {
       UpdateData();
    }, []);
 
+   const filteredModelPaperList = Data.filter(modelpaper => {
+
+      switch (searchOption) {
+         case 'des':
+            return modelpaper.Des.toLowerCase().includes(searchQuery.toLowerCase());
+         case 'pid':
+            return modelpaper.Pid.toLowerCase().includes(searchQuery.toLowerCase());
+         case 'tid':
+            return modelpaper.Tid.toString().toLowerCase().includes(searchQuery.toLowerCase());
+         case 'plink':
+            return modelpaper.Plink.toLowerCase().includes(searchQuery.toLowerCase());
+      }
+   });
+
    const RowGen = () => {
-      return Data.map((Paper, index) => (
+      return filteredModelPaperList.map((Paper, index) => (
          <tr
             className="bg-[white] border-b dark:bg-gray-800 dark:border-[gray] hover:bg-silver-mist dark:hover:bg-silver-mist"
             key={index}>
@@ -65,6 +81,49 @@ function TeacherTable() {
                Model Paper Management
             </h4>
             <div>
+            <select
+               value={searchOption}
+               onChange={e => {
+                  setSearchOption(e.target.value);
+               }}
+               className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500 mr-2 h-12">
+               <option value="des">By Description</option>
+               <option value="pid">By Paper ID</option>
+               <option value="tid">By Teacher ID</option>
+            </select>
+            <div className="mb-5 flex justify-start">
+   {(() => {
+      switch (searchOption) {
+         case 'des':
+         case 'pid':
+         case 'tid':
+         case 'plink':
+            return (
+               <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={e => {
+                     setSearchQuery(e.target.value);
+                  }}
+                  placeholder={`Search by ${
+                     searchOption === 'des'
+                        ? 'Description'
+                        : searchOption === 'pid'
+                        ? 'Paper ID'
+                        : searchOption === 'tid'
+                        ? 'Teacher ID'
+                        : searchOption === 'plink'
+                        ? 'Paper Link'
+                        : ''
+                  }...`}
+                  className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500"
+               />
+            );
+         default:
+            return null;
+      }
+   })()}
+</div>
                <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                   <table className="w-full text-sm text-left rtl:text-right text-[gray] dark:text-[gray]">
                      <thead className="text-sm text-[white] uppercase bg-[gray] dark:bg-[#1a1947] dark:text-[white] text-center">
@@ -85,6 +144,7 @@ function TeacherTable() {
                </div>
             </div>
          </div>
+
       </>
    );
 }
