@@ -1,11 +1,13 @@
 // LiveClassUI.jsx
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Card from './Cardview';
 import axios from 'axios';
 import backgroundImage from '../../../assets/images/LiveclassUI.jpg';
 
 function LiveClassView() {
    const [sessions, setSessions] = useState([]);
+   const navigate = useNavigate();
 
    useEffect(() => {
       fetchSessions();
@@ -35,6 +37,17 @@ function LiveClassView() {
             backgroundPosition: 'center',
             opacity: '1'
          }}>
+         <div className="font-semibold text-3xl my-10 text-center">
+            Live Sessions
+         </div>
+         {/* Chat Section */}
+         <div className="ml-auto">
+            <button
+               className="bg-[#0057FF] hover:bg-[#000D85] text-[#FFFFFF] font-bold py-2 px-12 rounded-full mx-10"
+               onClick={() => navigate('/chat')}>
+               Enter to the chat
+            </button>
+         </div>
          <div className="flex flex-wrap justify-center">
             {sessions.map((session, index) => (
                <div key={index} className="m-4">
