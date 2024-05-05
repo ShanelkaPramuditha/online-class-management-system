@@ -14,6 +14,6 @@ const msgschema = mongoose.Schema(
    },
    { timestamps: { currentTime: () => Date.now() + 5.5 * 60 * 60 * 1000 } }
 );
-const MSG = mongoose.model('Messages', msgschema);
+const MSG = mongoose.model('Messages13', msgschema);
 
 export default MSG;

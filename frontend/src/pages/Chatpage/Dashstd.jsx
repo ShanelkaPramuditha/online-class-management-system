@@ -1,11 +1,12 @@
 import React from 'react';
 import Usercircle from '../../assets/user-circle.svg';
 import Send from '../../assets/images/send-2.svg';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useEffect } from 'react';
 import Edit from '../../assets/images/edit.svg';
 import Delete from '../../assets/images/trash.svg';
 import chat from '../../assets/images/chat.jpg';
+import Arrow from '../../assets/images/arrow-narrow-down.png';
 import Swal from 'sweetalert2';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -24,18 +25,27 @@ const Dash = () => {
    const [file, setfile] = useState();
    const [file1, setfile1] = useState(false);
    const [filetype, setfiletype] = useState('');
-   console.log('edits', edit);
-   console.log('megsmsges', msgs);
+   const [admin, setadmin] = useState(false);
+
+   // console.log(`selected`, selcted);
+   // console.log('megsmsges', msgs);
+   console.log(`settype`, filetype);
+   console.log(`file`, file);
+   console.log(`file01`, file1);
+
+   const chatdash = document.getElementById('chatdash');
 
    useEffect(() => {
-      const handleMessage = (data1, data2) => {
+      const handleMessage = (data1, data2, data3) => {
          setmsgs(prevmsgs => [
             ...prevmsgs,
             {
                Messages: data1,
-               Username: data2
+               Username: data2,
+               dateTime: data3
             }
          ]);
+         scroolbtn();
       };
       socket.on('message_deleted', deletedId => {
          setmsgs(prevmsgs =>
@@ -43,11 +53,17 @@ const Dash = () => {
          );
       });
 
+      const handleMessageDeleted = deletedId => {
+         setmsgs(prevmsgs =>
+            prevmsgs.filter(msg => msg.idofmessage !== deletedId)
+         );
+      };
+      socket.on('message_deleted', handleMessageDeleted);
       socket.on('recived_msg', handleMessage);
 
       return () => {
          socket.off('recived_msg', handleMessage);
-         socket.off('recived_msg', handleMessage);
+         socket.off('message_deleted', handleMessageDeleted);
       };
    }, [socket]);
 
@@ -71,10 +87,28 @@ const Dash = () => {
    console.log(`user`, user);
    const user1 = user?.state.firstName;
    console.log(`user1`, user1);
+   if (user1 === 'Nameadmin') {
+      setadmin(true);
+   }
 
    const deletemsg = async msgId => {
       try {
          const res = await fetch(`http://localhost:5000/deletemsg/${msgId}`, {
+            method: 'DELETE',
+            headers: {
+               'Content-Type': 'application/json'
+            }
+         });
+         socket.emit('delete_msg', msgId);
+         fetchmeg();
+         s;
+      } catch (e) {
+         console.log(e);
+      }
+   };
+   const deleteAll = async () => {
+      try {
+         const res = await fetch(`http://localhost:5000/deleteAll`, {
             method: 'DELETE',
             headers: {
                'Content-Type': 'application/json'
@@ -85,6 +119,7 @@ const Dash = () => {
          console.log(e);
       }
    };
+
    const removemsg = msgId => {
       Swal.fire({
          title: 'Are you delete?',
@@ -104,7 +139,41 @@ const Dash = () => {
          }
       });
    };
-   const editdetails = async msgId => {
+   const removeAll = () => {
+      Swal.fire({
+         title: 'Are You Clear Chat?',
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonColor: '#747976',
+         cancelButtonColor: '#C2C8C4',
+         confirmButtonText: 'delete'
+      }).then(result => {
+         if (result.isConfirmed) {
+            deleteAll();
+            Swal.fire({
+               title: 'Deleted All Messages!',
+               text: 'Your message has been deleted.',
+               icon: 'success'
+            });
+         }
+      });
+   };
+
+   const editdetail1 = async msgId => {
+      try {
+         const res = await fetch(`http://localhost:5000/editdetail/${msgId}`, {
+            method: 'GET',
+            headers: {
+               'Content-Type': 'application/json'
+            }
+         });
+         const resdata = await res.json();
+         seteditinput(resdata.existmsg);
+      } catch (error) {
+         console.error('error:', error);
+      }
+   };
+   const editdetail2 = async msgId => {
       try {
          const res = await fetch(`http://localhost:5000/editdetail/${msgId}`, {
             method: 'GET',
@@ -131,7 +200,9 @@ const Dash = () => {
             })
          });
          seteditinput('');
+         setedit(false);
          fetchmeg();
+         setselcted(null);
       } catch (er) {
          console.log(er);
       }
@@ -177,8 +248,6 @@ const Dash = () => {
       doc.save('livechatreport.pdf');
    };
 
-   console.log('setmesssges', msgs);
-
    const sendmessage = async () => {
       const res1 = await fetch(`http://localhost:5000/message`, {
          method: 'POST',
@@ -190,11 +259,14 @@ const Dash = () => {
             firstName: user1
          })
       });
+      const just = 'Just Now';
       console.log(`res11`, user?.id);
-      socket.emit('send_msg', input, user1);
+      socket.emit('send_msg', input, user1, just);
       setinput('');
       fetchmeg();
+      scroolbtn();
    };
+
    const sendfile = async () => {
       const formData = new FormData();
       formData.append('file', file);
@@ -215,6 +287,8 @@ const Dash = () => {
          socket.emit('send_file', response.data, user1);
          setinput('');
          fetchmeg();
+         scroolbtn();
+         setfile1(false);
       } catch (error) {
          console.error('Error uploading file:', error);
       }
@@ -231,16 +305,32 @@ const Dash = () => {
          const selectfile = resdata.existmsg;
          console.log(selectfile);
          window.open(`http://localhost:5000/${selectfile}`);
+         setfiletype('');
       } catch (error) {
          console.error('error:', error);
       }
    };
-   console.log(`filetype`, filetype);
 
-   console.log(input);
-   console.log(`selected`, selcted);
+   const scroolbtn = async () => {
+      chatdash.scrollTo({
+         top: aboutSection.current.offsetTop,
+         behavior: 'smooth'
+      });
+   };
 
-   // console.log(`asdfg`, msgs);
+   const formatDate = dateString => {
+      const date = new Date(dateString);
+      const month = date.getMonth();
+      const day = date.getDate();
+      return `${month}/${day}`;
+   };
+
+   const formatTime = timeString => {
+      const time = new Date(timeString);
+      const hour = time.getHours();
+      const minutes = time.getMinutes();
+      return `${hour}:${minutes}`;
+   };
 
    return (
       <div className="flex flex-col items-center justify-center h-full bg-silver-mist">
@@ -253,6 +343,11 @@ const Dash = () => {
                <div>
                   <button
                      className="w-32 h-12 p-2 text-xl font-semibold text-center border rounded-md bg-light-blue"
+                     onClick={() => setlivechat(false)}>
+                     Get Started
+                  </button>
+                  <button
+                     className="w-32 h-12 p-2 text-xl font-semibold text-center border rounded-md bg-light-blue ml-[80%]"
                      onClick={() => setlivechat(true)}>
                      Get Started
                   </button>
@@ -266,15 +361,26 @@ const Dash = () => {
          {livechat && (
             <div className="w-full bg-silver-mist h-[600px] flex items-center justify-center flex-col mt-6">
                <div className=" bg-silver-mist w-[600px] shadow-lg shadow-neutral-500 border border-black h-[600px] flex flex-col items-center justify-center">
-                  <button
-                     className="p-1 mt-1 ml-auto mr-1 text-sm border rounded shadow-md bg-light-gray text-neutral-950 shadow-neutral-400"
-                     onClick={() => generatereport()}>
-                     Summary
-                  </button>
+                  {admin && (
+                     <div className="flex flex-row items-baseline ml-auto">
+                        <button
+                           className="p-1 mt-1 ml-auto mr-5 text-sm border rounded shadow-md bg-light-gray text-neutral-950 shadow-neutral-400"
+                           onClick={() => removeAll()}>
+                           Clear Chat
+                        </button>
+                        <button
+                           className="p-1 mt-1 ml-auto mr-1 text-sm border rounded shadow-md bg-light-gray text-neutral-950 shadow-neutral-400"
+                           onClick={() => generatereport()}>
+                           Summary
+                        </button>
+                     </div>
+                  )}
                   <div className="h-10 w-[80%] bg-light-gray m-3 border rounded-full text-center p-2 text-lg font-mono text-neutral-950 shadow-md shadow-neutral-500">
                      Live Chat
                   </div>
-                  <div className="w-[80%] h-[480px] bg-light-gray overflow-y-scroll rounded-md  shadow-md shadow-neutral-600">
+                  <div
+                     className="w-[80%] h-[480px] bg-light-gray overflow-y-scroll rounded-md  shadow-md shadow-neutral-600"
+                     id="chatdash">
                      <div className=" h-fit">
                         {options && (
                            <div className="flex flex-row items-center justify-center mt-3 -mb-4 border-x-0 border-neutral-900 ">
@@ -284,7 +390,6 @@ const Dash = () => {
                                     onClick={() => {
                                        console.log(selcted);
                                        removemsg(selcted);
-                                       // setselcted(null);
                                        setoptions(false);
                                     }}
                                     className="w-5 mr-2 cursor-pointer"></img>
@@ -292,9 +397,7 @@ const Dash = () => {
                                     <img
                                        src={Edit}
                                        onClick={() => {
-                                          editdetails(selcted);
-                                          // setoptions(false);
-                                          setedit(true);
+                                          editdetail1(selcted);
                                        }}
                                        className="w-5 ml-2 cursor-pointer"></img>
                                  )}
@@ -308,9 +411,15 @@ const Dash = () => {
                               return (
                                  <div className="flex flex-col mt-1 mb-2">
                                     <div className="flex flex-row ml-auto">
-                                       <div className="ml-1 font-sans text-xs text-neutral-500">
+                                       <div className="ml-1 mr-1 font-sans text-[8px] text-neutral-500 mt-1">
+                                          {formatTime(msg.dateTime) +
+                                             '   ' +
+                                             formatDate(msg.dateTime)}
+                                       </div>
+                                       <div className="ml-0 font-sans text-xs text-neutral-600">
                                           You
                                        </div>
+
                                        <img
                                           src={Usercircle}
                                           className="rounded-full shadow-sm shadow-neutral-500"
@@ -319,14 +428,17 @@ const Dash = () => {
                                     </div>
                                     <div
                                        onClick={() => {
-                                          editdetails(msg.idofmessage);
+                                          setedit(true);
+                                          editdetail2(msg.idofmessage);
                                           setselcted(msg.idofmessage);
                                           setoptions(true);
-                                          setedit(true);
                                           console.log(`setselcted`, selcted);
-                                          filetype === 'file' &&
+                                          if (filetype === 'file') {
+                                             setedit(false);
                                              getfiles(msg.idofmessage);
-                                          setedit(false);
+                                             setfiletype(' ');
+                                          }
+                                          setfiletype(' ');
                                        }}
                                        className={`max-h-full min-w-0 min-h-0 p-1 mb-1 ml-auto mr-2 font-sans text-sm shadow cursor-pointer shadow-neutral-400 w-fit max-w-64  rounded-b-xl rounded-tl-xl h-fit text-neutral-800 ${
                                           selcted === msg.idofmessage
@@ -346,20 +458,32 @@ const Dash = () => {
                                           className="rounded-full shadow-sm shadow-neutral-500"
                                           width={16}
                                           height={16}></img>
-                                       <div className="ml-1 font-sans text-xs text-neutral-500">
+
+                                       <div className="ml-1 font-sans text-xs text-neutral-600">
                                           {msg.Username}
+                                       </div>
+                                       <div className="ml-1 mr-2 font-sans text-[8px] text-neutral-500 mt-1">
+                                          {!isNaN(
+                                             new Date(msg.dateTime).getTime()
+                                          )
+                                             ? formatDate(msg.dateTime) +
+                                               ' ' +
+                                               formatTime(msg.dateTime)
+                                             : 'justNow'}
                                        </div>
                                     </div>
                                     <div
                                        onClick={() => {
-                                          editdetails(msg.idofmessage);
+                                          editdetail2(msg.idofmessage);
                                           setselcted(msg.idofmessage);
-                                          setoptions(true);
+                                          admin
+                                             ? setoptions(true)
+                                             : setoptions(false);
                                           setedit(false);
                                           console.log(`setselcted`, selcted);
-                                          filetype === 'file' &&
+                                          if (filetype === 'file') {
                                              getfiles(msg.idofmessage);
-                                          // setedit(false);
+                                          }
                                        }}
                                        className={`max-h-full min-w-0 min-h-0 p-1 mb-1 ml-2 font-sans text-sm shadow cursor-pointer shadow-neutral-400 w-fit max-w-64  rounded-b-xl rounded-tr-xl h-fit text-neutral-800 ${
                                           selcted === msg.idofmessage
@@ -372,22 +496,19 @@ const Dash = () => {
                               );
                            }
                         })}
-
-                        {/* 
-               <div className="flex flex-col mt-2 ">
-                  <div className="flex flex-row ml-auto">
-                     <div className="ml-1 font-sans text-xs">username</div>
-                     <img
-                        src={Usercircle}
-                        className=""
-                        width={20}
-                        height={20}></img>
-                  </div>
-                  <div className="max-h-full min-w-0 min-h-0 p-1 mb-1 ml-auto mr-2 shadow-sm cursor-pointer w-fit max-w-64 bg-light-silver rounded-b-xl rounded-tl-xl h-fit">
-                     hello asdfghjk
-                  </div>
-               </div> */}
                      </div>
+                     {/* {scrolls && (
+                        <div className="flex flex-col " id="scroolbtn">
+                           <div className="absolute flex flex-row mb-2 ml-auto mr-2 ">
+                              <img
+                                 src={Arrow}
+                                 width={25}
+                                 height={30}
+                                 onClick={() => scroolbtn()}
+                                 className="rounded-full shadow bg-dark-red shadow-dark-gray"></img>
+                           </div>
+                        </div>
+                     )} */}
                   </div>
                   <div
                      onClick={() => {
@@ -416,10 +537,9 @@ const Dash = () => {
                         type="file"
                         onClick={() => {
                            setfile1(true);
-                           setinput('Send file');
                         }}
                         onChange={e => setfile(e.target.files[0])}
-                        className="w-1 h-3 px-4 py-2 ml-5 leading-tight border rounded-md opacity-0 appearance-none text-neutral-800 bg-cold-gray border-y-neutral-800 focus:outline-none focus:border-blue-500"></input>
+                        className="w-1 h-3 px-4 py-2 mt-2 ml-5 leading-tight border rounded-md opacity-0 appearance-none text-neutral-800 bg-cold-gray border-y-neutral-800 focus:outline-none focus:border-blue-500"></input>
                      <input
                         type="text"
                         value={edit ? editinput : input}
@@ -429,9 +549,10 @@ const Dash = () => {
                               : setinput(e.target.value)
                         }
                         onClick={() => {
-                           setselcted(null), setfile1(false);
+                           // setfile1(false);
+                           edit && setselcted(selcted);
                         }}
-                        className="h-8 p-2 ml-2 border rounded-md shadow-md shadow-neutral-500 bg-light-silver w-96"
+                        className="h-8 p-2 mt-2 ml-1 border rounded-md shadow-md shadow-neutral-500 bg-light-silver w-96"
                         placeholder="Enter Message..."></input>
 
                      {/* <input
