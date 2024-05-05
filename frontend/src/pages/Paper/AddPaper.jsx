@@ -3,8 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function TeacherForm() {
-   var TextStyle = 'text-black text-xl mb-12';
-   var TextStyleErr = 'text-black text-xl mb-24';
+   var TextStyle = 'text-black  mb-12';
+   var TextStyleErr = 'text-black  mb-24';
    var TextBoxStyle =
       'border-slate-600 placeholder-zinc-950 bg-black bg-opacity-0 pb-3 border-b-4 text-xl';
 
@@ -118,11 +118,11 @@ function TeacherForm() {
       <>
          <div className="flex items-center justify-center min-h-screen ">
             <div>
-               <div className=" bg-gradient-to-br from-green-400 to-purple-400 min-h-52 min-w-32 border-spacing-4 flex items-center justify-center flex-col">
+               <div className="bg-gradient-to-br from-green-400 to-purple-400 min-h-52 min-w-32  flex items-center justify-center flex-col">
                   <div className="text-4xl font-bold mt-3 underline text-yellow-700">
                      ADD PAPER TO SYSTEM{' '}
                   </div>
-                  <div className="flex flex-col items-center justify-center border m-4 w-[800px] rounded-xl border-seperate">
+                  <div className="flex flex-col items-center justify-center m-4 w-[800px] rounded-xl">
                      <div className="flex">
                         <div className="mt-14 m-5">
                            <label
