@@ -28,3 +28,6 @@ backend/.env
 *.njsproj
 *.sln
 *.sw?
+
+# Folders
+backend/files

@@ -41,9 +41,10 @@ import {
    StudentTable,
    TeacherTable,
    UpdatePaper,
-   AddPaper
+   AddPaper,
+   Chat,
+   Chatstd
 } from '../pages';
-import Dash from '../components/chat/dash.jsx';
 
 /* Auth Middleware */
 import { ProtectedRoute } from './ProtectedRoutes.jsx';
@@ -211,15 +212,15 @@ const routes = [
    // Chat Option
    {
       path: '/chat',
-      element: <Dash />,
-      auth: [true],
-      roles: ['admin', 'teacher', 'student']
+      element: <Chat />,
+      auth: [true, false],
+      roles: ['admin', 'teacher', 'student', 'user']
    },
    {
-      path: '/recovery',
-      element: <Recovery />,
-      auth: [true],
-      roles: ['admin', 'teacher', 'student']
+      path: '/chatstd',
+      element: <Chatstd />,
+      auth: [true, false],
+      roles: ['admin', 'teacher', 'student', 'user']
    },
    {
       path: '/reset',
