@@ -63,10 +63,10 @@ const UpdateNotice = () => {
 
    return (
       <div>
-         <h2>Update Notice Form</h2>
-         <form action="#" method="POST" onSubmit={haddlesubmit}>
+         <h2 className="text-center font-bold text-2xl">Update Notice Form</h2>
+         <form action="#" method="POST" onSubmit={haddlesubmit} className="max-w-[500px] mx-auto p-20 border border-gray-300 rounded ">
             <div>
-               <label htmlFor="topic">Topic:</label>
+               <label htmlFor="topic" className="font-bold block mb-5">Topic:</label>
                <input
                   type="text"
                   id="topic"
@@ -74,20 +74,22 @@ const UpdateNotice = () => {
                   onChange={handlechange}
                   value={noticeData.topic}
                   required
+                  className="w-full px-4 py-2 mb-10 border border-gray-300 rounded"
                />
             </div>
             <div>
-               <label htmlFor="description">Description:</label>
+               <label htmlFor="description" className="font-bold block mb-5">Description:</label>
                <textarea
                   id="description"
                   name="description"
                   onChange={handlechange}
                   value={noticeData.description}
                   required
+                  className="w-full px-4 py-2 mb-10 border border-gray-300 rounded"
                />
             </div>
             <div>
-               <label htmlFor="course">Course:</label>
+               <label htmlFor="course" className="font-bold block mb-5">Course:</label>
                <input
                   type="text"
                   id="course"
@@ -95,10 +97,11 @@ const UpdateNotice = () => {
                   onChange={handlechange}
                   value={noticeData.course}
                   required
+                  className="w-full px-4 py-2 mb-10 border border-gray-300 rounded"
                />
             </div>
             <div>
-               <label htmlFor="grade">Grade:</label>
+               <label htmlFor="grade" className="font-bold block mb-5">Grade:</label>
                <input
                   type="text"
                   id="grade"
@@ -106,9 +109,10 @@ const UpdateNotice = () => {
                   onChange={handlechange}
                   value={noticeData.grade}
                   required
+                  className="w-full px-4 py-2 mb-10 border border-gray-300 rounded"
                />
             </div>
-            <button type="submit">Up date</button>
+            <button type="submit">UPDATE</button>
          </form>
       </div>
    );
