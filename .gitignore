@@ -31,3 +31,4 @@ backend/.env
 
 # Folders
 backend/files
+backend/src/uploads
