@@ -23,7 +23,19 @@ export default function UserMain() {
    const navigate = useNavigate();
    const [Data, setData] = useState([]);
    const [searchQuery, setSearchQuery] = useState('');
-   const [searchOption, setSearchOption] = useState('');
+   const [searchOption, setSearchOption] = useState('name');
+
+   useEffect(() => {
+      searchOption === 'gender'
+         ? setSearchQuery('male')
+         : searchOption === 'role'
+         ? setSearchQuery('student')
+         : searchOption === 'datebefore'
+         ? setSearchQuery(new Date('2024/04/01'))
+         : searchOption === 'dateafter'
+         ? setSearchQuery(new Date('2024/04/01'))
+         : setSearchQuery('');
+   }, [searchOption]);
 
    function AddUser() {
       navigate('/students/AddUser');
@@ -358,11 +370,13 @@ export default function UserMain() {
          </div>
 
          {/* Search Input */}
-         <div className="mb-5 flex justify-start">
+         <div className="mb-5 h-10 flex justify-start">
             <label className="p-2 text-lg">Filter</label>
             <select
                value={searchOption}
-               onChange={e => setSearchOption(e.target.value)}
+               onChange={e => {
+                  setSearchOption(e.target.value);
+               }}
                className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500 mr-2 h-12">
                <option value="name">By Name</option>
                <option value="gender">By Gender</option>
@@ -383,7 +397,9 @@ export default function UserMain() {
                            <input
                               type="text"
                               value={searchQuery}
-                              onChange={e => setSearchQuery(e.target.value)}
+                              onChange={e => {
+                                 setSearchQuery(e.target.value);
+                              }}
                               placeholder={`Search by ${
                                  searchOption === 'name'
                                     ? 'student name'
@@ -399,9 +415,9 @@ export default function UserMain() {
                                  <input
                                     type="radio"
                                     name="gender"
-                                    value="male"
-                                    checked={searchQuery === 'male'}
+                                    value={searchQuery === 'male'}
                                     onChange={() => setSearchQuery('male')}
+                                    defaultChecked
                                  />
                                  Male
                               </label>
@@ -409,8 +425,7 @@ export default function UserMain() {
                                  <input
                                     type="radio"
                                     name="gender"
-                                    value="female"
-                                    checked={searchQuery === 'female'}
+                                    value={searchQuery === 'female'}
                                     onChange={() => setSearchQuery('female')}
                                  />
                                  Female
@@ -427,6 +442,7 @@ export default function UserMain() {
                                     value="student"
                                     checked={searchQuery === 'student'}
                                     onChange={() => setSearchQuery('student')}
+                                    defaultChecked
                                  />
                                  Student
                               </label>
@@ -457,7 +473,7 @@ export default function UserMain() {
                         return (
                            <input
                               type="date"
-                              value={searchQuery}
+                              value={new Date(searchQuery)}
                               onChange={e => setSearchQuery(e.target.value)}
                               className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500"
                            />
