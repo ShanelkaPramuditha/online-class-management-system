@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './AddReview.css';
 import axios from 'axios';
 import swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
@@ -51,22 +50,22 @@ const AddReview = () => {
 
       if (!reviewData.StudentID) {
          formIsValid = false;
-         errors['topic'] = 'Please enter Topic';
+         errors['StudentID'] = 'Please enter Student ID';
       }
 
       if (!reviewData.Name) {
          formIsValid = false;
-         errors['description'] = 'Please enter Description';
+         errors['Name'] = 'Please enter Name';
       }
 
       if (!reviewData.ClassName) {
          formIsValid = false;
-         errors['course'] = 'Please enter Course';
+         errors['ClassName'] = 'Please enter Class Name';
       }
 
       if (!reviewData.Description) {
          formIsValid = false;
-         errors['grade'] = 'Please enter Grade';
+         errors['Description'] = 'Please enter Description';
       }
 
       setErrors(errors);
@@ -75,10 +74,10 @@ const AddReview = () => {
 
    return (
       <div>
-         <h2>Review Form</h2>
-         <form onSubmit={handleSubmit} noValidate>
-            <div>
-               <label htmlFor="StudentID">StudentID:</label>
+         <h2 className="text-center font-bold text-2xl ">Review Form</h2>
+         <form onSubmit={handleSubmit} className="max-w-md mx-auto p-8 border border-gray-300 rounded">
+            <div className="mb-4">
+               <label htmlFor="StudentID" className="block font-bold mb-1">Student ID:</label>
                <input
                   type="text"
                   id="StudentID"
@@ -86,22 +85,25 @@ const AddReview = () => {
                   onChange={handleChange}
                   value={reviewData.StudentID}
                   required
+                  className="w-full px-4 py-2 mb-10 border border-gray-300 rounded"
                />
                <div className="error">{errors['StudentID']}</div>
             </div>
-            <div>
-               <label htmlFor="Name">Name:</label>
-               <textarea
+            <div className="mb-4">
+               <label htmlFor="Name" className="block font-bold mb-1">Name:</label>
+               <input
+                  type="text"
                   id="Name"
                   name="Name"
                   onChange={handleChange}
                   value={reviewData.Name}
                   required
+                  className="w-full px-4 py-2 mb-10 border border-gray-300 rounded"
                />
                <div className="error">{errors['Name']}</div>
             </div>
-            <div>
-               <label htmlFor="ClassName">ClassName:</label>
+            <div className="mb-4">
+               <label htmlFor="ClassName" className="block font-bold mb-1">Class Name:</label>
                <input
                   type="text"
                   id="ClassName"
@@ -109,22 +111,23 @@ const AddReview = () => {
                   onChange={handleChange}
                   value={reviewData.ClassName}
                   required
+                  className="w-full px-4 py-2 mb-10 border border-gray-300 rounded"
                />
                <div className="error">{errors['ClassName']}</div>
             </div>
-            <div>
-               <label htmlFor="Description">Description:</label>
-               <input
-                  type="text"
+            <div className="mb-4">
+               <label htmlFor="Description" className="block font-bold mb-1">Description:</label>
+               <textarea
                   id="Description"
                   name="Description"
                   onChange={handleChange}
                   value={reviewData.Description}
                   required
+                  className="w-full px-4 py-2 mb-10 border border-gray-300 rounded"
                />
                <div className="error">{errors['Description']}</div>
             </div>
-            <button type="submit">Submit</button>
+            <button type="submit" className="bg-[blue] hover:bg-[blue] text-white px-4 py-2 rounded cursor-pointer">Submit</button>
          </form>
       </div>
    );

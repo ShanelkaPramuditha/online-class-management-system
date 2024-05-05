@@ -64,7 +64,7 @@ const UpdateNotice = () => {
    return (
       <div>
          <h2 className="text-center font-bold text-2xl">Update Notice Form</h2>
-         <form action="#" method="POST" onSubmit={haddlesubmit} className="max-w-[500px] mx-auto p-20 border border-gray-300 rounded ">
+         <form action="#" method="POST" onSubmit={haddlesubmit} className="max-w-md mx-auto p-8 border border-gray-300 rounded">
             <div>
                <label htmlFor="topic" className="font-bold block mb-5">Topic:</label>
                <input
@@ -112,7 +112,7 @@ const UpdateNotice = () => {
                   className="w-full px-4 py-2 mb-10 border border-gray-300 rounded"
                />
             </div>
-            <button type="submit">UPDATE</button>
+            <button type="submit"className="bg-[green] hover:bg-[green] text-white px-4 py-2 rounded cursor-pointer ">UPDATE</button>
          </form>
       </div>
    );
