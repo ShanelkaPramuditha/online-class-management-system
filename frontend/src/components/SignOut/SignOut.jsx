@@ -1,12 +1,18 @@
+import Swal from 'sweetalert2';
 import { useAuthStore } from '../../store/authStore';
 
 export default function SignOut() {
    const { logout } = useAuthStore();
 
-   // User Logout handler function
+   // Handle User Logout with SweetAlert
    const userLogout = () => {
       logout();
-      window.location.href = '/';
+      Swal.fire({
+         title: 'Logged Out',
+         text: 'You have been successfully logged out',
+         icon: 'success',
+         confirmButtonText: 'Close'
+      });
    };
 
    return (
@@ -16,9 +22,11 @@ export default function SignOut() {
                <h3 className="font-bold text-lg">Are you sure?</h3>
                <p className="py-4">Want You Signing Out...?</p>
                <div className="modal-action">
-                  <form method="dialog">
+                  <div>
                      <div className="flex justify-between gap-4">
-                        <button className="btn btn-outline">
+                        <button
+                           className="btn btn-outline"
+                           onClick={'closeModal'}>
                            Stay Logged In
                         </button>
                         <button
@@ -27,7 +35,7 @@ export default function SignOut() {
                            Sign Out
                         </button>
                      </div>
-                  </form>
+                  </div>
                </div>
             </div>
          </dialog>

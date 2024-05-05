@@ -6,6 +6,8 @@ import onlineexamImg from '../../../assets/images/Onlineexams.png';
 import paymentImg from '../../../assets/images/payment.png';
 import NoticeImg from '../../../assets/images/Notices.png';
 import Dashcard from '../../../components/Card/DashBoardCard';
+import ScrollToTopButton from '../../../components/ScrollToTop';
+
 
 const Dashboard = () => {
    return (
@@ -64,6 +66,7 @@ const Dashboard = () => {
                to="/payments"
             />
          </div>
+         <ScrollToTopButton />
       </div>
    );
 };

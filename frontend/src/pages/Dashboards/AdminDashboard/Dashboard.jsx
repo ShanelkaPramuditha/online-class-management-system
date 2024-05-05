@@ -2,6 +2,8 @@ import TeacherDashImg from '../../../assets/images/TeacherDashboard.png';
 import studentsimg from '../../../assets/images/students.png';
 import paymentImg from '../../../assets/images/payment.png';
 import Dashcard from '../../../components/Card/DashBoardCard';
+import ScrollToTopButton from '../../../components/ScrollToTop';
+
 const Dashboard = () => {
    return (
       <div>
@@ -28,6 +30,7 @@ const Dashboard = () => {
                to="/payments"
             />
          </div>
+         <ScrollToTopButton />
       </div>
    );
 };
