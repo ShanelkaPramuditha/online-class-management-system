@@ -51,7 +51,7 @@ const UpdateReview = () => {
                      Description: ''
                   });
                   Swal.fire('Review update Successfuly!');
-                  navigate('/reviews/');
+                  navigate('/review/');
                });
          }
       });
