@@ -120,6 +120,13 @@ function LiveClassEdit() {
                         Time Duration
                      </label>
                      <input
+                        type="datetime-local"
+                        id="sessiontime"
+                        name="sessiontime"
+                        value={session.sessiontime || ''}
+                        onChange={handleChange}
+                     />
+                     {/* <input
                         className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
                            validationErrors.sessiontime && 'border-red-500'
                         }`}
@@ -129,7 +136,7 @@ function LiveClassEdit() {
                         placeholder="Time"
                         value={session.sessiontime || ''}
                         onChange={handleChange}
-                     />
+                     /> */}
                      {validationErrors.sessiontime && (
                         <span className="text-red-500 text-sm">
                            {validationErrors.sessiontime}

@@ -105,13 +105,19 @@ function LiveClassForm() {
                         Time Duration
                      </label>
                      <input
+                        type="datetime-local"
+                        id="sessiontime"
+                        value={sessiontime}
+                        onChange={handleSessionTime}
+                     />
+                     {/* <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         id="sessiontime"
                         type="text"
                         placeholder="Time"
                         value={sessiontime}
                         onChange={handleSessionTime}
-                     />
+                     /> */}
                   </div>
                   <div className="mb-6">
                      <label

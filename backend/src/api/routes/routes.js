@@ -15,6 +15,8 @@ import * as reviewController from '../controllers/Review.controller.js';
 import * as noticeController from '../controllers/Notice.controller.js';
 import * as modelpapercontroller from '../controllers/Paper.controller.js';
 import * as studentAnswersController from '../controllers/OnlineExam/StudentAnswers.controller.js';
+import * as uploadHandler from '../controllers/upload.controller.js';
+
 
 /* POST Methods */
 router.route('/register').post(controller.register);
@@ -116,5 +118,8 @@ router.route('/modelpaper/:id').get(modelpapercontroller.getonePaper);
 router.route('/createmodelpaper').post(modelpapercontroller.addPaper);
 router.route('/updatemodelpaper/:id').put(modelpapercontroller.updatePaper);
 router.route('/deletemodelpaper/:id').delete(modelpapercontroller.deletePaper);
+
+// Upload File
+router.route('/upload').post(uploadHandler.uploadFile);
 
 export default router;

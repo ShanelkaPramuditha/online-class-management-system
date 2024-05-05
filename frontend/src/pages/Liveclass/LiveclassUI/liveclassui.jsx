@@ -1,5 +1,5 @@
 // LiveClassUI.jsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import Card from './Card';
 import axios from 'axios';

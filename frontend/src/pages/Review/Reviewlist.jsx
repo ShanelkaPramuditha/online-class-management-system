@@ -198,7 +198,7 @@ const Reviewlist = () => {
             </div>
          </div>
          <div className="min-h-[calc(100vh-170px)] mx-auto mt-8 body-content">
-            <h1 className="text-2xl font-bold mb-4">Online Exams</h1>
+            <h1 className="text-2xl font-bold mb-4">All the Student Reviews</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                {FilteredReviewdList.map(review => (
                   <div
@@ -207,7 +207,7 @@ const Reviewlist = () => {
                      <h2 className="text-xl font-bold mb-2">
                         {review.StudentID}
                      </h2>
-                     <img src="https://st2.depositphotos.com/1186248/11327/i/950/depositphotos_113276844-stock-photo-important-review-rubber-stamp.jpg"></img>
+                     <img src="https://th.bing.com/th/id/OIP.PdK-XW9X8xTJ7O6E-iwi6QHaHa?w=733&h=733&rs=1&pid=ImgDetMain"></img>
                      <p className="text-gray-700 mb-4">
                         Description: {review.Description}
                      </p>

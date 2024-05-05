@@ -51,7 +51,7 @@ const UpdateReview = () => {
                      Description: ''
                   });
                   Swal.fire('Review update Successfuly!');
-                  navigate('/reviews/');
+                  navigate('/review/');
                });
          }
       });
@@ -59,10 +59,10 @@ const UpdateReview = () => {
 
    return (
       <div>
-         <h2>Update Review Form</h2>
-         <form action="#" method="POST" onSubmit={haddlesubmit}>
+         <h2 className="text-center font-bold text-2xl ">Update Review Form</h2>
+         <form action="#" method="POST" onSubmit={haddlesubmit} className="max-w-md mx-auto p-8 border border-gray-300 rounded">
             <div>
-               <label htmlFor="StudentID">StudentID:</label>
+               <label htmlFor="StudentID" className="block font-bold mb-1">StudentID:</label>
                <input
                   type="text"
                   id="StudentID"
@@ -70,10 +70,11 @@ const UpdateReview = () => {
                   onChange={handlechange}
                   value={reviewData.StudentID}
                   required
+                  className="w-full px-4 py-2 mb-10 border border-gray-300 rounded"
                />
             </div>
             <div>
-               <label htmlFor="Name">Name:</label>
+               <label htmlFor="Name" className="block font-bold mb-1">Name:</label>
                <textarea
                   type="text"
                   id="Name"
@@ -81,10 +82,11 @@ const UpdateReview = () => {
                   onChange={handlechange}
                   value={reviewData.Name}
                   required
+                  className="w-full px-4 py-2 mb-10 border border-gray-300 rounded"
                />
             </div>
             <div>
-               <label htmlFor="ClassName">ClassName:</label>
+               <label htmlFor="ClassName" className="block font-bold mb-1">ClassName:</label>
                <input
                   type="text"
                   id="ClassName"
@@ -92,10 +94,11 @@ const UpdateReview = () => {
                   onChange={handlechange}
                   value={reviewData.ClassName}
                   required
+                  className="w-full px-4 py-2 mb-10 border border-gray-300 rounded"
                />
             </div>
             <div>
-               <label htmlFor="Description">Description:</label>
+               <label htmlFor="Description" className="block font-bold mb-1">Description:</label>
                <input
                   type="text"
                   id="Description"
@@ -103,9 +106,11 @@ const UpdateReview = () => {
                   onChange={handlechange}
                   value={reviewData.Description}
                   required
+                  className="w-full px-4 py-2 mb-10 border border-gray-300 rounded"
                />
             </div>
-            <button type="submit">Up date</button>
+
+            <button type="submit"className="bg-[blue] hover:bg-[blue] text-white px-4 py-2 rounded cursor-pointer">Up date</button>
          </form>
       </div>
    );

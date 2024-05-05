@@ -63,6 +63,9 @@ import UpdatePaper from './Paper/UpdatePaper';
 import Chat from './Chatpage/DashChat';
 import Chatstd from './Chatpage/Dashstd';
 
+// File Upload
+import FileUploadForm from './UploadFile/FileUpload';
+
 export {
    Home,
    AdminDashboard,
@@ -108,5 +111,6 @@ export {
    UpdatePaper,
    AddPaper,
    Chat,
-   Chatstd
+   Chatstd,
+   FileUploadForm
 };

@@ -180,8 +180,12 @@ const ViewPayment = () => {
                      <tr
                         key={index}
                         className="bg-[white] border-b dark:bg-gray-800 dark:border-[gray] hover:bg-silver-mist dark:hover:bg-silver-mist">
-                        <td className="px-6 py-4">{payment.studentName}</td>
-                        <td className="px-6 py-4">{payment.courseName}</td>
+                        <td className="px-6 py-4 text-start">
+                           {payment.studentName}
+                        </td>
+                        <td className="px-6 py-4 text-start">
+                           {payment.courseName}
+                        </td>
                         <td className="px-6 py-4">
                            {new Date(payment.createdAt).getFullYear()}/
                            {String(

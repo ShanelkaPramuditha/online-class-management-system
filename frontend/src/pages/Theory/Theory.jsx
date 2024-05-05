@@ -4,8 +4,10 @@ import CardImg_1 from '../../assets/images/card-image-01.png';
 const Theory = () => {
    return (
       <div className="body-content">
-         <div className="font-semibold text-3xl my-10 text-center">
-            Theory Classes
+         <div>
+            <div className="font-semibold text-3xl my-10 text-center">
+               Theory Classes
+            </div>
          </div>
          <div className="grid grid-cols-4 gap-7  justify-items-center items-center">
             <div>
@@ -30,7 +32,7 @@ const Theory = () => {
                   cName="grade-13-theory"
                   price={2000}
                   offer={100}
-                  pathname="/theory/grade-12"
+                  pathname="/liveclassview"
                   grade={13}
                />
             </div>
