@@ -1,7 +1,7 @@
 import React from 'react';
 import Usercircle from '../../assets/user-circle.svg';
 import Send from '../../assets/images/send-2.svg';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useEffect } from 'react';
 import Edit from '../../assets/images/edit.svg';
 import Delete from '../../assets/images/trash.svg';
@@ -25,18 +25,24 @@ const Dash = () => {
    const [file, setfile] = useState();
    const [file1, setfile1] = useState(false);
    const [filetype, setfiletype] = useState('');
-   const [scrolls, setscrolls] = useState(false);
-   // console.log('edits', edit);
+   const [admin, setadmin] = useState(false);
+
+   // console.log(`selected`, selcted);
    // console.log('megsmsges', msgs);
+   console.log(`settype`, filetype);
+   console.log(`file`, file);
+   console.log(`file01`, file1);
+
    const chatdash = document.getElementById('chatdash');
 
    useEffect(() => {
-      const handleMessage = (data1, data2) => {
+      const handleMessage = (data1, data2, data3) => {
          setmsgs(prevmsgs => [
             ...prevmsgs,
             {
                Messages: data1,
-               Username: data2
+               Username: data2,
+               dateTime: data3
             }
          ]);
          scroolbtn();
@@ -47,11 +53,17 @@ const Dash = () => {
          );
       });
 
+      const handleMessageDeleted = deletedId => {
+         setmsgs(prevmsgs =>
+            prevmsgs.filter(msg => msg.idofmessage !== deletedId)
+         );
+      };
+      socket.on('message_deleted', handleMessageDeleted);
       socket.on('recived_msg', handleMessage);
 
       return () => {
          socket.off('recived_msg', handleMessage);
-         socket.off('recived_msg', handleMessage);
+         socket.off('message_deleted', handleMessageDeleted);
       };
    }, [socket]);
 
@@ -60,15 +72,18 @@ const Dash = () => {
    }, []);
 
    const fetchmeg = async () => {
-      const res = await fetch(`http://localhost:5000/msg`, {
-         method: 'GET',
-         headers: {
-            'Content-Type': 'application/json'
-         }
-      });
-      const resdata = await res.json();
-      // console.log(`res`, resdata);
-      setmsgs(resdata);
+      try {
+         const res = await fetch(`http://localhost:5000/msg13`, {
+            method: 'GET',
+            headers: {
+               'Content-Type': 'application/json'
+            }
+         });
+         const resdata = await res.json();
+         setmsgs(resdata);
+      } catch (error) {
+         console.error('Error fetching messages:', error);
+      }
    };
 
    const user = JSON.parse(localStorage.getItem('authStore'));
@@ -76,9 +91,27 @@ const Dash = () => {
    const user1 = user?.state.firstName;
    console.log(`user1`, user1);
 
+   if (user1 === 'Nameadmin') {
+      setadmin(true);
+   }
+
    const deletemsg = async msgId => {
       try {
-         const res = await fetch(`http://localhost:5000/deletemsg/${msgId}`, {
+         const res = await fetch(`http://localhost:5000/deletemsg13/${msgId}`, {
+            method: 'DELETE',
+            headers: {
+               'Content-Type': 'application/json'
+            }
+         });
+         socket.emit('delete_msg', msgId);
+         fetchmeg();
+      } catch (e) {
+         console.log(e);
+      }
+   };
+   const deleteAll = async () => {
+      try {
+         const res = await fetch(`http://localhost:5000/deleteAll13`, {
             method: 'DELETE',
             headers: {
                'Content-Type': 'application/json'
@@ -108,7 +141,26 @@ const Dash = () => {
          }
       });
    };
-   const editdetails = async msgId => {
+   const removeAll = () => {
+      Swal.fire({
+         title: 'Are You Clear Chat?',
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonColor: '#747976',
+         cancelButtonColor: '#C2C8C4',
+         confirmButtonText: 'delete'
+      }).then(result => {
+         if (result.isConfirmed) {
+            deleteAll();
+            Swal.fire({
+               title: 'Deleted All Messages!',
+               text: 'Your message has been deleted.',
+               icon: 'success'
+            });
+         }
+      });
+   };
+   const editdetail1 = async msgId => {
       try {
          const res = await fetch(`http://localhost:5000/editdetail/${msgId}`, {
             method: 'GET',
@@ -118,6 +170,22 @@ const Dash = () => {
          });
          const resdata = await res.json();
          seteditinput(resdata.existmsg);
+      } catch (error) {
+         console.error('error:', error);
+      }
+   };
+   const editdetail2 = async msgId => {
+      try {
+         const res = await fetch(
+            `http://localhost:5000/editdetail13/${msgId}`,
+            {
+               method: 'GET',
+               headers: {
+                  'Content-Type': 'application/json'
+               }
+            }
+         );
+         const resdata = await res.json();
          setfiletype(resdata.filetype);
       } catch (error) {
          console.error('error:', error);
@@ -126,7 +194,7 @@ const Dash = () => {
 
    const editmsg = async msgId => {
       try {
-         const res = await fetch(`http://localhost:5000/editmsg/${msgId}`, {
+         const res = await fetch(`http://localhost:5000/editmsg13/${msgId}`, {
             method: 'PUT',
             headers: {
                'Content-Type': 'application/json'
@@ -138,6 +206,7 @@ const Dash = () => {
          seteditinput('');
          setedit(false);
          fetchmeg();
+         setselcted(null);
       } catch (er) {
          console.log(er);
       }
@@ -146,7 +215,7 @@ const Dash = () => {
    const generatereport = async () => {
       const doc = new jsPDF();
       doc.text('Livechat Summary Report', 105, 10, { align: 'center' });
-      const res = await fetch(`http://localhost:5000/report`, {
+      const res = await fetch(`http://localhost:5000/report1313`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json'
@@ -184,7 +253,7 @@ const Dash = () => {
    };
 
    const sendmessage = async () => {
-      const res1 = await fetch(`http://localhost:5000/message`, {
+      const res1 = await fetch(`http://localhost:5000/message13`, {
          method: 'POST',
          headers: {
             'content-type': 'application/json'
@@ -194,8 +263,9 @@ const Dash = () => {
             firstName: user1
          })
       });
+      const just = 'Just Now';
       console.log(`res11`, user?.id);
-      socket.emit('send_msg', input, user1);
+      socket.emit('send_msg', input, user1, just);
       setinput('');
       fetchmeg();
       scroolbtn();
@@ -208,7 +278,7 @@ const Dash = () => {
 
       try {
          const response = await axios.post(
-            'http://localhost:5000/uploadfile',
+            'http://localhost:5000/uploadfile13',
             formData,
             {
                headers: {
@@ -228,12 +298,15 @@ const Dash = () => {
    };
    const getfiles = async msgId => {
       try {
-         const res = await fetch(`http://localhost:5000/editdetail/${msgId}`, {
-            method: 'GET',
-            headers: {
-               'Content-Type': 'application/json'
+         const res = await fetch(
+            `http://localhost:5000/editdetail13/${msgId}`,
+            {
+               method: 'GET',
+               headers: {
+                  'Content-Type': 'application/json'
+               }
             }
-         });
+         );
          const resdata = await res.json();
          const selectfile = resdata.existmsg;
          console.log(selectfile);
@@ -246,19 +319,24 @@ const Dash = () => {
 
    const scroolbtn = async () => {
       chatdash.scrollTo({
-         top: document.documentElement.scrollHeight,
+         top: aboutSection.current.offsetTop,
          behavior: 'smooth'
       });
    };
-   // const handleSendMessage = () => {
-   //    if (edit) {
-   //       editmsg(selcted);
-   //    } else if (file1) {
-   //       sendfile();
-   //    } else {
-   //       sendmessage();
-   //    }
-   // };
+
+   const formatDate = dateString => {
+      const date = new Date(dateString);
+      const month = date.getMonth();
+      const day = date.getDate();
+      return `${month}/${day}`;
+   };
+
+   const formatTime = timeString => {
+      const time = new Date(timeString);
+      const hour = time.getHours();
+      const minutes = time.getMinutes();
+      return `${hour}:${minutes}`;
+   };
 
    return (
       <div className="flex flex-col items-center justify-center h-full bg-silver-mist">
@@ -271,6 +349,11 @@ const Dash = () => {
                <div>
                   <button
                      className="w-32 h-12 p-2 text-xl font-semibold text-center border rounded-md bg-light-blue"
+                     onClick={() => setlivechat(false)}>
+                     Get Started
+                  </button>
+                  <button
+                     className="w-32 h-12 p-2 text-xl font-semibold text-center border rounded-md bg-light-blue ml-[80%]"
                      onClick={() => setlivechat(true)}>
                      Get Started
                   </button>
@@ -284,11 +367,20 @@ const Dash = () => {
          {livechat && (
             <div className="w-full bg-silver-mist h-[600px] flex items-center justify-center flex-col mt-6">
                <div className=" bg-silver-mist w-[600px] shadow-lg shadow-neutral-500 border border-black h-[600px] flex flex-col items-center justify-center">
-                  <button
-                     className="p-1 mt-1 ml-auto mr-1 text-sm border rounded shadow-md bg-light-gray text-neutral-950 shadow-neutral-400"
-                     onClick={() => generatereport()}>
-                     Summary
-                  </button>
+                  {admin && (
+                     <div className="flex flex-row items-baseline ml-auto">
+                        <button
+                           className="p-1 mt-1 ml-auto mr-5 text-sm border rounded shadow-md bg-light-gray text-neutral-950 shadow-neutral-400"
+                           onClick={() => removeAll()}>
+                           Clear Chat
+                        </button>
+                        <button
+                           className="p-1 mt-1 ml-auto mr-1 text-sm border rounded shadow-md bg-light-gray text-neutral-950 shadow-neutral-400"
+                           onClick={() => generatereport()}>
+                           Summary
+                        </button>
+                     </div>
+                  )}
                   <div className="h-10 w-[80%] bg-light-gray m-3 border rounded-full text-center p-2 text-lg font-mono text-neutral-950 shadow-md shadow-neutral-500">
                      Live Chat
                   </div>
@@ -304,7 +396,6 @@ const Dash = () => {
                                     onClick={() => {
                                        console.log(selcted);
                                        removemsg(selcted);
-                                       // setselcted(null);
                                        setoptions(false);
                                     }}
                                     className="w-5 mr-2 cursor-pointer"></img>
@@ -312,9 +403,7 @@ const Dash = () => {
                                     <img
                                        src={Edit}
                                        onClick={() => {
-                                          editdetails(selcted);
-                                          // setoptions(false);
-                                          // setedit(true);
+                                          editdetail1(selcted);
                                        }}
                                        className="w-5 ml-2 cursor-pointer"></img>
                                  )}
@@ -328,9 +417,15 @@ const Dash = () => {
                               return (
                                  <div className="flex flex-col mt-1 mb-2">
                                     <div className="flex flex-row ml-auto">
-                                       <div className="ml-1 font-sans text-xs text-neutral-500">
+                                       <div className="ml-1 mr-1 font-sans text-[8px] text-neutral-500 mt-1">
+                                          {formatTime(msg.dateTime) +
+                                             '   ' +
+                                             formatDate(msg.dateTime)}
+                                       </div>
+                                       <div className="ml-0 font-sans text-xs text-neutral-600">
                                           You
                                        </div>
+
                                        <img
                                           src={Usercircle}
                                           className="rounded-full shadow-sm shadow-neutral-500"
@@ -340,15 +435,16 @@ const Dash = () => {
                                     <div
                                        onClick={() => {
                                           setedit(true);
-                                          editdetails(msg.idofmessage);
+                                          editdetail2(msg.idofmessage);
                                           setselcted(msg.idofmessage);
                                           setoptions(true);
-
                                           console.log(`setselcted`, selcted);
                                           if (filetype === 'file') {
-                                             getfiles(msg.idofmessage);
                                              setedit(false);
+                                             getfiles(msg.idofmessage);
+                                             setfiletype(' ');
                                           }
+                                          setfiletype(' ');
                                        }}
                                        className={`max-h-full min-w-0 min-h-0 p-1 mb-1 ml-auto mr-2 font-sans text-sm shadow cursor-pointer shadow-neutral-400 w-fit max-w-64  rounded-b-xl rounded-tl-xl h-fit text-neutral-800 ${
                                           selcted === msg.idofmessage
@@ -368,15 +464,27 @@ const Dash = () => {
                                           className="rounded-full shadow-sm shadow-neutral-500"
                                           width={16}
                                           height={16}></img>
-                                       <div className="ml-1 font-sans text-xs text-neutral-500">
+
+                                       <div className="ml-1 font-sans text-xs text-neutral-600">
                                           {msg.Username}
+                                       </div>
+                                       <div className="ml-1 mr-2 font-sans text-[8px] text-neutral-500 mt-1">
+                                          {!isNaN(
+                                             new Date(msg.dateTime).getTime()
+                                          )
+                                             ? formatDate(msg.dateTime) +
+                                               ' ' +
+                                               formatTime(msg.dateTime)
+                                             : 'justNow'}
                                        </div>
                                     </div>
                                     <div
                                        onClick={() => {
-                                          editdetails(msg.idofmessage);
+                                          editdetail2(msg.idofmessage);
                                           setselcted(msg.idofmessage);
-                                          setoptions(true);
+                                          admin
+                                             ? setoptions(true)
+                                             : setoptions(false);
                                           setedit(false);
                                           console.log(`setselcted`, selcted);
                                           if (filetype === 'file') {
@@ -394,21 +502,6 @@ const Dash = () => {
                               );
                            }
                         })}
-
-                        {/* 
-               <div className="flex flex-col mt-2 ">
-                  <div className="flex flex-row ml-auto">
-                     <div className="ml-1 font-sans text-xs">username</div>
-                     <img
-                        src={Usercircle}
-                        className=""
-                        width={20}
-                        height={20}></img>
-                  </div>
-                  <div className="max-h-full min-w-0 min-h-0 p-1 mb-1 ml-auto mr-2 shadow-sm cursor-pointer w-fit max-w-64 bg-light-silver rounded-b-xl rounded-tl-xl h-fit">
-                     hello asdfghjk
-                  </div>
-               </div> */}
                      </div>
                      {/* {scrolls && (
                         <div className="flex flex-col " id="scroolbtn">
@@ -450,10 +543,9 @@ const Dash = () => {
                         type="file"
                         onClick={() => {
                            setfile1(true);
-                           setinput('Send file');
                         }}
                         onChange={e => setfile(e.target.files[0])}
-                        className="w-1 h-3 px-4 py-2 ml-5 leading-tight border rounded-md opacity-0 appearance-none text-neutral-800 bg-cold-gray border-y-neutral-800 focus:outline-none focus:border-blue-500"></input>
+                        className="w-1 h-3 px-4 py-2 mt-2 ml-5 leading-tight border rounded-md opacity-0 appearance-none text-neutral-800 bg-cold-gray border-y-neutral-800 focus:outline-none focus:border-blue-500"></input>
                      <input
                         type="text"
                         value={edit ? editinput : input}
@@ -463,9 +555,10 @@ const Dash = () => {
                               : setinput(e.target.value)
                         }
                         onClick={() => {
-                           setselcted(null), setfile1(false);
+                           // setfile1(false);
+                           edit && setselcted(selcted);
                         }}
-                        className="h-8 p-2 ml-2 border rounded-md shadow-md shadow-neutral-500 bg-light-silver w-96"
+                        className="h-8 p-2 mt-2 ml-1 border rounded-md shadow-md shadow-neutral-500 bg-light-silver w-96"
                         placeholder="Enter Message..."></input>
 
                      {/* <input

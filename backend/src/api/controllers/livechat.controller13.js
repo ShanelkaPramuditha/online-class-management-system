@@ -1,8 +1,8 @@
-import MSG from '../models/messages.js';
+import MSG from '../models/messages13.js';
 import Users from '../models/User.model.js';
 import multer from 'multer';
 
-export const postmessages = async (req, res) => {
+export const postmessages13 = async (req, res) => {
    try {
       const { message, firstName } = req.body;
       const newMessage = new MSG({ message, firstName });
@@ -13,7 +13,7 @@ export const postmessages = async (req, res) => {
    }
 };
 
-export const getdetails = async (req, res) => {
+export const getdetails13 = async (req, res) => {
    try {
       //   const senderid = req.params.senderId;
       const mesg = await MSG.find();
@@ -39,7 +39,7 @@ export const getdetails = async (req, res) => {
    }
 };
 
-export const deletemessages = async (req, res) => {
+export const deletemessages13 = async (req, res) => {
    try {
       const id = req.params.msgId;
       console.log(`idid`, id);
@@ -51,7 +51,7 @@ export const deletemessages = async (req, res) => {
    }
 };
 
-export const editemessages = async (req, res) => {
+export const editemessages13 = async (req, res) => {
    try {
       const id = req.params.msgId;
       const editdata = await MSG.findById(id);
@@ -66,7 +66,7 @@ export const editemessages = async (req, res) => {
    }
 };
 
-export const editmsgs = async (req, res) => {
+export const editmsgs13 = async (req, res) => {
    try {
       const id = req.params.msgId;
       console.log(`idididid`, id);
@@ -80,7 +80,7 @@ export const editmsgs = async (req, res) => {
    }
 };
 
-export const report = async (req, res) => {
+export const report13 = async (req, res) => {
    try {
       const reportdata = await MSG.aggregate([
          {
@@ -106,7 +106,7 @@ export const report = async (req, res) => {
       console.error('error:', error);
    }
 };
-export const deleteAllmessages = async (req, res) => {
+export const deleteAllmessages13 = async (req, res) => {
    try {
       const deletes = await MSG.deleteMany();
       res.status(200).send('Message deleted successfully');
