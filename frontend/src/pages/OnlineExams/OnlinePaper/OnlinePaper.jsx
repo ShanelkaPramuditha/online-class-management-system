@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { UserData } from '../../../hooks/userData.jsx'; // Importing the function to get user data
 
@@ -14,6 +14,7 @@ function ViewPaper() {
    const [answers, setAnswers] = useState([]);
    const { paperId } = useParams(); // Extract paperId from URL params
    const { email } = UserData(); // Get user's email from UserData function
+   const navigate = useNavigate();
 
    useEffect(() => {
       const fetchPaper = async () => {
@@ -73,7 +74,12 @@ function ViewPaper() {
                'Success!',
                'Your answers have been submitted.',
                'success'
-            );
+            ).then(() => {
+               // Redirect to another page
+               // You can use the Link component from React Router to redirect
+               //return <Link to="http://localhost:5173/exam/view" />;
+               window.location.href = `http://localhost:5173/exam/view`;
+            });
          } catch (error) {
             console.error('Error submitting paper:', error);
             // Handle error response
@@ -85,10 +91,6 @@ function ViewPaper() {
          }
       }
    };
-
-   if (!paper) {
-      return <div>Loading...</div>;
-   }
 
    return (
       <div className="min-h-[calc(100vh-170px)] mx-auto mt-8 body-content">
@@ -122,11 +124,11 @@ function ViewPaper() {
                      className="bg-[#0eb009] hover:bg-[#0d5c0a] text-[white] font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 m-6">
                      Submit Paper
                   </button>
-                  <Link
+                  {/* <Link
                      to={`/exam/${paperId}`}
                      className="text-blue-500 hover:underline">
                      View Exam
-                  </Link>
+                  </Link> */}
                </div>
             </form>
          </div>
