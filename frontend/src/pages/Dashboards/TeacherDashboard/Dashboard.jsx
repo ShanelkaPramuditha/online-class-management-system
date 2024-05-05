@@ -4,7 +4,9 @@ import liveclassimg from '../../../assets/images/liveclass.png';
 import papersImg from '../../../assets/images/papers.png';
 import onlineexamImg from '../../../assets/images/Onlineexams.png';
 import paymentImg from '../../../assets/images/payment.png';
+import NoticeImg from '../../../assets/images/Notices.png';
 import Dashcard from '../../../components/Card/DashBoardCard';
+
 const Dashboard = () => {
    return (
       <div className="min-h-[calc(100vh-170px)]">
@@ -43,7 +45,16 @@ const Dashboard = () => {
                title="Live Classes"
                description="Host live classes virtually, engage with students in real-time, and deliver interactive learning experiences."
                buttonText="Manage"
-               to="/liveclass"
+               to=
+               "/liveclass"
+            />
+            <Dashcard
+               imageSrc={NoticeImg}
+               title="Notice and Notification"
+               description="Notice: Join our virtual classroom for interactive, real-time learning experiences. Engage with fellow students and instructors as you delve into dynamic educational content."
+               buttonText="Manage"
+               to=
+               "/Notices"
             />
             <Dashcard
                imageSrc={paymentImg}
