@@ -4,6 +4,7 @@ import liveclassimg from '../../../assets/images/liveclass.png';
 import papersImg from '../../../assets/images/papers.png';
 import onlineexamImg from '../../../assets/images/Onlineexams.png';
 import paymentImg from '../../../assets/images/payment.png';
+import ReviewImg from '../../../assets/images/ReviewImg.png';
 import NoticeImg from '../../../assets/images/Notices.png';
 import Dashcard from '../../../components/Card/DashBoardCard';
 import ScrollToTopButton from '../../../components/ScrollToTop';
@@ -64,6 +65,14 @@ const Dashboard = () => {
                description="Handle payment transactions seamlessly. Manage invoices, process payments, and track financial data efficiently."
                buttonText="Manage"
                to="/payments"
+            />
+            <Dashcard
+               imageSrc={ReviewImg}
+               title="Reviews"
+               description=
+               "Experience dynamic and immersive virtual classes where real-time engagement with students takes center stage. Dive into interactive learning experiences that captivate and enrich, fostering active participation and knowledge retention. Join our live sessions to unlock a world of interactive education tailored to your needs."
+               buttonText="Manage"
+               to="/review"
             />
          </div>
          <ScrollToTopButton />
