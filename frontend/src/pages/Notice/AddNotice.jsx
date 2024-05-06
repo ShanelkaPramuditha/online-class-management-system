@@ -128,7 +128,7 @@ const AddNotice = () => {
                     />
                     <div className="error">{errors['grade']}</div>
                 </div>
-                <button type="submit" className="bg-green-500 text-white px-10 py-2 rounded cursor-pointer">Submit</button>
+                <button type="submit" className="bg-[green] text-{white] px-10 py-2 rounded cursor-pointer">Submit</button>
             </form>
         </div>
     );
