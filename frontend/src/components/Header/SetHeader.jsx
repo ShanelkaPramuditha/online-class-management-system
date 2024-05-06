@@ -50,7 +50,7 @@ export const SetNavbarItems = () => {
             { name: 'COURSES', path: '/courses' },
             { name: 'ABOUT', path: '/about' },
             { name: 'CONTACT', path: '/contact' },
-            { name: 'FAQ', path: '/faq' },
+            { name: 'FAQ', path: '/faq' }
          ];
       }
    } else {
@@ -59,8 +59,8 @@ export const SetNavbarItems = () => {
          { name: 'COURSES', path: '/courses' },
          { name: 'ABOUT', path: '/about' },
          { name: 'CONTACT', path: '/contact' },
-         { name: 'FAQ', path: '/faq' },
-         { name: 'FAQHANDLING', path: '/faq-handling' }
+         { name: 'FAQ', path: '/faq' }
+         // { name: 'FAQHANDLING', path: '/faq-handling' }
       ];
    }
 };

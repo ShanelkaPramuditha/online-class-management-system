@@ -136,7 +136,22 @@ const UpdateEnrollment = () => {
                         className="block text-sm font-medium text-gray-700 mb-2">
                         Course Name
                      </label>
-                     <input
+                     <select
+                        {...register('courseName', {
+                           required: 'Course Name is required'
+                        })}
+                        id="courseName"
+                        name="courseName"
+                        defaultValue={payment.courseName}
+                        className={`input input-bordered w-full ${
+                           errors.courseName ? 'input-error' : ''
+                        }`}>
+                        <option value="">Select Course Name</option>
+                        <option value="grade-13-theory">Grade 13 Theory</option>
+                        <option value="grade-12-theory">Grade 12 Theory</option>
+                        <option value="online-exams">Online Exams</option>
+                     </select>
+                     {/* <input
                         {...register('courseName', {
                            required: 'Course Name is required'
                         })}
@@ -148,7 +163,7 @@ const UpdateEnrollment = () => {
                         className={`input input-bordered w-full ${
                            errors.courseName ? 'input-error' : ''
                         }`}
-                     />
+                     /> */}
                      {errors.courseName && (
                         <span className="text-sm text-[red]">
                            {errors.courseName.message}
