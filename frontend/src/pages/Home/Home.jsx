@@ -6,9 +6,7 @@ const Home = () => {
             {' '}
             <Carousel />
          </div>
-         <div>
-            <div>Reviews</div>
-         </div>
+         <div>{/* <div>Reviews</div> */}</div>
       </div>
    );
 };

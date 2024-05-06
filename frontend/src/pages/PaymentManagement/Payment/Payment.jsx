@@ -87,14 +87,20 @@ const Payment = () => {
                Select Payment Method
             </div>
             {/* Card Payment and Bank Transfers */}
-            <div className="">
+            <div className="w-60">
                <button
                   className={`w-full border mb-5  rounded-box ${
                      paymentMethod === 'card' ? ' text-white py-8' : ''
                   }`}
                   onClick={() => setPaymentMethod('card')}>
                   Pay with credit or debit card
+                  {/* <CiCreditCard1
+                     className={`w-full border mb-5  rounded-box ${
+                        paymentMethod === 'card' ? ' text-white py-8' : ''
+                     }`}
+                  /> */}
                </button>
+
                <button
                   className={`w-full border mb-5  rounded-box ${
                      paymentMethod === 'bank' ? ' text-white py-8' : ''
@@ -262,7 +268,7 @@ const Payment = () => {
                      )}
                   </div>
 
-                  <div className="mb-5">
+                  {/* <div className="mb-5">
                      <label
                         htmlFor="reciept"
                         className="block text-sm font-medium text-gray-700 mb-2">
@@ -284,7 +290,7 @@ const Payment = () => {
                            {errors.reciept.message}
                         </span>
                      )}
-                  </div>
+                  </div> */}
                   {/* Submit */}
                   <button type="submit" className="btn btn-primary w-full mt-7">
                      Pay Now

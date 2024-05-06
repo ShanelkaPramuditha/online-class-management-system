@@ -6,6 +6,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import requestAuth from '../../../api/requestAuth';
 import { deletePayment } from '../../../api/paymentAPI';
+import ScrollToTop from '../../../components/ScrollToTop';
 
 const ViewPayment = () => {
    const [payments, setPayments] = useState([]);
@@ -67,13 +68,56 @@ const ViewPayment = () => {
 
    // Report handler
    const reportHandler = async () => {
+      const { value: formValues } = await Swal.fire({
+         title: 'Enter Date Range',
+         html:
+            '<input id="swal-input-from" class="swal2-input" placeholder="From Date" type="date">' +
+            '<input id="swal-input-to" class="swal2-input" placeholder="To Date" type="date">',
+         focusConfirm: false,
+         preConfirm: () => {
+            return [
+               document.getElementById('swal-input-from').value,
+               document.getElementById('swal-input-to').value
+            ];
+         }
+      });
+
+      // Validate date inputs
+      if (!formValues || !formValues[0] || !formValues[1]) {
+         Swal.fire(
+            'Error!',
+            'Please enter both From Date and To Date.',
+            'error'
+         );
+         return;
+      }
+
+      const fromTimestamp = new Date(formValues[0]).getTime();
+      const toTimestamp = new Date(formValues[1]).getTime();
+
+      if (isNaN(fromTimestamp) || isNaN(toTimestamp)) {
+         Swal.fire(
+            'Error!',
+            'Invalid date format. Please use YYYY-MM-DD format.',
+            'error'
+         );
+         return;
+      }
+
+      // Filter payments within the date range
+      const filteredPaymentsInRange = filteredPayments.filter(payment => {
+         const paymentDate = new Date(payment.createdAt).getTime();
+         return paymentDate >= fromTimestamp && paymentDate <= toTimestamp;
+      });
+
+      // Generate report with filtered payments
       const doc = new jsPDF();
 
-      // Calculate total payments
-      const totalPayments = filteredPayments.length;
+      // Calculate total payments within the range
+      const totalPaymentsInRange = filteredPaymentsInRange.length;
 
-      // Total billing amount
-      const totalAmount = filteredPayments.reduce(
+      // Total billing amount within the range
+      const totalAmountInRange = filteredPaymentsInRange.reduce(
          (acc, payment) => acc + payment.billingAmount,
          0
       );
@@ -95,7 +139,7 @@ const ViewPayment = () => {
                'VALUE(RS)'
             ]
          ],
-         body: filteredPayments.map(payment => [
+         body: filteredPaymentsInRange.map(payment => [
             payment.studentName,
             payment.courseName,
             new Date(payment.createdAt).toISOString().split('T')[0],
@@ -106,11 +150,11 @@ const ViewPayment = () => {
 
       let currentY = doc.autoTable.previous.finalY + 10;
 
-      // total payments
-      doc.text(`Total Payment Count: ${totalPayments}`, 14, currentY);
+      // total payments within the range
+      doc.text(`Total Payment Count: ${totalPaymentsInRange}`, 14, currentY);
 
-      // Total Amounts
-      doc.text(`Total Value: ${totalAmount}`, 14, currentY + 10);
+      // Total Amounts within the range
+      doc.text(`Total Value: ${totalAmountInRange}`, 14, currentY + 10);
 
       // Save the PDF
       doc.save('payments-report.pdf');
@@ -151,9 +195,13 @@ const ViewPayment = () => {
                      <th scope="col" className="px-6 py-3">
                         Student Name
                      </th>
+                     {/* <th scope="col" className="px-6 py-3">
+                        Email
+                     </th> */}
                      <th scope="col" className="px-6 py-3">
                         Course Name
                      </th>
+
                      <th scope="col" className="px-6 py-3">
                         Billing Date
                      </th>
@@ -183,6 +231,9 @@ const ViewPayment = () => {
                         <td className="px-6 py-4 text-start">
                            {payment.studentName}
                         </td>
+                        {/* <td className="px-6 py-4 text-start">
+                           {payment.email}
+                        </td> */}
                         <td className="px-6 py-4 text-start">
                            {payment.courseName}
                         </td>
@@ -259,6 +310,7 @@ const ViewPayment = () => {
                </tbody>
             </table>
          </div>
+         <ScrollToTop />
       </div>
    );
 };
