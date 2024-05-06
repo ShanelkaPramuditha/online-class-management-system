@@ -7,8 +7,8 @@ import 'jspdf-autotable';
 
 const Noticelist = () => {
    const [notices, setNotices] = useState([]);
-   const [searchOption, setSearchOption] = useState('');
-   const [searchQuery, setSearchQuery] = useState('topic');
+   const [searchOption, setSearchOption] = useState('topic');
+   const [searchQuery, setSearchQuery] = useState('');
    const navigate = useNavigate();
 
    useEffect(() => {

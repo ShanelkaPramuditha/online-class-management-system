@@ -7,8 +7,8 @@ import 'jspdf-autotable';
 
 const Reviewlist = () => {
    const [reviews, setReviews] = useState([]);
-   const [searchOption, setSearchOption] = useState('');
-   const [searchQuery, setSearchQuery] = useState('StudentID');
+   const [searchOption, setSearchOption] = useState('StudentID');
+   const [searchQuery, setSearchQuery] = useState('');
    const navigate = useNavigate();
 
    useEffect(() => {
