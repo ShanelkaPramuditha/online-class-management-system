@@ -160,12 +160,26 @@ function UpdateUser() {
                      <div className="flex">
                         <div className="mt-20 m-4 ">
                            <label className={TextStyle}>First Name</label>
+                           <br />
+                           <br />
                            <label className={TextStyle}>Last Name</label>
+                           <br />
+                           <br />
                            <label className={TextStyle}>Email</label>
+                           <br />
+                           <br />
                            <label className={TextStyle}>User Role</label>
+                           <br />
+                           <br />
                            <label className={TextStyle}>Gender</label>
+                           <br />
+                           <br />
                            <label className={TextStyle}>Mobile Number</label>
+                           <br />
+                           <br />
                            <label className={TextStyle}>Password</label>
+                           <br />
+                           <br />
                            <label className={TextStyle}>Register Date</label>
                         </div>
                         <div className="bg-opacity-0 mt-8 m-5 block border-black border-3 p-4">

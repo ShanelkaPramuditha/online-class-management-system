@@ -32,7 +32,7 @@ const Theory = () => {
                   cName="grade-13-theory"
                   price={2000}
                   offer={100}
-                  pathname="/liveclassview"
+                  pathname="/liveclassview13"
                   grade={13}
                />
             </div>
