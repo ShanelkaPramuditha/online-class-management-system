@@ -30,6 +30,7 @@ import {
    LiveClassUI,
    LiveClassEdit,
    LiveClassView,
+   LiveClassView13,
    AllExams,
    UpdateEnrollment,
    NoticeList,
@@ -215,13 +216,13 @@ const routes = [
       path: '/chat',
       element: <Chat />,
       auth: [true, false],
-      roles: ['admin', 'teacher', 'student', 'user']
+      roles: ['admin', 'teacher', 'student']
    },
    {
       path: '/chatstd',
       element: <Chatstd />,
       auth: [true, false],
-      roles: ['admin', 'teacher', 'student', 'user']
+      roles: ['admin', 'teacher', 'student']
    },
    {
       path: '/reset',
@@ -252,6 +253,12 @@ const routes = [
    {
       path: '/liveclassview',
       element: <LiveClassView />,
+      auth: [true],
+      roles: ['admin', 'teacher', 'student']
+   },
+   {
+      path: '/liveclassview13',
+      element: <LiveClassView13 />,
       auth: [true],
       roles: ['admin', 'teacher', 'student']
    },

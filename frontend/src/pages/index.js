@@ -44,6 +44,7 @@ import LiveClassForm from './Liveclass/Liveclassform'; // Teacher
 import LiveClassUI from './Liveclass/LiveclassUI/liveclassui'; // Teacher
 import LiveClassEdit from './Liveclass/Liveclassedit/Liveclassedit'; // Teacher
 import LiveClassView from './Theory/LiveView/liveview'; //Student View
+import LiveClassView13 from './Theory/LiveView/liveview-13'; //Student View
 // Review Management
 import AddReview from './Review/AddReview';
 import Reviewlist from './Review/Reviewlist';
@@ -99,6 +100,7 @@ export {
    LiveClassUI,
    LiveClassEdit,
    LiveClassView,
+   LiveClassView13,
    AllExams,
    AddReview,
    Reviewlist,
